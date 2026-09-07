@@ -33,7 +33,12 @@ products/mealflow/intents/INT-MF-0042/intent.md
 products/agentic-sdlc/intents/INT-AS-0017/intent.md
 ```
 
-`intent.md` and its Trello card carry the same `product_id`, `intent_id`, version, and last synchronized commit. Cross-product initiatives are parent/portfolio intents decomposed into one execution intent per product; one execution intent never spans unrelated product repositories.
+`intent.md` and its Trello card carry the same `product_id`, `intent_id`,
+`intent_version`, `intent_commit`, and canonical content hash. The field names
+and permitted values are owned by the Intent Creation Skill's canonical schema;
+this repository does not define alternatives. Cross-product initiatives are
+parent/portfolio intents decomposed into one execution intent per product; one
+execution intent never spans unrelated product repositories.
 
 ## Execution workspace
 
@@ -49,8 +54,20 @@ The worktree is created only from a frozen input. A suggested durable layout is:
   evaluation/
 ```
 
-The work contract includes intent path, source commit, content hash, approval metadata, acceptance criteria, constraints, non-goals, dependencies, validation gates, and escalation conditions. Every downstream artifact links back to it.
+The work contract includes intent path, source commit, normalized content hash,
+frozen-artifact hash, approval metadata, acceptance criteria, constraints,
+non-goals, dependencies, validation gates, and escalation conditions. Every
+downstream artifact links back to it.
 
 ## Design constraints
 
 Agents remain stateless between runs; durable state belongs in versioned artifacts and Conductor-managed workflow records. Grant least privilege by role. Enforce critical architecture, validation, and policy invariants mechanically where possible. Record facts, inferences, and unresolved decisions separately.
+
+## Deployment boundary
+
+Containerization is an agent-specific deployment decision, not a current
+system-wide mandate. Every agent must be bounded, observable, and deployable
+through an approved runtime, but an existing local-process worker is not made
+noncompliant merely because it is not containerized. A container requirement
+must be adopted explicitly with its operational, secret-management, and health
+verification controls.

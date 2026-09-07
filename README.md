@@ -32,6 +32,7 @@ The detailed architecture begins in [docs/AGENTIC_SDLC_CONTEXT.md](docs/AGENTIC_
 | [Metrics](docs/METRICS.md) | Flow, quality, and outcome measures |
 | [Roadmap](docs/ROADMAP.md) | Incremental implementation plan |
 | [References](docs/REFERENCES.md) | First-party sources informing the design |
+| [Contract decisions](docs/CONTRACT_DECISIONS.md) | Canonical cross-component format, integrity, workflow, and deployment decisions |
 
 ## Status
 
