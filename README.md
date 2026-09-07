@@ -9,7 +9,7 @@ This repository is the canonical home for the plan and its durable documentation
 ```text
 Trello (human workflow) <-> intent-backlog (product intent)
                                       |
-                      Ready for Planning: freeze a revision
+                            Prioritized: freeze a revision
                                       |
 Product repository worktree: intent -> spec -> plan -> code -> evidence
                                       |

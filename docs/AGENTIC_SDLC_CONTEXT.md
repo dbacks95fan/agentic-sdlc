@@ -16,7 +16,7 @@ We adapt rather than reinvent: durable specifications, isolated workspaces, auto
 - Trello is the human-facing workflow. Git is the versioned record for durable artifacts.
 - Product intent lives in a dedicated `intent-backlog` repository, separate from product source repositories.
 - Each intent belongs to one product context and has a stable product-prefixed ID, such as `INT-MF-0042`.
-- A Trello move to **Ready for Planning** records the exact intent commit and hash. That revision is immutable once the first engineering agent begins.
+- A Trello move to **Prioritized** records the exact intent commit and hash. That revision is immutable once the first engineering agent begins.
 - The first engineering agent creates an isolated branch/worktree in the target product repository and copies that exact frozen intent into it.
 - A separate Spec & Design stage produces `spec.md`, followed by human Design Review. A separate planning stage produces `plan.md` and a work contract.
 - A Claude-oriented Coding Agent implements the approved plan and produces evidence. Deterministic validation runs independently of the agent’s self-report.

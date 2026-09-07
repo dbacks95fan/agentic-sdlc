@@ -11,8 +11,8 @@
 
 - Implement the Intent Creation Skill’s product/intent context handling.
 - Create the dedicated `intent-backlog` repository and product namespaces.
-- Configure Trello lists: New Ideas, Product Refinement, Backlog, Prioritized, Ready for Planning.
-- Implement bidirectional synchronization checks and the immutable freeze record.
+- Configure Trello lists: New Ideas, Product Refinement, Backlog, Prioritized.
+- Implement bidirectional synchronization checks and the immutable freeze record at Prioritized.
 
 ## Phase 2 — Engineering artifact chain
 
@@ -39,5 +39,5 @@
 - Exact canonical schemas and storage/retention requirements.
 - Trello authorization model and which transitions the Conductor may execute automatically.
 - Human approval roles, risk thresholds, and exception policy.
-- Worktree lifecycle, secret handling, sandboxing, and network permissions.
+- Artifact retention, worktree lifecycle, and access-control requirements.
 - Release environments, rollback authority, production-success measures, and observability ownership.

@@ -6,6 +6,8 @@
 | --- | --- | --- |
 | Create/refine pre-freeze intent | Product owner with Intent Creation Skill | Intent version and card synchronization metadata |
 | Prioritize and commit engineering capacity | Authorized product/engineering owner | Trello transition and frozen revision reference |
+| Publish a reviewable lifecycle artifact | Authorized workflow coordination path | Immutable commit SHA, repository-relative path, and reachable reference |
+| Advance a stage after worker completion | Conductor under the defined gate policy | Required artifact and validation evidence |
 | Approve design | Human Design Reviewer | Design-review decision linked to `spec.md` |
 | Change implementation plan | Authorized reviewer | Updated plan/work contract with rationale |
 | Decide evaluation disposition | Human approval authority | Evaluation decision brief and disposition |
@@ -13,7 +15,7 @@
 
 ## Controls
 
-- Use role-scoped credentials, isolated worktrees, and least privilege.
+- Authorize each workflow role only for its approved actions and apply least privilege.
 - Validate identity, revision, hash, and approval preconditions before an agent runs.
 - Make required checks executable: schemas, contract validation, CI, structural checks, and policy checks.
 - Preserve lineage from intent to spec, plan, code, validation, evaluation, approval, release, and production observation.

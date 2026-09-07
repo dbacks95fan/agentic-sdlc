@@ -63,11 +63,6 @@ downstream artifact links back to it.
 
 Agents remain stateless between runs; durable state belongs in versioned artifacts and Conductor-managed workflow records. Grant least privilege by role. Enforce critical architecture, validation, and policy invariants mechanically where possible. Record facts, inferences, and unresolved decisions separately.
 
-## Deployment boundary
+## Scope boundary
 
-Containerization is an agent-specific deployment decision, not a current
-system-wide mandate. Every agent must be bounded, observable, and deployable
-through an approved runtime, but an existing local-process worker is not made
-noncompliant merely because it is not containerized. A container requirement
-must be adopted explicitly with its operational, secret-management, and health
-verification controls.
+This repository defines lifecycle stages, role boundaries, artifact controls, and governance outcomes. Agent and skill runtime, packaging, deployment, credential mechanics, and implementation-specific recovery belong in the responsible component repository. Those choices must satisfy the lifecycle controls defined here without changing them.

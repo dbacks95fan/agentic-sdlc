@@ -33,7 +33,7 @@ Two hashes serve distinct purposes and must never be conflated:
 | `intent_content_sha256` | SHA-256 of the canonical normalized rendering defined by the Intent Creation Skill, excluding generated commit metadata | Product-side synchronization, semantic intent identity, and the Trello projection |
 | `frozen_artifact_sha256` | SHA-256 of the raw bytes of the exact `intent.md` snapshot copied into the engineering worktree | Byte-for-byte engineering chain of custody |
 
-At Ready for Planning, the freeze tuple records intent ID, product ID, intent
+At Prioritized, the freeze tuple records intent ID, product ID, intent
 version, intent repository commit SHA, both hashes, Trello card ID, and freeze
 time. The first engineering-stage worker verifies the raw-byte artifact hash
 after copying the frozen file; later agents verify the same frozen artifact and
@@ -48,3 +48,11 @@ overwrite a conflict casually: surface it, reconcile it with the authorized
 owner, and record the resulting version.
 
 Artifacts become durable inputs to later stages rather than disposable prompts. The precise schemas are an implementation-roadmap deliverable; this document defines the required lineage and ownership now.
+
+## Durability and publication
+
+Every engineering-stage artifact in this document is retained in the assigned work branch or another versioned record authorized by the lifecycle. Repository ignore rules must not cause loss of an artifact required for review, evaluation, approval, release, or later audit.
+
+Before Human Design Review or independent Evaluation starts, the workflow records the artifact's immutable commit SHA, repository-relative path, and reachable review or evaluation reference. The reference and provenance tuple make the reviewable input unambiguous without changing the frozen intent.
+
+Publication is a workflow control that makes a candidate available to the next stage. It does not confer authority to approve the design, accept the evaluation result, or release the product.
