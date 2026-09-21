@@ -25,6 +25,8 @@ gates; `Production Observation` continues after the card reaches `Done`.
 
 `Prioritized` is the product-to-engineering commitment and intent-freeze boundary. The exact freeze protocol and material-change rule are defined in [Workflow](WORKFLOW.md) and [Artifacts](ARTIFACTS.md).
 
+Product refinement is work performed within `New Ideas` and `Backlog`; it is not a separate Trello list. The versioned [Trello board template](../templates/trello-board-workflow.yaml) is the canonical list order used for board provisioning and validation.
+
 ## Publication
 
 Required lifecycle artifacts must be durable and reviewable before the next independent gate begins. The authorized workflow coordination path records their immutable provenance and reachable reference; publication is not design approval, evaluation approval, or release authorization. See [Artifacts](ARTIFACTS.md), [Workflow](WORKFLOW.md), and [Governance](GOVERNANCE.md).

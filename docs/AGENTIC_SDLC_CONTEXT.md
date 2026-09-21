@@ -21,7 +21,7 @@ We adapt rather than reinvent: durable specifications, isolated workspaces, auto
 - A separate Spec & Design stage produces `spec.md`, followed by human Design Review. A separate planning stage produces `plan.md` and a work contract.
 - A Claude-oriented Coding Agent implements the approved plan and produces evidence. Deterministic validation runs independently of the agent’s self-report.
 - A separate Codex-oriented Evaluator assesses the implementation against the frozen intent, specification, contract, and evidence. It is read-only and does not control board transitions.
-- Human Approval precedes Release. Production observation feeds learning back to product refinement.
+- Human Approval precedes Release. Production observation feeds learning back to pre-commit intent refinement.
 
 ## Change rule
 

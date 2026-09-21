@@ -11,7 +11,8 @@
 
 - Implement the Intent Creation Skill’s product/intent context handling.
 - Create the dedicated `intent-backlog` repository and product namespaces.
-- Configure Trello lists: New Ideas, Product Refinement, Backlog, Prioritized.
+- Version the canonical Trello board template and configure lists: New Ideas, Backlog, Prioritized.
+- Provide an idempotent Conductor board-bootstrap command that creates and validates the template without moving or deleting existing work.
 - Implement bidirectional synchronization checks and the immutable freeze record at Prioritized.
 
 ## Phase 2 — Engineering artifact chain

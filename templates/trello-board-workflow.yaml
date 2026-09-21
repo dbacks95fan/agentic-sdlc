@@ -1,0 +1,17 @@
+# Canonical Trello lifecycle used to provision and validate Agentic SDLC boards.
+template_version: 1
+lists:
+  - New Ideas
+  - Backlog
+  - Prioritized
+  - Spec & Design
+  - Design Review
+  - Implementation Planning
+  - Ready for Build
+  - Coding
+  - Evaluation
+  - Human Approval
+  - Ready for Release
+  - Release
+  - Production Observation
+  - Done

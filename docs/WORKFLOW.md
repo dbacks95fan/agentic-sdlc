@@ -3,9 +3,9 @@
 ## Product flow
 
 ```text
-New Ideas -> Product Refinement -> Backlog -> Prioritized
-                                                    |
-                                                 freeze
+New Ideas -> Backlog -> Prioritized
+                              |
+                           freeze
                                                               v
 Spec & Design -> Design Review -> Implementation Planning -> Ready for Build
                                                               |
@@ -18,8 +18,7 @@ Coding -> Evaluation -> Human Approval -> Ready for Release -> Release
 
 | State or stage | Primary action | Exit condition |
 | --- | --- | --- |
-| New Ideas | Capture an idea with product context | A product owner begins refinement |
-| Product Refinement | Intent Creation Skill reconciles card and `intent.md`; version intent | Outcome, criteria, constraints, and open questions are reviewable |
+| New Ideas | Capture an idea and refine its product context and intent | A coherent intent is ready for future consideration |
 | Backlog | Hold a valid, non-committed intent | Priority decision |
 | Prioritized | Commit engineering capacity and capture the full freeze tuple | Exact frozen intent is available to Spec & Design |
 | Spec & Design | Spec & Design Agent creates `spec.md` | Design Review approves or returns it |
