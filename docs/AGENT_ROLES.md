@@ -2,7 +2,7 @@
 
 | Role | Mission | May do | Must not do |
 | --- | --- | --- | --- |
-| Intent Creation Skill | Shape and synchronize product intent | Read/update pre-freeze intent and Trello projection | Modify an immutable/executing intent |
+| Intent Creation Skill | Shape and synchronize product intent | Read/update only New Ideas or Backlog; freeze and move a Backlog card to an explicitly selected handoff destination | Interpret downstream columns, move an already handed-off card, or modify its intent |
 | Conductor | Route the defined lifecycle and maintain workflow state | Validate the current column transition, create assignments, and update authorized board state | Author code or alter the frozen intent |
 | Spec & Design worker | Translate frozen intent into an implementable specification | Inspect target repo; produce `spec.md` | Alter frozen intent or workflow state |
 | Execution worker | Carry out work from the frozen intent and `spec.md` | Work inside assigned worktree; attach evidence when applicable | Alter frozen intent or workflow state |
