@@ -5,13 +5,4 @@ lists:
   - Backlog
   - Prioritized
   - Spec & Design
-  - Design Review
-  - Implementation Planning
-  - Ready for Build
-  - Coding
-  - Evaluation
-  - Human Approval
-  - Ready for Release
-  - Release
-  - Production Observation
-  - Done
+  - Execution

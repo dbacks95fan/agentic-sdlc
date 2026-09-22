@@ -4,13 +4,8 @@
 | --- | --- | --- | --- |
 | `intent.md` | `intent-backlog` | Intent Creation Skill with product owner | Canonical schema, identity, revision, and integrity metadata |
 | Frozen `intent.md` | Product worktree | First engineering agent | Source commit, normalized content hash, and exact-byte artifact hash |
-| `spec.md` | Product worktree | Spec & Design Agent | Frozen intent reference, spec version, review status |
-| `plan.md` | Product worktree | Planning Agent | Spec reference, dependencies, validation plan |
-| Work contract | Product worktree | Conductor/planning stage | Intent/spec/plan references, gates, approvals |
-| Coding evidence | Product worktree | Coding Agent and deterministic tools | Command/result, environment, commit, timestamp |
-| Evaluation result | Product worktree or designated evidence store | Evaluator | Candidate/base commits, facts, findings, disposition |
-| Decision brief | Trello card | Conductor from durable result | Links to source evidence and next action |
-| Release/observation record | Delivery and observability systems | Release process | Release identity, health, outcome signals |
+| `spec.md` | Product worktree | Spec & Design worker | Frozen intent reference and source commit |
+| Execution artifacts | Product worktree | Assigned execution worker | Frozen intent and `spec.md` references, command/result where applicable |
 
 ## Canonical intent schema
 
@@ -51,8 +46,8 @@ Artifacts become durable inputs to later stages rather than disposable prompts. 
 
 ## Durability and publication
 
-Every engineering-stage artifact in this document is retained in the assigned work branch or another versioned record authorized by the lifecycle. Repository ignore rules must not cause loss of an artifact required for review, evaluation, approval, release, or later audit.
+Every artifact in this document is retained in the assigned work branch or another versioned record authorized by the lifecycle. Repository ignore rules must not cause loss of an artifact needed by Spec & Design or Execution.
 
-Before Human Design Review or independent Evaluation starts, the workflow records the artifact's immutable commit SHA, repository-relative path, and reachable review or evaluation reference. The reference and provenance tuple make the reviewable input unambiguous without changing the frozen intent.
+Before Execution starts, the workflow records the `spec.md` artifact's immutable commit SHA, repository-relative path, and reachable reference. The reference and provenance tuple make the execution input unambiguous without changing the frozen intent.
 
-Publication is a workflow control that makes a candidate available to the next stage. It does not confer authority to approve the design, accept the evaluation result, or release the product.
+Publication is a workflow control that makes an artifact available to the next defined stage. It does not change the frozen intent or create an undeclared board stage.

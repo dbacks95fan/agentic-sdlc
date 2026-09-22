@@ -2,13 +2,13 @@
 
 ## Purpose
 
-The goal is not merely to automate coding. Agentic execution makes implementation cheaper and faster; human attention, prioritization, and judgment become the limiting resources. This SDLC therefore optimizes intent quality, flow, traceability, independent evaluation, governance, and outcome learning.
+The goal is not merely to automate coding. Agentic execution makes implementation cheaper and faster; human attention, prioritization, and judgment become the limiting resources. This SDLC therefore optimizes intent quality, flow, traceability, and bounded execution.
 
 ## Core thesis
 
 **Kanban for flow. XP for quality. Humans for consequential judgment. AI for execution.**
 
-We adapt rather than reinvent: durable specifications, isolated workspaces, automated validation, independent review, observability, and explicit approval gates. Repository-local knowledge and enforceable controls should replace fragile chat-only or prompt-only rules.
+We adapt rather than reinvent: durable specifications, isolated workspaces, and enforceable controls. Repository-local knowledge and mechanical checks should replace fragile chat-only or prompt-only rules.
 
 ## Non-negotiable decisions
 
@@ -18,10 +18,8 @@ We adapt rather than reinvent: durable specifications, isolated workspaces, auto
 - Each intent belongs to one product context and has a stable product-prefixed ID, such as `INT-MF-0042`.
 - A Trello move to **Prioritized** records the exact intent commit and hash. That revision is immutable once the first engineering agent begins.
 - The first engineering agent creates an isolated branch/worktree in the target product repository and copies that exact frozen intent into it.
-- A separate Spec & Design stage produces `spec.md`, followed by human Design Review. A separate planning stage produces `plan.md` and a work contract.
-- A Claude-oriented Coding Agent implements the approved plan and produces evidence. Deterministic validation runs independently of the agent’s self-report.
-- A separate Codex-oriented Evaluator assesses the implementation against the frozen intent, specification, contract, and evidence. It is read-only and does not control board transitions.
-- Human Approval precedes Release. Production observation feeds learning back to pre-commit intent refinement.
+- **Spec & Design** produces `spec.md` from the frozen intent.
+- **Execution** begins from the frozen intent and `spec.md`. Its detailed operating stages will be defined only as real work requires them.
 
 ## Change rule
 
@@ -32,5 +30,5 @@ Clarification and versioning are allowed before the commitment boundary. After e
 - **Intent:** the product outcome, boundaries, and acceptance criteria to be achieved.
 - **Product context:** the single product namespace owning an intent, its Trello location, and target repository information.
 - **Work item:** the execution lifecycle created from a frozen intent revision.
-- **Conductor:** the workflow state machine and router; not an implementation or evaluation agent.
+- **Conductor:** the workflow state machine and router; not an execution worker.
 - **Evidence:** reproducible validation outputs, review facts, and links to artifacts—not a declaration of success.

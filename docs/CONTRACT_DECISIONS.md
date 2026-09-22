@@ -18,10 +18,7 @@ content hash.
 
 ## Lifecycle vocabulary
 
-The canonical workflow stages are defined in [Workflow](WORKFLOW.md). Generic
-labels `Agent Working` and `Agent Review` are retired in favor of `Coding` and
-`Evaluation`. `Ready for Build` and `Ready for Release` are explicit Conductor
-gates; `Production Observation` continues after the card reaches `Done`.
+The canonical workflow stages are defined in [Workflow](WORKFLOW.md): `New Ideas`, `Backlog`, `Prioritized`, `Spec & Design`, and `Execution`. New stages are not implied by an agent capability or a possible future delivery concern; add one only after real work establishes its purpose, owner, and exit condition.
 
 `Prioritized` is the product-to-engineering commitment and intent-freeze boundary. The exact freeze protocol and material-change rule are defined in [Workflow](WORKFLOW.md) and [Artifacts](ARTIFACTS.md).
 
@@ -29,7 +26,7 @@ Product refinement is work performed within `New Ideas` and `Backlog`; it is not
 
 ## Publication
 
-Required lifecycle artifacts must be durable and reviewable before the next independent gate begins. The authorized workflow coordination path records their immutable provenance and reachable reference; publication is not design approval, evaluation approval, or release authorization. See [Artifacts](ARTIFACTS.md), [Workflow](WORKFLOW.md), and [Governance](GOVERNANCE.md).
+Required lifecycle artifacts must be durable and reachable before the next defined stage begins. The authorized workflow coordination path records their immutable provenance and reachable reference. See [Artifacts](ARTIFACTS.md), [Workflow](WORKFLOW.md), and [Governance](GOVERNANCE.md).
 
 ## Scope boundary
 

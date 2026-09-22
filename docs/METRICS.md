@@ -4,12 +4,10 @@ Metrics are decision aids, not targets to game. Segment results by product, work
 
 | Area | Measure | Why it matters |
 | --- | --- | --- |
-| Flow | Lead time from commitment to approval; time in each state; blocked time; WIP | Reveals queues and constrained human attention |
+| Flow | Lead time from Prioritized to Execution; time in each current state; blocked time; WIP | Reveals queues and constrained human attention |
 | Intent quality | Refinement cycles before freeze; post-freeze material-change rate; ambiguity/escalation rate | Tests whether commitment happens with sufficient clarity |
-| Delivery | Deployment frequency, change lead time, change-failure rate, time to restore | Uses established delivery-outcome signals without equating speed with value |
-| Quality | Contract-criterion pass rate; evaluator finding recurrence; escaped defects | Checks outcome alignment beyond a single test suite |
-| Governance | Gate-bypass count, stale approval count, lineage-completeness rate, access-policy violations | Shows whether controls are operating, not merely documented |
-| Human attention | Design/evaluation approval wait time; review rework rate | Identifies the actual judgment bottleneck |
-| Production outcome | Adoption, task success, reliability, support signals, and intent-specific success measure | Closes the loop on whether the desired outcome occurred |
+| Specification quality | Clarifications or rework requested after Spec & Design | Tests whether the frozen intent was translated clearly enough for Execution |
+| Execution | Time in Execution; blocked execution time; evidence completeness | Reveals where the currently defined execution approach needs improvement |
+| Governance | Freeze-integrity failures; lineage-completeness rate; unauthorized-transition attempts | Shows whether current controls are operating, not merely documented |
 
-Tests, code coverage, and green builds are tracked as validation evidence. They are not a standalone product-success metric.
+Tests, code coverage, and green builds are tracked as execution evidence when applicable. They are not a standalone product-success metric.

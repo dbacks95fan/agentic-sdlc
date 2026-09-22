@@ -14,14 +14,14 @@ People <-> Trello <-> Conductor <-> agent runners
 
 | Component | Owns | Does not own |
 | --- | --- | --- |
-| Trello | Human-visible flow, summaries, approvals, escalation | Canonical artifact contents |
+| Trello | Human-visible flow and summaries | Canonical artifact contents |
 | Intent Creation Skill | Refinement and synchronization contract | Engineering execution after freeze |
 | `intent-backlog` | Canonical evolving product intent and revision history | Product code or execution evidence |
-| Conductor | State transitions, routing, retries, and board updates | Coding or evaluation conclusions |
+| Conductor | State transitions, routing, retries, and board updates | Execution conclusions |
 | Target product repository | Branch-scoped execution artifacts, code, and evidence | Uncommitted product discovery |
-| Coding Agent | Scoped implementation and declared evidence | Final acceptance of its own work |
-| Evaluator | Independent, read-only evaluation result | Trello transitions or code mutation |
-| Humans | Priority, design, consequential approval, release authority | Routine deterministic work |
+| Spec & Design worker | Produce `spec.md` from a frozen intent | Alter the frozen intent |
+| Execution workers | Carry out assigned work from durable inputs | Mutate the frozen intent or workflow state |
+| Humans | Priority and consequential judgment | Routine deterministic work |
 
 ## Product and intent identity
 
@@ -48,16 +48,10 @@ The worktree is created only from a frozen input. A suggested durable layout is:
 .agent/work/INT-MF-0042/
   intent.md
   spec.md
-  plan.md
-  work-contract.json
-  evidence/
-  evaluation/
+  execution/
 ```
 
-The work contract includes intent path, source commit, normalized content hash,
-frozen-artifact hash, approval metadata, acceptance criteria, constraints,
-non-goals, dependencies, validation gates, and escalation conditions. Every
-downstream artifact links back to it.
+The frozen intent and `spec.md` are the current durable execution inputs. Any further artifact contract is defined only when the corresponding execution work requires it.
 
 ## Design constraints
 

@@ -5,7 +5,6 @@
 - Adopt this documentation baseline and assign decision owners.
 - Define product registry and ID conventions.
 - Define the canonical intent schema, Trello field mapping, and synchronization conflict policy.
-- Define work-contract and evaluator-result schemas plus validation fixtures.
 
 ## Phase 1 — Product intake and commitment
 
@@ -15,30 +14,19 @@
 - Provide an idempotent Conductor board-bootstrap command that creates and validates the template without moving or deleting existing work.
 - Implement bidirectional synchronization checks and the immutable freeze record at Prioritized.
 
-## Phase 2 — Engineering artifact chain
+## Phase 2 - Spec & Design
 
 - Implement Conductor preflight and isolated worktree creation.
 - Copy and verify frozen intent bytes in the target repository.
-- Implement templates and human Design Review for `spec.md`.
-- Implement planning output, work contract, and deterministic validation gates.
+- Implement a durable `spec.md` artifact and its transition to Execution.
 
-## Phase 3 — Independent execution and evaluation
+## Phase 3 - Execution
 
-- Connect the Claude-oriented Coding Agent to contracted worktrees.
-- Connect the Codex-oriented Evaluator in read-only mode.
-- Persist structured evidence, evaluation results, and card decision briefs.
-- Pilot with low-risk work and measure gate failures, rework, and cycle time.
-
-## Phase 4 — Release and learning loop
-
-- Integrate human approval and existing release controls.
-- Verify health after deployment; capture release and production-observation evidence.
-- Feed measured outcomes, incidents, and recurring evaluator findings into backlog refinement and mechanical controls.
+- Build the first execution capability only when a specific work item establishes the required behavior, artifacts, and controls.
+- Measure flow, rework, and failures; add a lifecycle stage only when those findings justify it.
 
 ## Decisions still required before production autonomy
 
-- Exact canonical schemas and storage/retention requirements.
 - Trello authorization model and which transitions the Conductor may execute automatically.
-- Human approval roles, risk thresholds, and exception policy.
 - Artifact retention, worktree lifecycle, and access-control requirements.
-- Release environments, rollback authority, production-success measures, and observability ownership.
+- The next needed Execution capability, based on work that has reached Spec & Design.
