@@ -4,8 +4,11 @@
 | --- | --- | --- | --- |
 | `intent.md` | `intent-backlog` | Intent Creation Skill with product owner | Canonical schema, identity, revision, and integrity metadata |
 | Frozen `intent.md` | Product worktree | First engineering agent | Source commit, normalized content hash, and exact-byte artifact hash |
-| `spec.md` | Product worktree | Spec & Design worker | Frozen intent reference and source commit |
-| Execution artifacts | Product worktree | Assigned execution worker | Frozen intent and `spec.md` references, command/result where applicable |
+| Policy & Compliance Profile | Product intent backlog | Product owner | Profile ID, version, applicability decisions, and control IDs |
+| `spec.md` | Product worktree | Spec & Design Agent | Frozen intent/profile references; design, implementation, validation, and decision sections |
+| `work-contract.yaml` | Product worktree | Spec & Design Agent; frozen by product owner | Frozen intent/profile and accepted `spec.md` references; target, scope, and required validation |
+| Evidence Package | Product worktree | Coding Agent | Candidate commit, validation results, control evidence, and status |
+| Execution artifacts | Product worktree | Coding Agent | Frozen intent, profile, `spec.md`, and work-contract references |
 
 ## Canonical intent schema
 
@@ -49,5 +52,7 @@ Artifacts become durable inputs to later stages rather than disposable prompts. 
 Every artifact in this document is retained in the assigned work branch or another versioned record authorized by the lifecycle. Repository ignore rules must not cause loss of an artifact needed by Spec & Design or Execution.
 
 Before Execution starts, the workflow records the `spec.md` artifact's immutable commit SHA, repository-relative path, and reachable reference. The reference and provenance tuple make the execution input unambiguous without changing the frozen intent.
+
+`spec.md` is the one human-reviewed Markdown document. It includes implementation and validation planning as required by [Stage Contracts](STAGE_CONTRACTS.md); do not create a separate `plan.md`. The machine-readable `work-contract.yaml` is frozen only after the product owner accepts the associated `spec.md`.
 
 Publication is a workflow control that makes an artifact available to the next defined stage. It does not change the frozen intent or create an undeclared board stage.

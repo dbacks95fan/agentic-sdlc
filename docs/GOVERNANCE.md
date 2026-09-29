@@ -5,7 +5,9 @@
 | Decision | Authority | Required record |
 | --- | --- | --- |
 | Create/refine pre-freeze intent | Product owner with Intent Creation Skill | Intent version and card synchronization metadata |
+| Select or revise a product Policy & Compliance Profile | Product owner or delegated accountable owner | Profile ID, version, applicability decisions, controls, and rationale |
 | Prioritize and commit engineering capacity | Authorized product/engineering owner | Trello transition and frozen revision reference |
+| Accept `spec.md` and work contract for Execution | Authorized product owner | Immutable artifact references and approval record |
 | Move work from Prioritized to Spec & Design | Authorized workflow coordination path | Frozen revision reference and assigned worktree |
 | Move work from Spec & Design to Execution | Authorized workflow coordination path | Immutable `spec.md` reference |
 | Advance a card within the current lifecycle | Conductor under the defined policy | Required artifact reference and transition record |
@@ -18,6 +20,7 @@
 - Preserve lineage from intent to spec and execution artifacts.
 - Use append-only or immutable records where the platform permits.
 - Do not treat agent narrative, green tests, or a successful deployment command as sufficient evidence by themselves.
+- Do not let an agent decide legal applicability, grant a policy exception, or claim compliance. It may identify a defined trigger and request an authorized human decision.
 
 ## Exceptions and incidents
 
