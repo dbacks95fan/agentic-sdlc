@@ -18,6 +18,7 @@
 
 ## Controls
 
+- Configure control-plane and execution-plane LLMs independently. Treat their provider, model, and version as operational metadata, not as a source of authority or a replacement for a control.
 - Authorize each workflow role only for its approved actions and apply least privilege.
 - Validate identity, revision, and hash preconditions before an agent runs.
 - Make required checks executable: schemas, contract validation, CI, structural checks, and policy checks.

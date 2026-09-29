@@ -7,16 +7,18 @@ This repository is the canonical home for the plan and its durable documentation
 ## The operating model
 
 ```text
-Trello (human workflow) <-> intent-backlog (product intent)
-                                      |
-                            Prioritized: freeze a revision
-                                      |
-Product repository worktree: frozen intent -> spec and design -> execution
-                                      |
-                        independent evaluation -> human decision
-                                      |
-                           release -> observe outcome -> close
+Control plane: Trello <-> intent-backlog <-> Conductor <-> human decisions
+                                     |
+                     immutable, validated handoff contracts
+                                     v
+Execution plane: isolated worktree -> spec/design -> candidate -> evaluation
+                                     |
+                     durable status, artifact, and evidence records
+                                     v
+Control plane: approval -> release -> observation -> closure
 ```
+
+The planes have separate responsibilities and may use different LLMs. A control-plane LLM supports workflow-facing work; an execution-plane LLM supports bounded engineering work. Neither plane is tied to a provider or model. The model assignments are independently configurable, and they do not change the documented authority, immutable-handoff, or human-decision rules.
 
 The board flow is **New Ideas -> Backlog -> Prioritized -> Spec & Design -> Execution -> Evaluation -> Human Approval -> Release -> Production Observation -> Done**. It is deliberately lean: each column has one clear purpose, owner, and exit condition. Human review happens within `Spec & Design`; there are no separate Design Review or Planning columns.
 

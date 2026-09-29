@@ -5,6 +5,7 @@ The documentation defines the intended lifecycle. Implement it in small, observa
 ## Phase 0 — Establish the contract
 
 - Adopt this documentation baseline and assign decision owners.
+- Define independently configurable control-plane and execution-plane LLM assignments, including how run metadata will be recorded. Do not make model selection a substitute for role permissions or validation controls.
 - Define product registry and ID conventions.
 - Define the canonical intent schema, Trello field mapping, and synchronization conflict policy.
 - Adopt the [stage contracts](STAGE_CONTRACTS.md) and a lean, versioned Policy & Compliance Profile for each product.

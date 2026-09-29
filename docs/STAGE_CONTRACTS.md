@@ -15,6 +15,8 @@ The board has no Planning column. `spec.md` is the one human-reviewed Markdown d
 
 ## Shared rules
 
+- The control plane owns workflow state, intent synchronization, handoff validation, routing, and human decision records. The execution plane owns only its assigned engineering artifacts and evidence.
+- Each plane may use a separately configured LLM. Provider/model/version does not change role permissions, human authority, or the required status and artifact contracts.
 - Each durable input is identified by immutable revision, path, and hash where applicable.
 - A worker validates every input it receives before acting. A missing, mutable, or mismatched input returns `blocked` and does not advance the card.
 - A worker returns `needs_decision` for a material ambiguity. It does not invent a product, security, compliance, cost, scope, or external-contract decision.
