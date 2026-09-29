@@ -16,11 +16,9 @@ New Ideas -> Backlog -> Prioritized -> Spec & Design -> Execution
 
 ## Intent Creation boundary
 
-The Intent Creation skill recognizes only `New Ideas` and `Backlog` as editable locations. It may create or revise an intent only while its card is in one of those columns.
+The Intent Creation Skill may create or revise an intent only while its card is in `New Ideas` or `Backlog`. If the card is in any other column, it must leave both the card and intent unchanged and tell the user that the intent has already been handed off.
 
-When a user or user interface explicitly selects a handoff destination, the skill may freeze a synchronized Backlog intent and move its card to that selected destination. It uses the selected list identifier and does not infer meaning from a downstream list's name or visual position. On the current board, `Prioritized` is the usual handoff destination; the skill does not depend on that name.
-
-If a card is already outside `New Ideas` or `Backlog`, the skill must not update the intent or move the card. It reports the card's current column and that the intent has been handed off.
+From Backlog, a product owner may explicitly select a handoff destination. The skill must freeze the synchronized intent and place the card in that selected destination. It must not infer meaning from a destination's name, visual position, or any other downstream board detail. After that handoff, routing belongs to the Conductor and the skill does not change the card or intent.
 
 ## Prioritized freeze protocol
 
