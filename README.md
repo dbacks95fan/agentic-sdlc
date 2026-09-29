@@ -7,8 +7,8 @@ This repository is the canonical home for the plan and its durable documentation
 ## The operating model
 
 ```text
-Control plane: Trello <-> intent-backlog <-> Conductor <-> human decisions
-                                     |
+Control plane: Trello <-> Intent Creation Skill + Conductor <-> intent-backlog
+                                                        |
                      immutable, validated handoff contracts
                                      v
 Execution plane: isolated worktree -> spec/design -> candidate -> evaluation
@@ -38,7 +38,7 @@ This is a learning exercise that will build real applications. Begin with a smal
 | [Metrics](docs/METRICS.md) | Flow, quality, and outcome measures |
 | [Roadmap](docs/ROADMAP.md) | Incremental implementation plan |
 | [References](docs/REFERENCES.md) | First-party sources informing the design |
-| [Contract decisions](docs/CONTRACT_DECISIONS.md) | Canonical cross-component format, integrity, workflow, and deployment decisions |
+| [Contract decisions](docs/CONTRACT_DECISIONS.md) | Canonical cross-component format, integrity, workflow, and handoff decisions |
 | [Learning workflow](docs/LEARNING_WORKFLOW.md) | A safe, practical first-feature walkthrough and learning loop |
 
 ## Status

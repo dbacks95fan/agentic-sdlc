@@ -12,12 +12,12 @@ Data classification: `None identified | Public | Internal | Confidential | Regul
 
 | Consideration | Status | Decision rationale | Human owner |
 | --- | --- | --- | --- |
-| Baseline secure development | Applies | Required for every product | `<owner>` |
-| PCI DSS / payment-card data | Not applicable | `<reason>` | `<owner>` |
-| HIPAA / ePHI | Not applicable | `<reason>` | `<owner>` |
-| SOX / financial-reporting controls | Not applicable | `<reason>` | `<owner>` |
-| SOC 2 / customer assurance commitment | Not applicable | `<reason>` | `<owner>` |
-| Other | Not applicable | `<reason>` | `<owner>` |
+| Baseline secure development | `<choose: Applies / Not applicable / Needs decision>` | `<decision rationale>` | `<owner>` |
+| PCI DSS / payment-card data | `<choose: Applies / Not applicable / Needs decision>` | `<decision rationale>` | `<owner>` |
+| HIPAA / ePHI | `<choose: Applies / Not applicable / Needs decision>` | `<decision rationale>` | `<owner>` |
+| SOX / financial-reporting controls | `<choose: Applies / Not applicable / Needs decision>` | `<decision rationale>` | `<owner>` |
+| SOC 2 / customer assurance commitment | `<choose: Applies / Not applicable / Needs decision>` | `<decision rationale>` | `<owner>` |
+| Other | `<choose: Applies / Not applicable / Needs decision>` | `<decision rationale>` | `<owner>` |
 
 ## Controls
 

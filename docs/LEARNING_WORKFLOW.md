@@ -14,14 +14,14 @@ Use one product, one board, one intent, and one branch. Keep the feature small e
 | --- | --- | --- | --- |
 | New Ideas | Capture the desired user outcome and why it matters. | Product owner, using the Intent Creation Skill | Initial versioned `intent.md` and matching card |
 | Backlog | Clarify scope, exclusions, acceptance criteria, assumptions, and selected policy profile. | Product owner | Revised, synchronized intent |
-| Prioritized | Decide it is worth doing now and freeze the exact revision. | Product owner and Conductor | Freeze tuple and exact worktree copy |
-| Spec & Design | The Spec & Design Agent investigates the target repository and creates `spec.md` plus a proposed work contract. The owner reviews the same `spec.md` and either resolves questions or accepts it. | Agent investigates; human accepts | Accepted spec and frozen work contract |
+| Prioritized | Decide it is worth doing now and freeze the exact intent and policy-profile revisions. | Product owner authorizes; Conductor records and moves | Complete freeze tuple |
+| Spec & Design | The first engineering worker creates and verifies the isolated workspace. The Spec & Design Agent then creates `spec.md` plus a proposed work contract. The owner reviews and accepts both. | Worker prepares; agent investigates; human accepts | Spec Acceptance Record binding the accepted artifacts |
 | Execution | The Coding Agent builds only the accepted scope in an isolated workspace. It runs the defined checks and produces evidence tied to its candidate commit. | Coding Agent | Immutable candidate SHA and Evidence Package |
 | Evaluation | A separate Evaluator checks the candidate against the frozen inputs and evidence. | Evaluator | Evaluation Package with pass, fail, or escalation |
-| Human Approval | Review the candidate and evaluation. Approve release, request bounded rework, or stop. | Accountable human | Decision tied to candidate SHA |
-| Release | Use the product's authorized release path; verify the delivered revision and basic health. | Authorized release control and human oversight | Release Record |
+| Human Approval | Review the candidate and evaluation. Approve integration/release, request bounded rework, or stop. | Accountable human | Decision tied to candidate SHA |
+| Release | Merge the approved candidate through the authorized integration path, release the resulting revision, and verify basic health. | Authorized integration and release controls with human oversight | Release Record with candidate and integration SHA |
 | Production Observation | Watch the agreed signals for a short, defined period and compare them with the intended outcome. | Observation control gathers facts; human interprets | Observation Record and follow-up links |
-| Done | Close only after the observation is understood and needed follow-up is captured. | Accountable human | Closure record |
+| Done | Close delivered work after observation, or stopped/rolled-back work with a clear closure reason. | Accountable human | Observation Record or Closure Record |
 
 ## What to learn from the first feature
 

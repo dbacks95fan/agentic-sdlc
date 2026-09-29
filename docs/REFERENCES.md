@@ -1,6 +1,6 @@
 # References
 
-The links below were verified on 2026-09-06. They inform this architecture; they are not treated as mandates, and this repository intentionally documents its own choices where sources differ.
+The links below were verified on 2026-09-29. They inform this architecture; they are not treated as mandates, and this repository intentionally documents its own choices where sources differ.
 
 | Organization | First-party source | How it informs this design |
 | --- | --- | --- |
@@ -16,4 +16,4 @@ The links below were verified on 2026-09-06. They inform this architecture; they
 
 ## Interpretation notes
 
-These sources agree on durable context, explicit control points, isolated or well-defined execution environments, and observability. They inform the practical choices here: repository-local specifications and records; bounded, incremental work; independent checks; explicit human judgment at consequential gates; and feedback after release. They do not prescribe this exact Trello-to-backlog-to-worktree flow, its ten columns, or its vendor assignments. Those are deliberate local decisions designed to preserve a familiar human workflow while providing immutable, auditable machine inputs.
+These sources agree on durable context, explicit control points, isolated or well-defined execution environments, and observability. They inform the practical choices here: repository-local specifications and records; bounded, incremental work; independent checks; explicit human judgment at consequential gates; and feedback after release. They do not prescribe this exact Trello-to-backlog-to-worktree flow, its ten columns, or its model/provider choices. Those are deliberate local decisions designed to preserve a familiar human workflow while providing immutable, auditable machine inputs.

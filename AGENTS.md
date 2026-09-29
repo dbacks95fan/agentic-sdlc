@@ -149,9 +149,9 @@ Everything above this heading is the DPSystems canonical rule set, copied verbat
 
 ## What this repository is
 
-This is a vendor-neutral architectural repository: reference architecture, workflow, governance, and artifact contracts for an intent-driven Agentic SDLC. It holds documentation and one board template, not component implementations. Agent and skill runtimes live in their own component repositories.
+This is a vendor-neutral architectural repository: reference architecture, workflow, governance, artifact contracts, and templates for an intent-driven Agentic SDLC. It does not contain component implementations. Agent and skill runtimes live in their own component repositories.
 
-Before proposing or changing the Agentic SDLC, read `docs/AGENTIC_SDLC_CONTEXT.md`, `docs/ARCHITECTURE.md`, `docs/WORKFLOW.md`, `docs/GOVERNANCE.md`, `docs/INTENT_CREATION_SKILL.md`, and `docs/REFERENCES.md`.
+Before proposing or changing the Agentic SDLC, read `docs/AGENTIC_SDLC_CONTEXT.md`, `docs/ARCHITECTURE.md`, `docs/WORKFLOW.md`, `docs/STAGE_CONTRACTS.md`, `docs/GOVERNANCE.md`, `docs/INTENT_CREATION_SKILL.md`, and `docs/REFERENCES.md`.
 
 ## Decisions to preserve
 
@@ -159,7 +159,7 @@ Preserve these decisions unless a documented deviation has concrete evidence and
 
 - Trello is the human workflow surface; Git is the durable artifact record.
 - The Intent Creation Skill maintains synchronization between a Trello card and its canonical `intent.md`.
-- An accepted intent revision is immutable once execution starts; a material change creates a new work item and lifecycle.
+- An accepted intent revision and policy profile are immutable once the card reaches Prioritized; a material change creates a new work item and lifecycle.
 - Agents are narrow, stateless workers. The Conductor owns workflow state and routing.
 - Execution workers act only from durable, frozen inputs. Tests are evidence, not proof of outcome delivery.
 - Humans retain consequential judgment; deterministic controls belong in tooling, not prompts alone.
@@ -173,11 +173,12 @@ Do not silently redesign the workflow or assert implementation, test, deployment
 | `README.md` | Operating model and documentation map |
 | `docs/` | Architecture, workflow, governance, artifacts, roles, metrics, roadmap, references, and contract decisions |
 | `templates/trello-board-workflow.yaml` | Canonical Trello list order used to provision and validate boards |
+| `templates/policy-compliance-profile.md` | Lean, versioned policy-profile template |
 | `AGENTS.md` | This file; `CLAUDE.md` and `GEMINI.md` import it |
 
 ## Keeping the documents consistent
 
-- The ten lifecycle names in `docs/WORKFLOW.md` are the canonical vocabulary. A change to a stage name or order updates `docs/WORKFLOW.md`, `docs/CONTRACT_DECISIONS.md`, `README.md`, and `templates/trello-board-workflow.yaml` in the same change.
+- The ten lifecycle names in `docs/WORKFLOW.md` are the canonical vocabulary. A change to a stage name or order updates every affected lifecycle document, including `docs/WORKFLOW.md`, `docs/STAGE_CONTRACTS.md`, `docs/AGENTIC_SDLC_CONTEXT.md`, `docs/CONTRACT_DECISIONS.md`, `docs/AGENT_ROLES.md`, `docs/ROADMAP.md`, `docs/LEARNING_WORKFLOW.md`, `docs/METRICS.md`, `README.md`, and `templates/trello-board-workflow.yaml`.
 - `templates/trello-board-workflow.yaml` is consumed by board provisioning and validation. Changing its lists needs explicit approval.
 - This repository describes a process. It never links to, depends on, or defers to an implementation of any component, including the Intent Creation Skill. Describe the purpose and required outcome instead, so someone can build the component from this repository alone.
 - When you add or re-check a link in `docs/REFERENCES.md`, update the verification date there.

@@ -18,8 +18,8 @@ In this SDLC, **XP for quality** means practical engineering habits within each 
 - Trello is the human-facing workflow. Git is the versioned record for durable artifacts.
 - Product intent lives in a dedicated `intent-backlog` repository, separate from product source repositories.
 - Each intent belongs to one product context and has a stable product-prefixed ID, such as `INT-MF-0042`.
-- A Trello move to **Prioritized** records the exact intent commit and hash. That revision is immutable once the first engineering agent begins.
-- The first engineering agent creates an isolated branch/worktree in the target product repository and copies that exact frozen intent into it.
+- A Trello move to **Prioritized** records the exact intent and policy-profile references. Both are immutable immediately after that successful freeze.
+- The first engineering agent creates an isolated branch/worktree in the target product repository and copies the exact frozen intent and policy profile into it before it starts Spec & Design.
 - **Spec & Design** produces `spec.md` from the frozen intent.
 - **Execution** begins from the frozen intent, accepted `spec.md`, and frozen work contract. The Coding Agent creates a candidate implementation and evidence.
 - **Evaluation** is independent of implementation. An Evaluator reviews the candidate and evidence against the frozen inputs.
@@ -28,7 +28,7 @@ In this SDLC, **XP for quality** means practical engineering habits within each 
 
 ## Change rule
 
-Clarification and versioning are allowed before the commitment boundary. After execution begins, any material change in outcome, scope, acceptance criteria, constraints, or assumptions creates a new intent/work item and follows a new lifecycle. Do not mutate work beneath active agents.
+Clarification and versioning are allowed before the Prioritized commitment boundary. After that freeze, any material change in outcome, scope, acceptance criteria, constraints, or assumptions creates a new intent/work item and follows a new lifecycle. Do not mutate frozen work beneath active agents.
 
 ## Terminology
 

@@ -6,7 +6,7 @@ This repository describes what an intent must capture and what the Intent Creati
 
 ## Freeze integrity
 
-The freeze tuple records a single intent fingerprint: the SHA-256 of the exact bytes of `intent.md` at the frozen commit, as defined in [Artifacts](ARTIFACTS.md). Anyone can recompute it, and every stage verifies the frozen intent against it.
+The freeze tuple records the SHA-256 fingerprint of the exact bytes of `intent.md` at the frozen commit and the same source-commit/fingerprint pair for the selected policy profile, as defined in [Artifacts](ARTIFACTS.md). Anyone can recompute them, and every engineering stage verifies the frozen inputs against them.
 
 ## Lifecycle vocabulary
 
@@ -18,7 +18,7 @@ Product refinement is work performed within `New Ideas` and `Backlog`; it is not
 
 ## Publication
 
-Required lifecycle artifacts must be durable and reachable before the next defined stage begins. The authorized workflow coordination path records their immutable provenance and reachable reference. See [Artifacts](ARTIFACTS.md), [Workflow](WORKFLOW.md), and [Governance](GOVERNANCE.md).
+Required lifecycle artifacts must be durable and reachable before the next defined stage begins. The Conductor, acting under authorized policy, records their immutable provenance and reachable reference. See [Artifacts](ARTIFACTS.md), [Workflow](WORKFLOW.md), and [Governance](GOVERNANCE.md).
 
 ## Specification and execution contract
 
@@ -26,11 +26,11 @@ Required lifecycle artifacts must be durable and reachable before the next defin
 
 ## Candidate, evaluation, and delivery
 
-Execution creates a candidate commit and Evidence Package; neither is an approval. A separate Evaluator produces an Evaluation Package against the frozen inputs. Only an accountable human may approve the named candidate for Release. Release and Production Observation create durable fact records tied to that same candidate SHA, and Done requires a human closure decision. Evaluation failure returns to Execution with findings; a material product change creates a successor intent instead.
+Execution creates a candidate commit and Evidence Package; neither is an approval. A separate Evaluator produces an Evaluation Package against the frozen inputs. Only an accountable human may approve the named candidate for integration and Release. The authorized integration path records the resulting protected-branch SHA before release. Release and Production Observation create durable fact records tied to the candidate and integration SHA, and Done requires a human closure decision. Evaluation failure returns to Execution with findings; a non-material specification defect returns to Spec & Design; a material product change creates a successor intent instead.
 
 ## Policy controls
 
-Each frozen intent names a versioned product Policy & Compliance Profile. Its applicable controls and escalation conditions travel through the specification, work contract, and Evidence Package. The profile makes a consideration visible; it does not permit an agent to make a legal or compliance conclusion.
+Each frozen intent names a versioned product Policy & Compliance Profile by ID, version, source commit, and fingerprint. Its applicable controls and escalation conditions travel through the specification, work contract, and Evidence Package. The profile makes a consideration visible; it does not permit an agent to make a legal or compliance conclusion.
 
 ## Scope boundary
 

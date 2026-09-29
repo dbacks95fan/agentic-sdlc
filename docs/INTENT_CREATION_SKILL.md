@@ -12,7 +12,7 @@ A product owner works with the skill to create and refine intent. The skill help
 
 The skill works only while a card is in `New Ideas` or `Backlog`. Refinement is work done within those columns, not a separate stage. If a card is in any other column, the skill leaves the card and intent unchanged and tells the user that the intent has been handed off.
 
-From Backlog, a product owner may explicitly select a handoff destination. The skill freezes the synchronized revision and places the card in that selected destination. It does not need to understand or validate the destination's name, position, or purpose. Once handed off, it does not change the card or intent.
+From Backlog, a product owner may explicitly select a handoff destination. The skill synchronizes the revision and submits the handoff request to the control plane; it does not need to understand or validate the destination's name, position, or purpose. The Conductor validates and applies the board transition. Once handed off, the skill does not change the card or intent.
 
 ## What an intent must capture
 
@@ -39,7 +39,7 @@ The file must not contain values that are only known after it is saved, such as 
 5. Ambiguity the skill cannot resolve is raised with the owner, not filled in with a guess.
 6. An idea that spans several products becomes a parent intent with one intent per product; no single intent spans unrelated product repositories.
 7. Before handoff, the intent is synchronized, its acceptance criteria are settled, and its current revision is committed and reachable, so the freeze can record it exactly.
-8. A handoff begins only when a product owner explicitly selects a destination for a Backlog card. It leaves a frozen revision and places the card in that selected destination without interpreting the downstream workflow.
+8. A handoff begins only when a product owner explicitly selects a destination for a Backlog card. It leaves a frozen revision and asks the Conductor to place the card in that selected destination without interpreting the downstream workflow.
 9. After handoff, a material change becomes a new successor intent that goes through the normal flow. The frozen intent is left untouched.
 10. The skill records the policy-profile reference selected by the product owner. It may surface a defined escalation condition, but it must not decide legal applicability or claim compliance.
 
@@ -57,7 +57,7 @@ An implementation is complete when all of these can be shown:
 - Revising the intent produces a new version and a new commit, the previous revision is still retrievable, and the card shows the new values.
 - For any card, recomputing the SHA-256 of `intent.md` at the commit shown on the card gives the fingerprint shown on the card.
 - Editing the card and the file in different ways produces a reported conflict, not a silent overwrite.
-- A handoff from Backlog happens only after a product owner explicitly selects a destination, leaves a frozen revision, and places the card in that destination without interpreting its meaning.
+- A handoff from Backlog happens only after a product owner explicitly selects a destination, leaves a frozen revision, and asks the Conductor to place the card in that destination without interpreting its meaning.
 - An attempt to change a frozen revision is refused and leaves both the file and the card unchanged.
 - An attempt to change a card outside New Ideas or Backlog is refused and tells the user that the intent has been handed off.
 - An idea spanning two products results in one intent per product.

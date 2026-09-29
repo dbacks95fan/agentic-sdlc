@@ -7,7 +7,7 @@ The documentation defines the intended lifecycle. Implement it in small, observa
 - Adopt this documentation baseline and assign decision owners.
 - Define independently configurable control-plane and execution-plane LLM assignments, including how run metadata will be recorded. Do not make model selection a substitute for role permissions or validation controls.
 - Define product registry and ID conventions.
-- Define the canonical intent schema, Trello field mapping, and synchronization conflict policy.
+- Define the required intent invariants, Trello/freeze-field mapping, and synchronization conflict policy without prescribing an `intent.md` layout.
 - Adopt the [stage contracts](STAGE_CONTRACTS.md) and a lean, versioned Policy & Compliance Profile for each product.
 
 ## Phase 1 — Product intake and commitment
@@ -20,8 +20,8 @@ The documentation defines the intended lifecycle. Implement it in small, observa
 
 ## Phase 2 - Spec & Design
 
-- Implement Conductor preflight and isolated worktree creation.
-- Copy and verify frozen intent bytes in the target repository.
+- Implement Conductor preflight and worker assignment for isolated worktree creation.
+- Copy and verify frozen intent and policy-profile bytes in the target repository without checkout line-ending conversion.
 - Implement sectioned `spec.md` production, proposed `work-contract.yaml`, and the human acceptance gate within Spec & Design.
 
 ## Phase 3 - Execution and evaluation
@@ -33,9 +33,10 @@ The documentation defines the intended lifecycle. Implement it in small, observa
 ## Phase 4 - Accountable delivery and learning
 
 - Implement the Human Approval decision record tied to an immutable candidate SHA.
-- Integrate the product's existing authorized release path to produce a Release Record with post-release verification and rollback facts.
+- Integrate the approved candidate into the protected product branch, record the immutable integration SHA, and produce a Release Record with post-release verification and rollback facts.
 - Define a short observation window and signals for the first real feature; produce an Observation Record and capture any follow-up as new intent.
 - Review flow, rework, release, and outcome evidence. Improve a documented rule or control only when the evidence supports it.
+- Add automated checks for local documentation links, lifecycle vocabulary/template consistency, and required freeze and handoff fields.
 
 ## Decisions still required before production autonomy
 
