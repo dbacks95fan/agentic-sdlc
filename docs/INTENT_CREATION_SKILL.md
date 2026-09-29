@@ -10,7 +10,9 @@ Agentic execution makes implementation cheap; human attention and clear decision
 
 A product owner works with the skill to create and refine intent. The skill helps the owner think the idea through and records the result; the owner makes the decisions (see [Governance](GOVERNANCE.md)).
 
-The skill works before the freeze, while a card is in `New Ideas` or `Backlog`. Refinement is work done within those columns, not a separate stage. Once an intent revision is frozen, the skill does not change it.
+The skill works only while a card is in `New Ideas` or `Backlog`. Refinement is work done within those columns, not a separate stage. If a card is in any other column, the skill leaves the card and intent unchanged and tells the user that the intent has been handed off.
+
+From Backlog, a product owner may explicitly select a handoff destination. The skill freezes the synchronized revision and places the card in that selected destination. It does not need to understand or validate the destination's name, position, or purpose. Once handed off, it does not change the card or intent.
 
 ## What an intent must capture
 
@@ -35,14 +37,15 @@ The file must not contain values that are only known after it is saved, such as 
 4. When the card and the file disagree, the conflict is surfaced, reconciled with the product owner, and recorded as a new version. Neither side is silently overwritten.
 5. Ambiguity the skill cannot resolve is raised with the owner, not filled in with a guess.
 6. An idea that spans several products becomes a parent intent with one intent per product; no single intent spans unrelated product repositories.
-7. By the time a card reaches `Prioritized`, its intent is synchronized, its acceptance criteria are settled, and its current revision is committed and reachable, so the freeze can record it exactly.
-8. After the freeze, a material change becomes a new successor intent that goes through the normal flow. The frozen intent is left untouched.
+7. Before handoff, the intent is synchronized, its acceptance criteria are settled, and its current revision is committed and reachable, so the freeze can record it exactly.
+8. A handoff begins only when a product owner explicitly selects a destination for a Backlog card. It leaves a frozen revision and places the card in that selected destination without interpreting the downstream workflow.
+9. After handoff, a material change becomes a new successor intent that goes through the normal flow. The frozen intent is left untouched.
 
 ## What the skill does not do
 
 - Change an intent revision once it is frozen.
 - Create branches, worktrees, specifications, or any other engineering artifact.
-- Route work or change workflow state after the freeze; that belongs to the Conductor (see [Agent roles](AGENT_ROLES.md)).
+- Infer, validate, or manage downstream board stages after handoff; that belongs to the Conductor (see [Agent roles](AGENT_ROLES.md)).
 
 ## Done when
 
@@ -52,10 +55,11 @@ An implementation is complete when all of these can be shown:
 - Revising the intent produces a new version and a new commit, the previous revision is still retrievable, and the card shows the new values.
 - For any card, recomputing the SHA-256 of `intent.md` at the commit shown on the card gives the fingerprint shown on the card.
 - Editing the card and the file in different ways produces a reported conflict, not a silent overwrite.
+- A handoff from Backlog happens only after a product owner explicitly selects a destination, leaves a frozen revision, and places the card in that destination without interpreting its meaning.
 - An attempt to change a frozen revision is refused and leaves both the file and the card unchanged.
+- An attempt to change a card outside New Ideas or Backlog is refused and tells the user that the intent has been handed off.
 - An idea spanning two products results in one intent per product.
 
 ## Open decisions
 
-- Which component writes the freeze tuple at `Prioritized`. [Governance](GOVERNANCE.md) gives the commitment decision to an authorized owner but does not name the component that records it.
 - Whether a card may move back from `Backlog` to `New Ideas` for more refinement, and how that move is shown on the card.
