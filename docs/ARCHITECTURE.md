@@ -33,12 +33,7 @@ products/mealflow/intents/INT-MF-0042/intent.md
 products/agentic-sdlc/intents/INT-AS-0017/intent.md
 ```
 
-`intent.md` and its Trello card carry the same `product_id`, `intent_id`,
-`intent_version`, `intent_commit`, and canonical content hash. The field names
-and permitted values are owned by the Intent Creation Skill's canonical schema;
-this repository does not define alternatives. Cross-product initiatives are
-parent/portfolio intents decomposed into one execution intent per product; one
-execution intent never spans unrelated product repositories.
+`intent.md` and its Trello card carry the same `product_id`, `intent_id`, `intent_version`, `intent_commit`, and canonical content hash. The field names and permitted values are owned by the Intent Creation Skill's canonical schema; this repository does not define alternatives. Cross-product initiatives are parent/portfolio intents decomposed into one execution intent per product; one execution intent never spans unrelated product repositories.
 
 ## Execution workspace
 

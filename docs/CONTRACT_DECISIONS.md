@@ -2,19 +2,11 @@
 
 ## Canonical intent representation
 
-The Intent Creation Skill owns the sole canonical `intent.md` schema at
-`references/output-format.md`. Agent repositories and the Conductor reference
-that contract rather than create local metadata variants. Legacy consumers must
-migrate through an explicit compatibility plan; they may not silently parse a
-different format as if it were canonical.
+The Intent Creation Skill owns the sole canonical `intent.md` schema at `references/output-format.md`. Agent repositories and the Conductor reference that contract rather than create local metadata variants. Legacy consumers must migrate through an explicit compatibility plan; they may not silently parse a different format as if it were canonical.
 
 ## Freeze integrity
 
-The freeze tuple records both a normalized content hash and an exact-byte
-engineering artifact hash, as defined in [Artifacts](ARTIFACTS.md). The two
-values have different purposes and field names. A worker verifies the exact
-bytes it receives; cross-system product synchronization uses the normalized
-content hash.
+The freeze tuple records both a normalized content hash and an exact-byte engineering artifact hash, as defined in [Artifacts](ARTIFACTS.md). The two values have different purposes and field names. A worker verifies the exact bytes it receives; cross-system product synchronization uses the normalized content hash.
 
 ## Lifecycle vocabulary
 
