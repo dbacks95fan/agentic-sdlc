@@ -16,6 +16,7 @@ The board has no Planning column. `spec.md` is the one human-reviewed Markdown d
 - A worker validates every input it receives before acting. A missing, mutable, or mismatched input returns `blocked` and does not advance the card.
 - A worker returns `needs_decision` for a material ambiguity. It does not invent a product, security, compliance, cost, scope, or external-contract decision.
 - The Conductor alone reads or updates Trello workflow state. Agents do not move cards or grant approvals.
+- An assigned worker may commit only its authorized artifacts on its assigned work branch. The Conductor publishes a validated branch when the next human or worker needs a reachable reference; publication is neither approval nor merge.
 - The product owner decides intent, priority, policy applicability, and whether to accept `spec.md` and the proposed work contract. Tests and agent evidence inform that decision; they do not replace it.
 
 ## 1. Intent Creation
