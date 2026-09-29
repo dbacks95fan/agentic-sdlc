@@ -25,6 +25,7 @@ The current board flow is **New Ideas -> Backlog -> Prioritized -> Spec & Design
 | [Governance](docs/GOVERNANCE.md) | Authority, controls, and exceptions |
 | [Artifacts](docs/ARTIFACTS.md) | Artifact contracts and provenance |
 | [Agent roles](docs/AGENT_ROLES.md) | Narrow, independent agent responsibilities |
+| [Intent Creation Skill](docs/INTENT_CREATION_SKILL.md) | Purpose, required outcomes, and completion checks for the intent component |
 | [Metrics](docs/METRICS.md) | Flow, quality, and outcome measures |
 | [Roadmap](docs/ROADMAP.md) | Incremental implementation plan |
 | [References](docs/REFERENCES.md) | First-party sources informing the design |

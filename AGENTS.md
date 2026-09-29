@@ -151,7 +151,7 @@ Everything above this heading is the DPSystems canonical rule set, copied verbat
 
 This is a vendor-neutral architectural repository: reference architecture, workflow, governance, and artifact contracts for an intent-driven Agentic SDLC. It holds documentation and one board template, not component implementations. Agent and skill runtimes live in their own component repositories.
 
-Before proposing or changing the Agentic SDLC, read `docs/AGENTIC_SDLC_CONTEXT.md`, `docs/ARCHITECTURE.md`, `docs/WORKFLOW.md`, `docs/GOVERNANCE.md`, and `docs/REFERENCES.md`.
+Before proposing or changing the Agentic SDLC, read `docs/AGENTIC_SDLC_CONTEXT.md`, `docs/ARCHITECTURE.md`, `docs/WORKFLOW.md`, `docs/GOVERNANCE.md`, `docs/INTENT_CREATION_SKILL.md`, and `docs/REFERENCES.md`.
 
 ## Decisions to preserve
 
@@ -179,7 +179,7 @@ Do not silently redesign the workflow or assert implementation, test, deployment
 
 - The five lifecycle names in `docs/WORKFLOW.md` are the canonical vocabulary. A change to a stage name or order updates `docs/WORKFLOW.md`, `docs/CONTRACT_DECISIONS.md`, `README.md`, and `templates/trello-board-workflow.yaml` in the same change.
 - `templates/trello-board-workflow.yaml` is consumed by board provisioning and validation. Changing its lists needs explicit approval.
-- The canonical `intent.md` schema belongs to the Intent Creation Skill. Reference it; don't restate or extend its field names here.
+- This repository describes a process. It never links to, depends on, or defers to an implementation of any component, including the Intent Creation Skill. Describe the purpose and required outcome instead, so someone can build the component from this repository alone.
 - When you add or re-check a link in `docs/REFERENCES.md`, update the verification date there.
 
 ## Checks before calling a change done
