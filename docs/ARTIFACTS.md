@@ -53,6 +53,10 @@ Every artifact in this document is retained in the assigned work branch or anoth
 
 Before Execution starts, the workflow records the `spec.md` artifact's immutable commit SHA, repository-relative path, and reachable reference. The reference and provenance tuple make the execution input unambiguous without changing the frozen intent.
 
+## Publication authority
+
+An assigned worker may commit only its authorized artifacts on its assigned work branch. The Conductor publishes a validated branch when a human or later worker needs a reachable reference, and records that reference with the stage handoff. Publication is not an approval or merge. A worker without remote access remains correct; a required publication failure blocks the handoff and is surfaced to the authorized owner.
+
 `spec.md` is the one human-reviewed Markdown document. It includes implementation and validation planning as required by [Stage Contracts](STAGE_CONTRACTS.md); do not create a separate `plan.md`. The machine-readable `work-contract.yaml` is frozen only after the product owner accepts the associated `spec.md`.
 
 Publication is a workflow control that makes an artifact available to the next defined stage. It does not change the frozen intent or create an undeclared board stage.
