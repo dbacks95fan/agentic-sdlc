@@ -10,6 +10,10 @@
 | Accept `spec.md` and work contract for Execution | Authorized product owner | Immutable artifact references and approval record |
 | Move work from Prioritized to Spec & Design | Authorized workflow coordination path | Frozen revision reference and assigned worktree |
 | Move work from Spec & Design to Execution | Authorized workflow coordination path | Immutable `spec.md` reference |
+| Return Evaluation work to Execution | Conductor under the defined policy | Evaluation finding and immutable candidate reference |
+| Approve candidate for Release, request rework, or stop work | Accountable human | Candidate SHA, decision, rationale, and time |
+| Release an approved candidate | Authorized release path | Human approval and Release Record |
+| Close work after observation | Accountable human | Observation Record and linked follow-up, if any |
 | Advance a card within the current lifecycle | Conductor under the defined policy | Required artifact reference and transition record |
 
 ## Controls
@@ -21,6 +25,8 @@
 - Use append-only or immutable records where the platform permits.
 - Do not treat agent narrative, green tests, or a successful deployment command as sufficient evidence by themselves.
 - Do not let an agent decide legal applicability, grant a policy exception, or claim compliance. It may identify a defined trigger and request an authorized human decision.
+- Keep candidate assessment independent from implementation. An Evaluator may provide evidence and findings, but only a human can approve release.
+- Preserve release and observation facts against the immutable candidate SHA. Do not treat an execution report, a green test suite, or a completed release command as outcome proof.
 
 ## Exceptions and incidents
 

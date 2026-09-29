@@ -25,7 +25,7 @@ From Backlog, a product owner may explicitly select a handoff destination. The s
 - A stable, product-prefixed intent ID that is never changed or reused.
 - A version that increases with every accepted revision.
 
-The format and field names are the builder's choice, provided people can read the intent and the Spec & Design stage can use it. No workflow control depends on a particular layout.
+The Intent Creation Skill's canonical schema owns the exact format and field names. This document does not restate or alter that schema: a builder must use the canonical schema so people, Trello synchronization, and later stages identify the same revision consistently.
 
 ## Required outcomes
 

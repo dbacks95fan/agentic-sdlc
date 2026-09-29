@@ -18,7 +18,7 @@ content hash.
 
 ## Lifecycle vocabulary
 
-The canonical workflow stages are defined in [Workflow](WORKFLOW.md): `New Ideas`, `Backlog`, `Prioritized`, `Spec & Design`, and `Execution`. New stages are not implied by an agent capability or a possible future delivery concern; add one only after real work establishes its purpose, owner, and exit condition.
+The canonical workflow stages are defined in [Workflow](WORKFLOW.md): `New Ideas`, `Backlog`, `Prioritized`, `Spec & Design`, `Execution`, `Evaluation`, `Human Approval`, `Release`, `Production Observation`, and `Done`. The stages are intentionally few: human review stays within `Spec & Design`, and the implementation plan stays in `spec.md`; neither needs a separate board column. New stages are not implied by an agent capability or a possible future delivery concern; add one only after real work establishes its purpose, owner, and exit condition.
 
 `Prioritized` is the product-to-engineering commitment and intent-freeze boundary. The exact freeze protocol and material-change rule are defined in [Workflow](WORKFLOW.md) and [Artifacts](ARTIFACTS.md).
 
@@ -31,6 +31,10 @@ Required lifecycle artifacts must be durable and reachable before the next defin
 ## Specification and execution contract
 
 `spec.md` is the single human-reviewed Markdown artifact. It contains its own implementation and validation plan; a separate `plan.md` is not part of this lifecycle. The proposed `work-contract.yaml` is a machine-readable execution record created alongside the spec and frozen only after human acceptance. Its required lineage is defined in [Stage Contracts](STAGE_CONTRACTS.md).
+
+## Candidate, evaluation, and delivery
+
+Execution creates a candidate commit and Evidence Package; neither is an approval. A separate Evaluator produces an Evaluation Package against the frozen inputs. Only an accountable human may approve the named candidate for Release. Release and Production Observation create durable fact records tied to that same candidate SHA, and Done requires a human closure decision. Evaluation failure returns to Execution with findings; a material product change creates a successor intent instead.
 
 ## Policy controls
 

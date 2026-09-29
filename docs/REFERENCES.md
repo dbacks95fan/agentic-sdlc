@@ -16,4 +16,4 @@ The links below were verified on 2026-09-06. They inform this architecture; they
 
 ## Interpretation notes
 
-These sources agree on durable context, explicit control points, and observability. They do not prescribe this exact Trello-to-backlog-to-worktree flow or its vendor assignments. Those are deliberate local decisions designed to preserve a familiar human workflow while providing immutable, auditable machine inputs.
+These sources agree on durable context, explicit control points, isolated or well-defined execution environments, and observability. They inform the practical choices here: repository-local specifications and records; bounded, incremental work; independent checks; explicit human judgment at consequential gates; and feedback after release. They do not prescribe this exact Trello-to-backlog-to-worktree flow, its ten columns, or its vendor assignments. Those are deliberate local decisions designed to preserve a familiar human workflow while providing immutable, auditable machine inputs.

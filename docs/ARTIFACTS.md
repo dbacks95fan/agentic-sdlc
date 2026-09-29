@@ -8,6 +8,10 @@
 | `spec.md` | Product worktree | Spec & Design Agent | Frozen intent/profile references; design, implementation, validation, and decision sections |
 | `work-contract.yaml` | Product worktree | Spec & Design Agent; frozen by product owner | Frozen intent/profile and accepted `spec.md` references; target, scope, and required validation |
 | Evidence Package | Product worktree | Coding Agent | Candidate commit, validation results, control evidence, and status |
+| Evaluation Package | Product worktree or authorized versioned record | Evaluator | Candidate commit, checks reproduced, findings, and outcome status |
+| Human Approval Record | Authorized workflow record | Accountable human | Candidate SHA, decision, rationale, and time |
+| Release Record | Product worktree or authorized versioned record | Authorized release control | Candidate SHA, environment, release/health facts, and rollback facts |
+| Observation Record | Product worktree or authorized versioned record | Observation control with human closure | Observation window, signals, outcome, findings, and follow-up links |
 | Execution artifacts | Product worktree | Coding Agent | Frozen intent, profile, `spec.md`, and work-contract references |
 
 ## Canonical intent schema
@@ -59,4 +63,4 @@ An assigned worker may commit only its authorized artifacts on its assigned work
 
 `spec.md` is the one human-reviewed Markdown document. It includes implementation and validation planning as required by [Stage Contracts](STAGE_CONTRACTS.md); do not create a separate `plan.md`. The machine-readable `work-contract.yaml` is frozen only after the product owner accepts the associated `spec.md`.
 
-Publication is a workflow control that makes an artifact available to the next defined stage. It does not change the frozen intent or create an undeclared board stage.
+Publication is a workflow control that makes an artifact available to the next defined stage. It does not change the frozen intent or create an undeclared board stage. The candidate, Evaluation Package, Human Approval Record, Release Record, and Observation Record retain the same immutable candidate reference so the work can be traced from intent to observed outcome.
