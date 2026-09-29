@@ -1,20 +1,12 @@
 # Cross-Component Contract Decisions
 
-## Canonical intent representation
+## Intent content
 
-The Intent Creation Skill owns the sole canonical `intent.md` schema at
-`references/output-format.md`. Agent repositories and the Conductor reference
-that contract rather than create local metadata variants. Legacy consumers must
-migrate through an explicit compatibility plan; they may not silently parse a
-different format as if it were canonical.
+This repository describes what an intent must capture and what the Intent Creation Skill must achieve, in [Intent Creation Skill](INTENT_CREATION_SKILL.md). It does not depend on, link to, or defer to any implementation of the skill. The layout of `intent.md` is the implementer's choice, and no workflow control depends on it.
 
 ## Freeze integrity
 
-The freeze tuple records both a normalized content hash and an exact-byte
-engineering artifact hash, as defined in [Artifacts](ARTIFACTS.md). The two
-values have different purposes and field names. A worker verifies the exact
-bytes it receives; cross-system product synchronization uses the normalized
-content hash.
+The freeze tuple records a single intent fingerprint: the SHA-256 of the exact bytes of `intent.md` at the frozen commit, as defined in [Artifacts](ARTIFACTS.md). Anyone can recompute it, and every stage verifies the frozen intent against it.
 
 ## Lifecycle vocabulary
 

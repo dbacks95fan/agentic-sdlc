@@ -34,6 +34,7 @@ This is a learning exercise that will build real applications. Begin with a smal
 | [Artifacts](docs/ARTIFACTS.md) | Artifact contracts and provenance |
 | [Stage contracts](docs/STAGE_CONTRACTS.md) | Required inputs, outputs, rules, and handoffs from intent through closure |
 | [Agent roles](docs/AGENT_ROLES.md) | Narrow, independent agent responsibilities |
+| [Intent Creation Skill](docs/INTENT_CREATION_SKILL.md) | Purpose, required outcomes, and completion checks for the intent component |
 | [Metrics](docs/METRICS.md) | Flow, quality, and outcome measures |
 | [Roadmap](docs/ROADMAP.md) | Incremental implementation plan |
 | [References](docs/REFERENCES.md) | First-party sources informing the design |

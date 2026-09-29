@@ -30,11 +30,17 @@ The Intent Creation Skill may create or revise an intent only while its card is 
 
 From Backlog, a product owner may explicitly select a handoff destination. The skill must freeze the synchronized intent and place the card in that selected destination. It must not infer meaning from a destination's name, visual position, or any other downstream board detail. After that handoff, routing belongs to the Conductor and the skill does not change the card or intent.
 
+## Intent Creation boundary
+
+The Intent Creation Skill may create or revise an intent only while its card is in `New Ideas` or `Backlog`. If the card is in any other column, it must leave both the card and intent unchanged and tell the user that the intent has already been handed off.
+
+From Backlog, a user may explicitly select a handoff destination. The skill must freeze the synchronized intent and place the card in that selected destination. It must not infer meaning from a destination's name, visual position, or any other downstream board detail. After that handoff, routing belongs to the Conductor and the skill does not change the card or intent.
+
 ## Prioritized freeze protocol
 
 1. Confirm card/intent identity and synchronization.
 2. Resolve material ambiguity and acceptance criteria before commitment.
-3. Record intent ID, product ID, intent version, intent commit SHA, normalized content hash, frozen-artifact hash, card ID, freeze time, and acceptance metadata.
+3. Record intent ID, product ID, intent version, intent commit SHA, intent fingerprint, card ID, freeze time, and acceptance metadata.
 4. Mark the revision immutable and establish the assigned product-repository branch/worktree.
 5. Copy the frozen bytes into `.agent/work/<intent-id>/intent.md` before Spec & Design begins.
 

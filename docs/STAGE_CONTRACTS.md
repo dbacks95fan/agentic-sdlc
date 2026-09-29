@@ -43,7 +43,7 @@ The board has no Planning column. `spec.md` is the one human-reviewed Markdown d
 
 **Inputs:** synchronized intent revision, card identity, policy-profile reference, and product/intent identity.
 
-**Outputs:** a freeze tuple containing the intent revision, hashes, card ID, policy-profile ID and version, and freeze time. The frozen intent and profile are immutable inputs to engineering.
+**Outputs:** a freeze tuple containing the intent revision, exact-byte intent fingerprint, card ID, policy-profile ID and version, and freeze time. The frozen intent and profile are immutable inputs to engineering.
 
 **Rules:** a failed synchronization or missing policy profile blocks the transition. A later material change creates a successor intent and new lifecycle.
 

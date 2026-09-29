@@ -1,62 +1,68 @@
 # Intent Creation Skill
 
-The Intent Creation Skill turns a product idea into a clear, versioned intent and keeps the human-facing Trello card and durable `intent.md` in agreement. This document defines the outcomes and rules a person or agent must meet when building the skill. It does not prescribe a repository for the skill, a runtime, tools, APIs, or file layout.
+The Intent Creation Skill is the process component that turns a product idea into a clear, versioned intent and keeps the human-facing Trello card and the durable `intent.md` in agreement. This document describes what the skill is for and what it must achieve, so a person or an agent can build one that works with this workflow. It does not prescribe how the skill is built, what it runs on, or how `intent.md` is laid out. Any implementation that delivers these outcomes satisfies this process.
 
 ## Why it exists
 
-Agentic execution makes implementation cheap; human attention and clear decisions become the scarce resources. Work that enters engineering with a vague or shifting intent wastes both. The skill ensures that, when work is handed off, the intent is clear, reviewable, and stored as an exact revision that later stages can trust.
+Agentic execution makes implementation cheap; human attention and clear decisions become the scarce resources. Work that enters engineering with a vague or shifting intent wastes both. The skill exists so that, when a product owner commits engineering capacity at `Prioritized`, the intent is clear, reviewable, and stored as an exact revision that later stages can trust without asking again.
 
-## Where it operates
+## Who uses it and where
 
-A product owner uses the skill to create and refine intent. The skill records and clarifies the owner's decisions; it does not make consequential product decisions.
+A product owner works with the skill to create and refine intent. The skill helps the owner think the idea through and records the result; the owner makes the decisions (see [Governance](GOVERNANCE.md)).
 
-The skill may work only while a card is in `New Ideas` or `Backlog`. Refinement happens within those columns, not in a separate stage. A card in any other column is outside the skill's write authority: it must leave the card and intent unchanged and inform the user that handoff has already occurred.
+The skill works only while a card is in `New Ideas` or `Backlog`. Refinement is work done within those columns, not a separate stage. If a card is in any other column, the skill leaves the card and intent unchanged and tells the user that the intent has been handed off.
 
-From Backlog, a product owner may explicitly select a handoff destination. The skill freezes the synchronized revision and places the card in that selected destination. It does not need to understand, validate, or infer the destination's name, position, or purpose.
+From Backlog, a product owner may explicitly select a handoff destination. The skill freezes the synchronized revision and places the card in that selected destination. It does not need to understand or validate the destination's name, position, or purpose. Once handed off, it does not change the card or intent.
 
 ## What an intent must capture
 
-- The product outcome to achieve, stated so a reader can later tell whether it was delivered.
-- Scope: what is included and deliberately excluded.
-- Acceptance criteria a later stage can check.
-- Constraints and assumptions the work must respect.
-- The one product the intent belongs to.
+- The product outcome to achieve, stated so a reader can tell afterwards whether it was delivered.
+- Scope: what is included and what is deliberately left out.
+- Acceptance criteria that a later stage can check.
+- Constraints the work must respect.
+- Assumptions the intent depends on.
+- The one product it belongs to.
 - The product Policy & Compliance Profile ID and version selected by the product owner.
-- A stable, product-prefixed intent ID that is never changed or reused.
+- A stable identifier that includes the product, such as `INT-MF-0042`, which is never changed or reused.
 - A version that increases with every accepted revision.
 
-The Intent Creation Skill's canonical schema owns the exact format and field names. This document does not restate or alter that schema: a builder must use the canonical schema so people, Trello synchronization, and later stages identify the same revision consistently.
+How these are laid out in `intent.md`, and what they are called, is the implementer's choice, as long as a person can read the file and the Spec & Design stage can work from it. No workflow control depends on the layout.
 
-## Required outcomes
+The file must not contain values that are only known after it is saved, such as the commit that stores it. Those values are recorded on the card and in the freeze tuple, so the file's fingerprint stays stable (see [Artifacts](ARTIFACTS.md)).
 
-1. Every captured idea has a card on its product board and a matching durable `intent.md` under that product's intent backlog.
-2. The card and intent describe the same intent at the same version. Each accepted revision is durable, retrievable, and identified by its product, intent ID, version, commit, and fingerprint.
-3. History is never rewritten. Revising an intent creates a new version without losing earlier revisions.
-4. If the card and intent disagree, the conflict is surfaced to the product owner and reconciled as a new version. Neither side is silently overwritten.
-5. Ambiguity the skill cannot resolve is escalated to the product owner rather than filled in with a guess.
-6. An idea spanning multiple products creates a parent intent plus one product-specific intent per affected product. One intent does not span unrelated product repositories.
-7. Before handoff, the intent is synchronized, acceptance criteria are settled, and the current revision is durable and reachable so the freeze can identify it exactly.
-8. Handoff begins only when a product owner explicitly selects a destination for a Backlog card. It leaves a frozen revision and places the card in that selected destination without interpreting the downstream workflow.
-9. After handoff, a material change creates a new successor intent that follows the normal flow. The frozen intent remains untouched.
+## Outcomes the skill must deliver
+
+1. Every idea it captures has a card on the product's board and a matching `intent.md` in the `intent-backlog` repository, under the right product.
+2. The card and `intent.md` always describe the same intent at the same version. Each accepted revision is committed to `intent-backlog`, and the card shows the product, intent ID, version, commit, and fingerprint of that revision.
+3. Every revision stays retrievable; history is never rewritten.
+4. When the card and the file disagree, the conflict is surfaced, reconciled with the product owner, and recorded as a new version. Neither side is silently overwritten.
+5. Ambiguity the skill cannot resolve is raised with the owner, not filled in with a guess.
+6. An idea that spans several products becomes a parent intent with one intent per product; no single intent spans unrelated product repositories.
+7. Before handoff, the intent is synchronized, its acceptance criteria are settled, and its current revision is committed and reachable, so the freeze can record it exactly.
+8. A handoff begins only when a product owner explicitly selects a destination for a Backlog card. It leaves a frozen revision and places the card in that selected destination without interpreting the downstream workflow.
+9. After handoff, a material change becomes a new successor intent that goes through the normal flow. The frozen intent is left untouched.
 10. The skill records the policy-profile reference selected by the product owner. It may surface a defined escalation condition, but it must not decide legal applicability or claim compliance.
 
-## Out of scope
+## What the skill does not do
 
-- Changing a frozen intent revision.
-- Creating engineering branches, worktrees, specifications, plans, or implementation artifacts.
-- Inferring, validating, or managing downstream board stages after handoff. That belongs to the Conductor.
+- Change an intent revision once it is frozen.
+- Create branches, worktrees, specifications, or any other engineering artifact.
+- Infer, validate, or manage downstream board stages after handoff; that belongs to the Conductor (see [Agent roles](AGENT_ROLES.md)).
 
 ## Done when
 
-- Creating an idea yields a product-prefixed ID, first intent version, matching card, and durable intent revision.
-- Revising an intent yields a new version while keeping the prior revision retrievable.
-- A card and its intent can be verified as the same revision using the recorded fingerprint.
-- A card/intent conflict is reported rather than silently overwritten.
-- Handoff occurs only after an explicit product-owner destination selection, produces a frozen revision, and places the card in the selected destination without interpreting it.
-- Attempts to change a frozen intent, or any card outside `New Ideas` and `Backlog`, are refused without changing either artifact.
-- A multi-product idea results in one intent per product.
-- The frozen intent identifies the product policy-profile version used by Spec & Design and Execution.
+An implementation is complete when all of these can be shown:
 
-## Open decision
+- Capturing a new idea produces a card and an `intent.md` with a product-prefixed ID and a first version, and the card shows the commit and fingerprint of that revision.
+- Revising the intent produces a new version and a new commit, the previous revision is still retrievable, and the card shows the new values.
+- For any card, recomputing the SHA-256 of `intent.md` at the commit shown on the card gives the fingerprint shown on the card.
+- Editing the card and the file in different ways produces a reported conflict, not a silent overwrite.
+- A handoff from Backlog happens only after a product owner explicitly selects a destination, leaves a frozen revision, and places the card in that destination without interpreting its meaning.
+- An attempt to change a frozen revision is refused and leaves both the file and the card unchanged.
+- An attempt to change a card outside New Ideas or Backlog is refused and tells the user that the intent has been handed off.
+- An idea spanning two products results in one intent per product.
+- The frozen intent identifies the policy-profile version used by Spec & Design and Execution.
 
-- Whether a card may move from `Backlog` back to `New Ideas` for additional refinement, and how that should be shown.
+## Open decisions
+
+- Whether a card may move back from `Backlog` to `New Ideas` for more refinement, and how that move is shown on the card.
