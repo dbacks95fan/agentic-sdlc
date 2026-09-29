@@ -14,6 +14,12 @@ New Ideas -> Backlog -> Prioritized -> Spec & Design -> Execution
 | Spec & Design | Produce `spec.md` from the frozen intent | A specification and design artifact is ready for Execution |
 | Execution | Carry out the work from the frozen intent and `spec.md` | Define further workflow only when real work establishes its need |
 
+## Intent Creation boundary
+
+The Intent Creation Skill may create or revise an intent only while its card is in `New Ideas` or `Backlog`. If the card is in any other column, it must leave both the card and intent unchanged and tell the user that the intent has already been handed off.
+
+From Backlog, a product owner may explicitly select a handoff destination. The skill must freeze the synchronized intent and place the card in that selected destination. It must not infer meaning from a destination's name, visual position, or any other downstream board detail. After that handoff, routing belongs to the Conductor and the skill does not change the card or intent.
+
 ## Prioritized freeze protocol
 
 1. Confirm card/intent identity and synchronization.
