@@ -5,6 +5,7 @@
 - Adopt this documentation baseline and assign decision owners.
 - Define product registry and ID conventions.
 - Define the canonical intent schema, Trello field mapping, and synchronization conflict policy.
+- Adopt the [stage contracts](STAGE_CONTRACTS.md) and a lean, versioned Policy & Compliance Profile for each product.
 
 ## Phase 1 — Product intake and commitment
 
@@ -18,11 +19,12 @@
 
 - Implement Conductor preflight and isolated worktree creation.
 - Copy and verify frozen intent bytes in the target repository.
-- Implement a durable `spec.md` artifact and its transition to Execution.
+- Implement sectioned `spec.md` production, proposed `work-contract.yaml`, and the human acceptance gate within Spec & Design.
 
 ## Phase 3 - Execution
 
-- Build the first execution capability only when a specific work item establishes the required behavior, artifacts, and controls.
+- Align the Coding Agent with the accepted work contract; require independently observed validation and an Evidence Package before reporting a candidate result.
+- Configure Conductor column triggers for Spec & Design and Execution only after it validates the canonical contracts.
 - Measure flow, rework, and failures; add a lifecycle stage only when those findings justify it.
 
 ## Decisions still required before production autonomy

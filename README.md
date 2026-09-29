@@ -24,6 +24,7 @@ The current board flow is **New Ideas -> Backlog -> Prioritized -> Spec & Design
 | [Workflow](docs/WORKFLOW.md) | State transitions, gates, and lifecycle behavior |
 | [Governance](docs/GOVERNANCE.md) | Authority, controls, and exceptions |
 | [Artifacts](docs/ARTIFACTS.md) | Artifact contracts and provenance |
+| [Stage contracts](docs/STAGE_CONTRACTS.md) | Required inputs, outputs, rules, and handoffs through Coding Agent output |
 | [Agent roles](docs/AGENT_ROLES.md) | Narrow, independent agent responsibilities |
 | [Metrics](docs/METRICS.md) | Flow, quality, and outcome measures |
 | [Roadmap](docs/ROADMAP.md) | Incremental implementation plan |

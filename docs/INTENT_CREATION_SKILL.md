@@ -21,6 +21,7 @@ From Backlog, a product owner may explicitly select a handoff destination. The s
 - Acceptance criteria a later stage can check.
 - Constraints and assumptions the work must respect.
 - The one product the intent belongs to.
+- The product Policy & Compliance Profile ID and version selected by the product owner.
 - A stable, product-prefixed intent ID that is never changed or reused.
 - A version that increases with every accepted revision.
 
@@ -37,6 +38,7 @@ The format and field names are the builder's choice, provided people can read th
 7. Before handoff, the intent is synchronized, acceptance criteria are settled, and the current revision is durable and reachable so the freeze can identify it exactly.
 8. Handoff begins only when a product owner explicitly selects a destination for a Backlog card. It leaves a frozen revision and places the card in that selected destination without interpreting the downstream workflow.
 9. After handoff, a material change creates a new successor intent that follows the normal flow. The frozen intent remains untouched.
+10. The skill records the policy-profile reference selected by the product owner. It may surface a defined escalation condition, but it must not decide legal applicability or claim compliance.
 
 ## Out of scope
 
@@ -53,6 +55,7 @@ The format and field names are the builder's choice, provided people can read th
 - Handoff occurs only after an explicit product-owner destination selection, produces a frozen revision, and places the card in the selected destination without interpreting it.
 - Attempts to change a frozen intent, or any card outside `New Ideas` and `Backlog`, are refused without changing either artifact.
 - A multi-product idea results in one intent per product.
+- The frozen intent identifies the product policy-profile version used by Spec & Design and Execution.
 
 ## Open decision
 
