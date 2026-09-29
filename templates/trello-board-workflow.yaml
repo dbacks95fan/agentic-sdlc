@@ -1,4 +1,5 @@
-# Canonical Trello lifecycle used to provision and validate Agentic SDLC boards.
+# Copyright (c) 2026 DPSystems, LLC.
+# ABOUTME: Canonical Trello lifecycle used to provision and validate Agentic SDLC boards.
 template_version: 1
 lists:
   - New Ideas
