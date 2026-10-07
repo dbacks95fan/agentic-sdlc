@@ -28,7 +28,7 @@ The documentation defines the intended lifecycle. Implement it in small, observa
 
 - Align the Coding Agent with the accepted work contract; require independently observed validation and an Evidence Package before reporting a candidate result.
 - Implement the independent Evaluator contract and Evaluation Package; route failures back to Execution without changing frozen inputs.
-- Configure Conductor column triggers for Spec & Design, Execution, and Evaluation only after it validates the canonical contracts.
+- Configure Conductor column triggers for Spec & Design, Execution, and Evaluation only after it validates the canonical contracts. Entry into the distinct `Spec & Design` column immediately after `Prioritized` is the trigger for that agent stage; dispatch occurs after required input and workspace preflight checks.
 
 ## Phase 4 - Accountable delivery and learning
 

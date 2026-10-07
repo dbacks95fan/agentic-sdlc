@@ -50,7 +50,7 @@ The board has no Planning column. `spec.md` is the one human-reviewed Markdown d
 
 ## 3. Spec & Design
 
-**Board trigger:** a card enters `Spec & Design`. The Conductor validates the frozen inputs and assigns the target repository/base revision to the first engineering worker. That worker creates the isolated workspace and verifies exact byte-preserving copies of the frozen intent and policy profile before it begins.
+**Board trigger:** when a card enters the distinct `Spec & Design` column immediately after `Prioritized`, the Conductor validates the frozen inputs and invokes the Spec & Design Agent stage. The assigned worker first creates the isolated workspace and verifies exact byte-preserving copies of the frozen intent and policy profile; then the Spec & Design Agent produces the required artifacts. A failed preflight blocks invocation and is reported for human resolution.
 
 **Inputs:** frozen intent and policy-profile references, target repository/base revision, assigned workspace requirements, and repository-local instructions.
 

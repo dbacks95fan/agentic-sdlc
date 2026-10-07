@@ -22,7 +22,7 @@ Done <- Production Observation <- Release <- Human Approval <- Evaluation
 | Production Observation | Observe the agreed outcome and operational signals. | Observation Record and human closure decision are complete. |
 | Done | Close delivered or deliberately stopped work. | Human closure record explains the outcome and any follow-up. |
 
-The required stage inputs, outputs, decision gates, and agent statuses are defined in [Stage Contracts](STAGE_CONTRACTS.md). Entries into `Spec & Design`, `Execution`, and `Evaluation` are the planned agent-trigger points. `Human Approval` is always a human decision. The Conductor is the sole control-plane identity that writes Trello workflow state; a human card move is a transition request that it validates and records.
+The required stage inputs, outputs, decision gates, and agent statuses are defined in [Stage Contracts](STAGE_CONTRACTS.md). Entry into `Spec & Design` triggers the Spec & Design stage: the Conductor validates the frozen inputs, prepares the isolated workspace handoff, and invokes the Spec & Design Agent. Entry into `Execution` and `Evaluation` triggers their respective agents under the same stage contracts. `Human Approval` is always a human decision. The Conductor is the sole control-plane identity that writes Trello workflow state; a human card move is a transition request that it validates and records.
 
 ## Intent Creation boundary
 
