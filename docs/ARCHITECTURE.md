@@ -33,7 +33,7 @@ Using different LLMs supports separation of concerns and makes it easier to comp
 | Component | Owns | Does not own |
 | --- | --- | --- |
 | Trello | Human-visible flow and summaries | Canonical artifact contents |
-| Intent Creation Skill | Refinement and synchronization contract | Engineering execution after freeze |
+| Intent Creation Skill | Refinement and synchronization contract | Engineering execution while a freeze is active |
 | `intent-backlog` | Canonical evolving product intent and revision history | Product code or execution evidence |
 | Conductor | State transitions, routing, bounded retries, and board updates | Execution conclusions |
 | Target product repository | Branch-scoped engineering artifacts, code, candidate, and evidence | Product intent or workflow state |

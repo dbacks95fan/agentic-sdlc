@@ -12,11 +12,11 @@ The documentation defines the intended lifecycle. Implement it in small, observa
 
 ## Phase 1 — Product intake and commitment
 
-- Implement the Intent Creation Skill’s product/intent context handling.
-- Create the dedicated `intent-backlog` repository and product namespaces.
-- Version the canonical Trello board template and configure lists: New Ideas, Backlog, Prioritized, Spec & Design, Execution, Evaluation, Human Approval, Release, Production Observation, and Done.
-- Provide an idempotent Conductor board-bootstrap command that creates and validates the template without moving or deleting existing work.
-- Implement bidirectional synchronization checks and the immutable freeze record at Prioritized.
+- Completed: the separately packaged Intent Creation Skill creates and refines `intent.md`, commits and pushes accepted versions to the dedicated GitHub `intent-backlog` repository, and synchronizes Trello references. Its current contract validation is text-level; real authenticated create/update verification remains an integration check.
+- Completed: the dedicated `intent-backlog` repository and product namespaces are configured.
+- Completed: version the canonical Trello board template with New Ideas, Backlog, Prioritized, Spec & Design, Execution, Evaluation, Human Approval, Release, Production Observation, and Done.
+- Pending: configure the live board to match that template. The existing bootstrap command can create and order recognized lists but refuses unexpected legacy lists; resolve the existing board migration before applying it.
+- Pending: integrate the skill's synchronization with the Conductor; enforce the Prioritized freeze, revocation when an unstarted card returns to Backlog, and immutable freeze history.
 
 ## Phase 2 - Spec & Design
 

@@ -14,11 +14,11 @@ In this SDLC, **XP for quality** means practical engineering habits within each 
 
 ## Non-negotiable decisions
 
-- The **Intent Creation Skill** turns ideas into reviewable, versioned intent and keeps Trello and `intent.md` synchronized.
+- The **Intent Creation Skill** creates and refines `intent.md`, commits and pushes each accepted revision to the dedicated GitHub `intent-backlog` repository, and synchronizes Trello with the exact revision reference and fingerprint.
 - Trello is the human-facing workflow. Git is the versioned record for durable artifacts.
 - Product intent lives in a dedicated `intent-backlog` repository, separate from product source repositories.
 - Each intent belongs to one product context and has a stable product-prefixed ID, such as `INT-MF-0042`.
-- A Trello move to **Prioritized** records the exact intent and policy-profile references. Both are immutable immediately after that successful freeze.
+- A Trello move to **Prioritized** records and freezes the exact intent and policy-profile references. If the card returns to **Backlog before Spec & Design starts**, the Conductor revokes the active freeze while preserving its history; the intent can then be revised as a new Git version. Once Spec & Design starts, the freeze cannot be lifted for that work item.
 - The first engineering agent creates an isolated branch/worktree in the target product repository and copies the exact frozen intent and policy profile into it before it starts Spec & Design.
 - **Spec & Design** produces `spec.md` from the frozen intent.
 - **Execution** begins from the frozen intent, accepted `spec.md`, and frozen work contract. The Coding Agent creates a candidate implementation and evidence.
@@ -28,7 +28,7 @@ In this SDLC, **XP for quality** means practical engineering habits within each 
 
 ## Change rule
 
-Clarification and versioning are allowed before the Prioritized commitment boundary. After that freeze, any material change in outcome, scope, acceptance criteria, constraints, or assumptions creates a new intent/work item and follows a new lifecycle. Do not mutate frozen work beneath active agents.
+Clarification and versioning are allowed before the Prioritized commitment boundary. A return from Prioritized to Backlog before Spec & Design starts revokes the active freeze and allows a new intent revision while retaining the previous Git history and freeze record. Once Spec & Design starts, the freeze remains in force; any material change in outcome, scope, acceptance criteria, constraints, or assumptions creates a successor intent/work item and follows a new lifecycle. Do not mutate frozen work beneath active agents.
 
 ## Terminology
 

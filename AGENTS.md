@@ -159,7 +159,7 @@ Preserve these decisions unless a documented deviation has concrete evidence and
 
 - Trello is the human workflow surface; Git is the durable artifact record.
 - The Intent Creation Skill maintains synchronization between a Trello card and its canonical `intent.md`.
-- An accepted intent revision and policy profile are immutable once the card reaches Prioritized; a material change creates a new work item and lifecycle.
+- An accepted intent revision and policy profile freeze when the card reaches Prioritized. If the card returns to Backlog before Spec & Design starts, the Conductor records revocation and the skill may create a new intent version; after Spec & Design starts, material changes require a new work item and lifecycle.
 - Agents are narrow, stateless workers. The Conductor owns workflow state and routing.
 - Execution workers act only from durable, frozen inputs. Tests are evidence, not proof of outcome delivery.
 - Humans retain consequential judgment; deterministic controls belong in tooling, not prompts alone.
