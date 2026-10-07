@@ -7,7 +7,7 @@
 | Create/refine pre-freeze intent | Product owner with Intent Creation Skill | Intent version and card synchronization metadata |
 | Select or revise a product Policy & Compliance Profile | Product owner or delegated accountable owner | Profile ID, version, applicability decisions, controls, and rationale |
 | Prioritize and commit engineering capacity | Product owner authorizes; Conductor applies | Trello transition and complete freeze tuple |
-| Withdraw an unstarted commitment | Product owner authorizes; Conductor applies only before Spec & Design starts | Return to Backlog and recorded freeze revocation; prior tuple remains in history |
+| Withdraw a commitment | Product owner authorizes; Conductor applies when the card returns to Backlog or New Ideas | Record freeze revocation; prior tuple remains in history |
 | Accept `spec.md` and work contract for Execution | Product owner authorizes; Conductor applies | Spec Acceptance Record binding both immutable artifacts |
 | Move work from Prioritized to Spec & Design | Conductor under authorized policy | Valid freeze tuple and worker assignment |
 | Move work from Spec & Design to Execution | Conductor after product-owner acceptance | Spec Acceptance Record |

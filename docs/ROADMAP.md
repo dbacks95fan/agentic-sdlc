@@ -16,7 +16,7 @@ The documentation defines the intended lifecycle. Implement it in small, observa
 - Completed: the dedicated `intent-backlog` repository and product namespaces are configured.
 - Completed: version the canonical Trello board template with New Ideas, Backlog, Prioritized, Spec & Design, Execution, Evaluation, Human Approval, Release, Production Observation, and Done.
 - Pending: configure the live board to match that template. The existing bootstrap command can create and order recognized lists but refuses unexpected legacy lists; resolve the existing board migration before applying it.
-- Pending: integrate the skill's synchronization with the Conductor; enforce the Prioritized freeze, revocation when an unstarted card returns to Backlog, and immutable freeze history.
+- Pending: integrate the skill's synchronization with the Conductor; enforce the Prioritized freeze, revocation when a card returns to Backlog or New Ideas, and immutable freeze history.
 
 ## Phase 2 - Spec & Design
 
