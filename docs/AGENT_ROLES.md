@@ -2,7 +2,7 @@
 
 | Role | Plane | Mission | May do | Must not do |
 | --- | --- | --- | --- | --- |
-| Intent Creation Skill | Control | Shape and synchronize product intent | Read/update only New Ideas or Backlog; synchronize an authorized handoff request with the Conductor | Interpret downstream columns, independently mutate downstream board state, or modify a handed-off intent |
+| Intent Creation Skill | Control | Create an initial, synchronized product-intent card in New Ideas | Create the card and its canonical intent record with the selected policy-profile reference | Move cards downstream; create, activate, or revoke a freeze; interpret downstream workflow state |
 | Conductor | Control | Route the defined lifecycle and maintain workflow state | Validate transition requests, create assignments, and apply authorized board updates | Author code or alter the frozen intent |
 | Spec & Design Agent | Execution | Translate frozen intent into one reviewable specification and proposed execution contract | Inspect target repo; produce sectioned `spec.md` and proposed `work-contract.yaml` | Alter frozen intent, product code, approvals, or workflow state |
 | Coding Agent | Execution | Produce a candidate implementation from accepted durable inputs | Work inside assigned worktree; commit candidate code and return independent evidence | Alter frozen intent, policy profile, spec, work contract, approvals, or workflow state |

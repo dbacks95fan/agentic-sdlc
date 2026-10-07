@@ -14,7 +14,7 @@ In this SDLC, **XP for quality** means practical engineering habits within each 
 
 ## Non-negotiable decisions
 
-- The **Intent Creation Skill** creates and refines `intent.md`, commits and pushes each accepted revision to the dedicated GitHub `intent-backlog` repository, and synchronizes Trello with the exact revision reference and fingerprint.
+- The **Intent Creation Skill** creates the initial card in `New Ideas` and synchronizes the canonical, versioned `intent.md` and selected policy-profile ID/version. It does not own downstream transitions or freeze state.
 - Trello is the human-facing workflow. Git is the versioned record for durable artifacts.
 - Product intent lives in a dedicated `intent-backlog` repository, separate from product source repositories.
 - Each intent belongs to one product context and has a stable product-prefixed ID, such as `INT-MF-0042`.
