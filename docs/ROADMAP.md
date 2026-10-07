@@ -44,3 +44,7 @@ The documentation defines the intended lifecycle. Implement it in small, observa
 - Artifact retention, worktree lifecycle, and access-control requirements.
 - The concrete release authorization, observation window, and operational signals for each product.
 - The next automation capability, based on a completed learning feature and its evidence.
+
+## Deferred exception handling
+
+The initial implementation and validation focus on the documented happy path. Define reruns of an agent stage after review and out-of-order or unexpected Trello card moves separately before supporting them. Their triggers, Conductor behavior, state reconciliation, and audit records are not implied by the happy-path contracts.
