@@ -6,7 +6,7 @@ This repository describes what an intent must capture and what the Intent Creati
 
 ## Freeze integrity
 
-The freeze tuple records the SHA-256 fingerprint of the exact bytes of `intent.md` at the frozen commit and the same source-commit/fingerprint pair for the selected policy profile, as defined in [Artifacts](ARTIFACTS.md). Anyone can recompute them, and every engineering stage verifies the frozen inputs against them.
+Each product's `product.yaml` maps policy-profile IDs to repository-relative profile paths. The intent records the selected profile ID and version, and the Trello card projects those values. The profile path and profile bytes are resolved from the same immutable `intent-backlog` commit pinned by the intent, avoiding an implicit lookup of a moving branch. The freeze tuple records the exact-byte SHA-256 fingerprints for both files. The Conductor records an active-state projection on the card and appends visible activation/revocation comments so prior freeze events remain inspectable. See [Artifacts](ARTIFACTS.md).
 
 ## Lifecycle vocabulary
 
@@ -14,7 +14,7 @@ The canonical workflow stages are defined in [Workflow](WORKFLOW.md): `New Ideas
 
 `Prioritized` is the product-to-engineering commitment and intent-freeze boundary. Returning the card to Backlog or New Ideas revokes the active freeze while retaining its history and permits a new intent version, regardless of whether Spec & Design has started. The exact protocol is defined in [Workflow](WORKFLOW.md) and [Artifacts](ARTIFACTS.md).
 
-Product refinement is work performed within `New Ideas` and `Backlog`; it is not a separate Trello list. The versioned [Trello board template](../templates/trello-board-workflow.yaml) is the canonical list order used for board provisioning and validation.
+The Intent Creation Skill creates initial cards in `New Ideas`; the product owner owns subsequent moves. The Conductor alone updates workflow and freeze state. The versioned [Trello board template](../templates/trello-board-workflow.yaml) is the canonical list order used for board provisioning and validation.
 
 ## Publication
 

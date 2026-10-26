@@ -1,6 +1,6 @@
 # Intent Creation Skill
 
-The Intent Creation Skill creates and refines `intent.md`, commits and pushes accepted revisions to the dedicated GitHub `intent-backlog` repository, and synchronizes Trello with the exact revision reference and fingerprint. This document describes required outcomes, not how the skill is built or how `intent.md` is laid out.
+The Intent Creation Skill creates the initial Trello card in `New Ideas` and synchronizes it with the canonical, versioned `intent.md` in the dedicated GitHub `intent-backlog` repository. It records the selected policy-profile ID and version with the card and intent. The product owner moves the card through later columns; the Conductor alone records workflow transitions and freeze state. This document describes required outcomes, not how the skill is built or how `intent.md` is laid out.
 
 ## Why it exists
 
@@ -10,9 +10,9 @@ Agentic execution makes implementation cheap; human attention and clear decision
 
 A product owner works with the skill to create and refine intent. The skill helps the owner think the idea through and records the result; the owner makes the decisions (see [Governance](GOVERNANCE.md)).
 
-The skill works only while a card is in `New Ideas` or `Backlog`. Refinement is work done within those columns, not a separate stage. If a card is in any other column, the skill leaves the card and intent unchanged and tells the user that the intent has been handed off.
+The Skill creates cards in `New Ideas`. After creation, the product owner and Conductor own all board transitions. The Skill does not move a card to `Backlog` or any downstream column and does not write or interpret freeze state.
 
-From Backlog, a product owner may explicitly select a handoff destination. The skill synchronizes the revision and submits the handoff request to the control plane; it does not need to understand or validate the destination's name, position, or purpose. The Conductor validates and applies the board transition. If the card returns to Backlog or New Ideas, the Conductor revokes the active freeze and records that state; the skill may then refine the same intent as a new version, even if Spec & Design has started.
+The product owner moves a synchronized card from `Backlog` to `Prioritized`. The Conductor validates the card and its pinned artifacts, then records or revokes the freeze as the card moves. The Skill has no role in that transition.
 
 ## What an intent must capture
 
@@ -39,9 +39,11 @@ The file must not contain values that are only known after it is saved, such as 
 5. Ambiguity the skill cannot resolve is raised with the owner, not filled in with a guess.
 6. An idea that spans several products becomes a parent intent with one intent per product; no single intent spans unrelated product repositories.
 7. Before handoff, the intent is synchronized, its acceptance criteria are settled, and its current revision is committed and reachable, so the freeze can record it exactly.
-8. A handoff begins only when a product owner explicitly selects a destination for a Backlog card. It leaves a frozen revision and asks the Conductor to place the card in that selected destination without interpreting the downstream workflow.
-9. If a card returns to Backlog or New Ideas and the Conductor has recorded the freeze as revoked, the skill may revise the same intent by creating a new version and commit. Preserve the prior Git revision and freeze record.
+8. The Skill creates the initial card in `New Ideas` and synchronizes its intent and selected policy-profile reference. A product owner, not the Skill, moves the card through later columns.
+9. The Skill does not set, clear, or interpret freeze state. The Conductor records activation or revocation and preserves prior freeze history.
 10. The skill records the policy-profile reference selected by the product owner. It may surface a defined escalation condition, but it must not decide legal applicability or claim compliance.
+
+The Trello projection includes `Policy Profile ID` and `Policy Profile Version`. The Skill does not calculate or record the policy-profile source commit or fingerprint; the Conductor resolves those from the pinned intent-backlog revision when freezing the card.
 
 ## What the skill does not do
 
@@ -57,12 +59,13 @@ An implementation is complete when all of these can be shown:
 - Revising the intent produces a new version and a new commit, the previous revision is still retrievable, and the card shows the new values.
 - For any card, recomputing the SHA-256 of `intent.md` at the commit shown on the card gives the fingerprint shown on the card.
 - Editing the card and the file in different ways produces a reported conflict, not a silent overwrite.
-- A handoff from Backlog happens only after a product owner explicitly selects a destination, leaves a frozen revision, and asks the Conductor to place the card in that destination without interpreting its meaning.
-- Returning to Backlog or New Ideas lifts the active freeze only after the Conductor records revocation; a new revision is committed without rewriting the old commit.
-- An attempt to change a card outside New Ideas or Backlog is refused and tells the user that the intent has been handed off.
+- Creating an idea creates a Trello card in `New Ideas` and a synchronized, versioned intent record.
+- The card's selected profile ID/version resolves through the product's `product.yaml` to a profile file in the same pinned intent-backlog commit.
+- Moving a card to `Prioritized` causes the Conductor, not the Skill, to resolve and record the complete freeze tuple.
+- Returning a card to `Backlog` or `New Ideas` causes the Conductor, not the Skill, to record revocation while preserving prior history.
 - An idea spanning two products results in one intent per product.
 - The frozen intent identifies the policy-profile version used by Spec & Design and Execution.
 
 ## Open decisions
 
-- Whether a card may move back from `Backlog` to `New Ideas` for more refinement, and how that move is shown on the card.
+No workflow decision is currently open in this contract. Reruns and out-of-order moves are documented as deferred exceptions in [Roadmap](ROADMAP.md).

@@ -30,23 +30,23 @@ The board has no Planning column. `spec.md` is the one human-reviewed Markdown d
 
 ## 1. Intent Creation
 
-**Board trigger:** a product owner works in `New Ideas` or `Backlog`.
+**Board trigger:** a product owner captures an idea through a new card in `New Ideas`.
 
 **Inputs:** product context, a new or existing card, the current intent revision when one exists, and the product's Policy & Compliance Profile reference.
 
 **Outputs:** a versioned canonical `intent.md` committed and pushed to the dedicated GitHub `intent-backlog` repository, a synchronized Trello projection that records the exact commit and fingerprint, stable intent ID, and the selected policy-profile ID and version. A conflict is reported rather than overwritten.
 
-**Rules:** the skill may edit only `New Ideas` and `Backlog`. It must not decide that a framework applies or claim compliance. A card returned from Prioritized to either `New Ideas` or `Backlog` may be edited only after the Conductor records that its freeze was revoked, regardless of whether Spec & Design has started.
+**Rules:** the Skill creates the initial card in `New Ideas` and synchronizes its intent and selected policy-profile ID/version. It does not move a card downstream or set, activate, or revoke freeze state. It must not decide that a framework applies or claim compliance.
 
 ## 2. Prioritized Freeze
 
-**Board trigger:** the product owner authorizes the control plane to hand off a Backlog card to `Prioritized`.
+**Board trigger:** the product owner moves a synchronized card from `Backlog` to `Prioritized`; the Conductor observes and validates that transition.
 
 **Inputs:** synchronized intent revision, card identity, policy-profile reference, and product/intent identity.
 
 **Outputs:** a freeze tuple containing the intent revision and exact-byte fingerprint; policy-profile ID, version, source commit, and fingerprint; card ID; authorizing owner; and freeze time. The frozen intent and profile are immutable inputs to engineering.
 
-**Rules:** a failed synchronization or missing policy profile blocks the transition. A successful Prioritized transition immediately freezes both inputs. If the card returns to Backlog or New Ideas, the Conductor revokes the active freeze and preserves the previous tuple and Git revision in history; the skill can then create a new version, even if Spec & Design has started. A later move to Prioritized creates a new freeze tuple.
+**Rules:** the Conductor resolves the selected profile path through `product.yaml` at the intent's pinned commit and verifies profile identity/version and exact bytes. Missing or mismatched inputs prevent the transition from remaining in `Prioritized`; the Conductor returns the card to `Backlog` with a visible explanation. A successful Prioritized transition immediately freezes both inputs. If the card returns to Backlog or New Ideas, the Conductor revokes the active freeze and preserves the previous tuple and Git revision in history. A later move to Prioritized creates a new freeze tuple.
 
 ## 3. Spec & Design
 

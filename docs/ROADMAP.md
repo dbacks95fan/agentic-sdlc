@@ -12,23 +12,23 @@ The documentation defines the intended lifecycle. Implement it in small, observa
 
 ## Phase 1 — Product intake and commitment
 
-- Completed: the separately packaged Intent Creation Skill creates and refines `intent.md`, commits and pushes accepted versions to the dedicated GitHub `intent-backlog` repository, and synchronizes Trello references. Its current contract validation is text-level; real authenticated create/update verification remains an integration check.
+- Completed: the separately packaged Intent Creation Skill creates the initial New Ideas card and synchronizes its versioned `intent.md` to the dedicated GitHub `intent-backlog` repository. It does not move cards or control freeze state. Its contract validation is text-level; authenticated create verification remains an integration check.
 - Completed: the dedicated `intent-backlog` repository and product namespaces are configured.
 - Completed: version the canonical Trello board template with New Ideas, Backlog, Prioritized, Spec & Design, Execution, Evaluation, Human Approval, Release, Production Observation, and Done.
-- Pending: configure the live board to match that template. The existing bootstrap command can create and order recognized lists but refuses unexpected legacy lists; resolve the existing board migration before applying it.
-- Pending: integrate the skill's synchronization with the Conductor; enforce the Prioritized freeze, revocation when a card returns to Backlog or New Ideas, and immutable freeze history.
+- Completed: the PerioParrot board was verified against the ten-list template; its order matches the documented flow.
+- In progress: Conductor feature branch implements the Prioritized freeze projection and visible activation/revocation events. The Spec & Design handoff verifies the same frozen intent and policy-profile bytes.
+- Pending: merge and deploy that Conductor change, then verify it against the live Trello webhook and a controlled test card.
 
 ## Phase 2 - Spec & Design
 
-- Implement Conductor preflight and worker assignment for isolated worktree creation.
-- Copy and verify frozen intent and policy-profile bytes in the target repository without checkout line-ending conversion.
-- Implement sectioned `spec.md` production, proposed `work-contract.yaml`, and the human acceptance gate within Spec & Design.
+- In progress: Spec & Design request contract carries Prioritized authorization and the pinned policy-profile reference; its worker validates raw bytes and stages both frozen inputs in an isolated workspace.
+- Pending: verify the published `spec.md` and proposed `work-contract.yaml` against the human acceptance gate and record a durable Spec Acceptance Record before Execution.
 
 ## Phase 3 - Execution and evaluation
 
 - Align the Coding Agent with the accepted work contract; require independently observed validation and an Evidence Package before reporting a candidate result.
 - Implement the independent Evaluator contract and Evaluation Package; route failures back to Execution without changing frozen inputs.
-- Configure Conductor column triggers for Spec & Design, Execution, and Evaluation only after it validates the canonical contracts. Entry into the distinct `Spec & Design` column immediately after `Prioritized` is the trigger for that agent stage; dispatch occurs after required input and workspace preflight checks.
+- In progress: Conductor recognizes Spec & Design, Execution, and Evaluation list entry as stage triggers. Its existing Coding Agent adapter still consumes a legacy card-derived contract and must be reconciled with the accepted `spec.md` and `work-contract.yaml` before end-to-end deployment.
 
 ## Phase 4 - Accountable delivery and learning
 

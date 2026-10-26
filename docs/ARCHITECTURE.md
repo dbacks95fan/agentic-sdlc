@@ -49,11 +49,23 @@ The intent backlog is namespaced by product. A lightweight product registry supp
 
 ```text
 products/mealflow/product.yaml
+products/mealflow/policy-profiles/MEALFLOW-DEFAULT.md
 products/mealflow/intents/INT-MF-0042/intent.md
 products/agentic-sdlc/intents/INT-AS-0017/intent.md
 ```
 
-`intent.md` and its Trello card identify the same product, intent, and version, and the card also shows the commit and fingerprint of that revision (see [Artifacts](ARTIFACTS.md)). What an intent must capture is described in [Intent Creation Skill](INTENT_CREATION_SKILL.md). Cross-product initiatives are parent/portfolio intents decomposed into one execution intent per product; one execution intent never spans unrelated product repositories.
+`product.yaml` identifies the product and its repository and maps every selectable profile ID to an exact path:
+
+```yaml
+product_id: MF
+product_name: MealFlow
+trello_board_id: <board-id>
+target_repository: https://github.com/example/mealflow.git
+policy_profiles:
+  MEALFLOW-DEFAULT: policy-profiles/MEALFLOW-DEFAULT.md
+```
+
+`product.yaml` maps each policy-profile ID to a repository-relative profile path in the same product namespace. The selected profile ID and version are recorded with the intent. The Conductor resolves that mapping and reads `intent.md`, `product.yaml`, and the selected policy profile from the intent's pinned `intent-backlog` commit, then records the source commit and exact-byte fingerprints at Prioritized. The Skill creates the initial Trello card in New Ideas and records the intent and selected profile reference; it does not create, activate, or revoke a freeze. `intent.md` and its Trello card identify the same product, intent, and version, and the card also shows the commit and fingerprint of that revision (see [Artifacts](ARTIFACTS.md)). What an intent must capture is described in [Intent Creation Skill](INTENT_CREATION_SKILL.md). Cross-product initiatives are parent/portfolio intents decomposed into one execution intent per product; one execution intent never spans unrelated product repositories.
 
 ## Execution workspace
 
