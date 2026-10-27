@@ -6,6 +6,7 @@
 | --- | --- | --- | --- | --- |
 | Intent Creation Skill | Control | Capture and synchronize an initial product intent | Creates in `New Ideas`; does not move cards or control freeze state | [Intent Creation Skill](INTENT_CREATION_SKILL.md) and Stage Contracts: Intent Creation |
 | Conductor | Control | Maintain lifecycle state and route validated work | Sole workflow-state writer; does not author product code or make human decisions | Stage Contracts: Prioritized Freeze and shared rules; [Workflow](WORKFLOW.md) |
+| Board Setup | Control setup | Create a canonical Trello board or bind an existing board to a product configuration | Runs only when explicitly authorized; does not create work items, set priority, or change lifecycle policy | [Board Setup](BOARD_SETUP.md) and [Architecture](ARCHITECTURE.md) |
 | Spec & Design Agent | Execution | Turn frozen intent and product baselines into reviewed specification artifacts | Writes assigned artifacts; cannot change intent, baselines, workflow state, or accept its own work | Stage Contracts: Spec & Design |
 | Coding Agent | Execution | Implement the accepted specification | Writes only assigned product changes and evidence; cannot change accepted inputs, evaluate, approve, merge, or release | Stage Contracts: Execution |
 | Evaluator | Execution | Independently assess the candidate and its evidence | Read-only on candidate code; cannot edit, approve, or change workflow state | Stage Contracts: Evaluation |

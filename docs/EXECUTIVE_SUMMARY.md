@@ -18,7 +18,7 @@ The product owner creates and refines an intent. `Prioritized` commits the work 
 
 ## Who owns what
 
-- **Trello** shows the current work state; **Git** preserves intents, specifications, code, and evidence.
+- A configured Trello board shows one product's work state; **Git** preserves intents, specifications, code, and evidence. The Conductor is configured with board and list IDs; it is not tied to a named product or board. A setup capability can create a board from the canonical template or bind an existing board.
 - The **Conductor** validates board events, owns workflow state, and routes work.
 - **Agents** are narrow workers: they use assigned, validated inputs and return durable results. They do not approve their own work or control the board.
 - **People** decide priority, policy applicability, specification acceptance, release, and closure.

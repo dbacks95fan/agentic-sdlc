@@ -36,7 +36,7 @@ Using different LLMs supports separation of concerns and makes it easier to comp
 
 | Component | Owns | Does not own |
 | --- | --- | --- |
-| Trello | Human-visible flow and summaries | Canonical artifact contents |
+| Configured Trello board | Human-visible flow and summaries for one product | Canonical artifact contents or Conductor policy |
 | Intent Creation Skill | Refinement and synchronization contract | Engineering execution while a freeze is active |
 | `intent-backlog` | Canonical evolving product intent and revision history | Product code or execution evidence |
 | Conductor | State transitions, routing, bounded retries, and board updates | Execution conclusions |
@@ -47,9 +47,9 @@ Using different LLMs supports separation of concerns and makes it easier to comp
 | Release and Observation Controls | Record authorized integration, delivery, and outcome facts | Decide product intent, approval, or compliance applicability |
 | Humans | Priority and consequential judgment | Routine deterministic work |
 
-## Product and intent identity
+## Product, board, and intent identity
 
-The intent backlog is namespaced by product. A lightweight product registry supplies product ID/name, Trello board ID, target repository, authorized product-owner identities, and policy-profile paths. Product IDs are unique and stable within the registry. An intent ID is stable, unique within its product, includes that product's identifying prefix, and is never reused; its precise textual format is configured rather than parsed as workflow state. Intent versions are positive integers beginning at `1` and increasing by one. Each product entry validates against `ProductConfig` in the [lifecycle schemas](../schemas/lifecycle-contracts.schema.json). Example:
+The intent backlog is namespaced by product. A lightweight product registry supplies product ID/name, the assigned Trello board ID, the board's explicit mapping from canonical lifecycle stages to Trello list IDs, target repository, authorized product-owner identities, and policy-profile paths. Product IDs are unique and stable within the registry. An intent ID is stable, unique within its product, includes that product's identifying prefix, and is never reused; its precise textual format is configured rather than parsed as workflow state. Intent versions are positive integers beginning at `1` and increasing by one. Each product entry validates against `ProductConfig` in the [lifecycle schemas](../schemas/lifecycle-contracts.schema.json). Example:
 
 ```text
 products/mealflow/product.yaml
@@ -61,10 +61,21 @@ products/agentic-sdlc/intents/INT-AS-0017/intent.md
 `product.yaml` identifies the product and its repository and maps every selectable profile ID to an exact path:
 
 ```yaml
-schema_version: "1.0"
+schema_version: "1.1"
 product_id: MF
 product_name: MealFlow
 trello_board_id: <board-id>
+trello_lists:
+  new_ideas: <list-id>
+  backlog: <list-id>
+  prioritized: <list-id>
+  spec_design: <list-id>
+  execution: <list-id>
+  evaluation: <list-id>
+  human_approval: <list-id>
+  release: <list-id>
+  production_observation: <list-id>
+  done: <list-id>
 target_repository: https://github.com/example/mealflow.git
 authorized_product_owner_ids:
   - <trello-member-id>
@@ -72,7 +83,9 @@ policy_profiles:
   MEALFLOW-DEFAULT: policy-profiles/MEALFLOW-DEFAULT.md
 ```
 
-The Conductor resolves the configured board's actual Trello list IDs by exact match to the canonical names in [Workflow](WORKFLOW.md) and the board template; it does not infer a stage from a list's visual position. Missing, duplicate, or unknown required names stop the workflow until a human corrects the board/configuration. It validates the board actor against that product's configured authorized product-owner identities for owner-only decisions. Those identity values are not secrets; authentication credentials remain in the component's approved secret store. `policy_profiles` paths must be relative to the product namespace, remain inside the intent-backlog repository, and resolve at the same pinned commit as the intent.
+The Conductor uses the configured board ID and explicit `trello_lists` mapping to resolve workflow stages. It does not contain a product-specific board ID, assume a board title, or infer a stage from list names, order, or visual position. Each mapped list ID must exist on the configured board, and each canonical stage must map to exactly one list. A missing, duplicate, or cross-board mapping blocks processing until an authorized owner corrects the configuration. The product's assigned board can use any board title; a greenfield board uses the canonical list names from the [Trello workflow template](../templates/trello-board-workflow.yaml). Existing boards may use other list names when a human explicitly maps each lifecycle stage to a Trello list. The provider integration remains Trello-specific; board agnostic here means the Conductor can be configured for any product's Trello board without product-specific code. See [Board Setup](BOARD_SETUP.md) for creation and binding requirements.
+
+The Conductor validates the board actor against that product's configured authorized product-owner identities for owner-only decisions. Those identity values are not secrets; authentication credentials remain in the component's approved secret store. `policy_profiles` paths must be relative to the product namespace, remain inside the intent-backlog repository, and resolve at the same pinned commit as the intent.
 
 `product.yaml` maps each policy-profile ID to a repository-relative profile path in the same product namespace. The selected profile ID and version are recorded with the intent. The Conductor resolves that mapping and reads `intent.md`, `product.yaml`, and the selected policy profile from the intent's pinned `intent-backlog` commit, then records the source commit and exact-byte fingerprints at Prioritized. The Skill creates the initial Trello card in New Ideas and records the intent and selected profile reference; it does not create, activate, or revoke a freeze. `intent.md` and its Trello card identify the same product, intent, and version, and the card also shows the commit and fingerprint of that revision (see [Artifacts](ARTIFACTS.md)). What an intent must capture is described in [Intent Creation Skill](INTENT_CREATION_SKILL.md). Cross-product initiatives are parent/portfolio intents decomposed into one execution intent per product; one execution intent never spans unrelated product repositories.
 

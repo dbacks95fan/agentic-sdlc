@@ -1,18 +1,36 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:agentic-sdlc:lifecycle-contracts:1.0.0",
+  "$id": "urn:agentic-sdlc:lifecycle-contracts:1.1.0",
   "title": "Agentic SDLC lifecycle contracts",
   "description": "Shared machine-readable records for workflow handoffs. YAML documents MUST be parsed to JSON data before validation against these schemas.",
   "$defs": {
     "ProductConfig": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["schema_version", "product_id", "product_name", "trello_board_id", "target_repository", "authorized_product_owner_ids", "policy_profiles"],
+      "required": ["schema_version", "product_id", "product_name", "trello_board_id", "trello_lists", "target_repository", "authorized_product_owner_ids", "policy_profiles"],
       "properties": {
-        "schema_version": { "const": "1.0" },
+        "schema_version": { "const": "1.1" },
         "product_id": { "type": "string", "minLength": 1 },
         "product_name": { "type": "string", "minLength": 1 },
         "trello_board_id": { "type": "string", "minLength": 1 },
+        "trello_lists": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["new_ideas", "backlog", "prioritized", "spec_design", "execution", "evaluation", "human_approval", "release", "production_observation", "done"],
+          "properties": {
+            "new_ideas": { "type": "string", "minLength": 1 },
+            "backlog": { "type": "string", "minLength": 1 },
+            "prioritized": { "type": "string", "minLength": 1 },
+            "spec_design": { "type": "string", "minLength": 1 },
+            "execution": { "type": "string", "minLength": 1 },
+            "evaluation": { "type": "string", "minLength": 1 },
+            "human_approval": { "type": "string", "minLength": 1 },
+            "release": { "type": "string", "minLength": 1 },
+            "production_observation": { "type": "string", "minLength": 1 },
+            "done": { "type": "string", "minLength": 1 }
+          },
+          "description": "Explicit mapping from each canonical workflow stage to one Trello list ID on trello_board_id. Consumers must verify uniqueness and board membership against Trello."
+        },
         "target_repository": { "type": "string", "format": "uri" },
         "authorized_product_owner_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "minItems": 1, "uniqueItems": true },
         "policy_profiles": { "type": "object", "minProperties": 1, "propertyNames": { "minLength": 1 }, "additionalProperties": { "type": "string", "minLength": 1 } }
