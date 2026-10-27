@@ -14,7 +14,7 @@ Done <- Production Observation <- Release <- Human Approval <- Evaluation
 | New Ideas | Capture an idea and refine its product context and intent. | A coherent intent is ready for future consideration. |
 | Backlog | Hold a valid intent that may be refined. A card returned from Prioritized is editable again after the Conductor revokes its active freeze. | Product owner authorizes its handoff to Prioritized. |
 | Prioritized | Commit engineering capacity and record the freeze tuple. | Frozen intent and policy-profile references are valid; the control plane queues Spec & Design. A return to Backlog or New Ideas revokes the active freeze. |
-| Spec & Design | Produce and review `spec.md` and the proposed work contract. | Owner accepts both artifacts; the acceptance record freezes their revisions and authorizes Execution. |
+| Spec & Design | Consult product-level constitution and architecture; produce and review `spec.md` and the proposed work contract for the intent. | Owner accepts both artifacts; the acceptance record freezes their revisions and authorizes Execution. Any conflict with the product baseline or required baseline change is surfaced for human decision, not silently resolved by the agent. |
 | Execution | Build the candidate from accepted durable inputs. | Candidate commit and Evidence Package are ready for independent evaluation. |
 | Evaluation | Independently compare candidate and evidence to frozen inputs. | Pass goes to Human Approval; implementation findings return to Execution; specification findings return to Spec & Design. |
 | Human Approval | Make the accountable integration and release decision. | Approve integration/release, request bounded rework, or stop the work. |
@@ -23,6 +23,8 @@ Done <- Production Observation <- Release <- Human Approval <- Evaluation
 | Done | Close delivered or deliberately stopped work. | Human closure record explains the outcome and any follow-up. |
 
 The required stage inputs, outputs, decision gates, and agent statuses are defined in [Stage Contracts](STAGE_CONTRACTS.md). Entry into `Spec & Design` triggers the Spec & Design stage: the Conductor validates the frozen inputs, prepares the isolated workspace handoff, and invokes the Spec & Design Agent. Entry into `Execution` and `Evaluation` triggers their respective agents under the same stage contracts. `Human Approval` is always a human decision. The Conductor is the sole control-plane identity that writes Trello workflow state; a human card move is a transition request that it validates and records.
+
+The product constitution and architecture are maintained once for the whole product in its product repository. They provide durable constraints and current-system context to each Spec & Design run; they are not recreated, copied, or separately frozen for every intent. A change to either baseline is a product-level documentation/architecture change handled through the repository's normal review process. If feature work reveals that a baseline change is needed, the Spec & Design Agent records the issue and options and waits for human direction before treating the new direction as agreed.
 
 ## Intent Creation boundary
 

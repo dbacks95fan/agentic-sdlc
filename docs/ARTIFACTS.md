@@ -2,6 +2,8 @@
 
 | Artifact | Authoritative location | Created/updated by | Required provenance |
 | --- | --- | --- | --- |
+| Product Constitution | Product repository, maintained with product documentation | Product owner; changes reviewed through the normal repository workflow | Product/repository identity and Git revision |
+| Product Architecture | Product repository, maintained with product documentation | Product owner and engineering contributors; changes reviewed through the normal repository workflow | Product/repository identity and Git revision; links to accepted architecture decisions where useful |
 | `intent.md` | `intent-backlog` | Intent Creation Skill with product owner | Product, intent identity, version, and the commit that stores each revision |
 | Frozen `intent.md` | Product worktree | First engineering agent | Source commit and exact-byte intent fingerprint |
 | Policy & Compliance Profile | `products/<product>/policy-profiles/` in `intent-backlog`, with its path mapped by `product.yaml` | Product owner | Profile ID, version, source commit, exact-byte fingerprint, applicability decisions, and control IDs |
@@ -17,6 +19,8 @@
 | Execution artifacts | Product worktree | Coding Agent | Frozen intent, profile, `spec.md`, and work-contract references |
 
 ## Intent content
+
+The constitution and architecture are product-level references, not per-intent artifacts. Spec & Design consults the current product constitution and architecture when producing a feature's `spec.md` and implementation plan. The spec records relevant constraints and architectural assumptions and links to the files or decisions it relied on when that context materially affects the design. These baseline documents are not copied into each work item or frozen as part of the intent tuple. If a proposed feature conflicts with a constitution rule or requires an architectural change, Spec & Design makes the conflict and tradeoff explicit for human decision; it does not silently revise the baseline. An accepted baseline change is maintained in the product repository through its normal review process.
 
 Each product's `product.yaml` contains a `policy_profiles` mapping from profile ID to a repository-relative profile path, for example `MEALFLOW-DEFAULT: policy-profiles/MEALFLOW-DEFAULT.md`. The selected profile ID and version are identified by the intent and projected on the Trello card as `Policy Profile ID` and `Policy Profile Version`. The profile file exposes `Profile ID` and `Version` in its human-readable metadata. The Conductor resolves `product.yaml` and the profile at the exact commit pinned by the intent, verifies identity/version, and computes the raw-byte SHA-256; it never guesses a path or substitutes the latest profile. What an intent must capture, and the outcomes the Intent Creation Skill must deliver, are described in [Intent Creation Skill](INTENT_CREATION_SKILL.md). This repository describes outcomes only; the layout of `intent.md` and the names inside it are otherwise the implementer's choice.
 
