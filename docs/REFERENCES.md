@@ -1,5 +1,7 @@
 # References
 
+**Audience:** maintainers validating the design rationale. These sources inform the local choices; the canonical requirements are in this repository's normative architecture, workflow, stage, intent, governance, artifact, and schema documents.
+
 The links below were verified on 2026-09-29. They inform this architecture; they are not treated as mandates, and this repository intentionally documents its own choices where sources differ.
 
 | Organization | First-party source | How it informs this design |

@@ -151,6 +151,8 @@ Everything above this heading is the DPSystems canonical rule set, copied verbat
 
 This is a vendor-neutral architectural repository: reference architecture, workflow, governance, artifact contracts, and templates for an intent-driven Agentic SDLC. It does not contain component implementations. Agent and skill runtimes live in their own component repositories.
 
+Audience split: `README.md`, `docs/EXECUTIVE_SUMMARY.md`, and `docs/LEARNING_WORKFLOW.md` orient people and do not create requirements. Each detailed contract identifies its authority and scope. Put each binding rule in its authoritative document once; elsewhere summarize it briefly and link to it.
+
 Before proposing or changing the Agentic SDLC, read `docs/AGENTIC_SDLC_CONTEXT.md`, `docs/ARCHITECTURE.md`, `docs/WORKFLOW.md`, `docs/STAGE_CONTRACTS.md`, `docs/AGENT_ROLES.md`, `docs/ARTIFACTS.md`, `docs/GOVERNANCE.md`, `docs/INTENT_CREATION_SKILL.md`, `docs/CONTRACT_DECISIONS.md`, `docs/ROADMAP.md`, `docs/REFERENCES.md`, and `schemas/lifecycle-contracts.schema.json`.
 
 ## Decisions to preserve
@@ -171,7 +173,7 @@ Do not silently redesign the workflow or assert implementation, test, deployment
 | Path | Contents |
 | --- | --- |
 | `README.md` | Operating model and documentation map |
-| `docs/` | Architecture, workflow, governance, artifacts, roles, metrics, roadmap, references, and contract decisions |
+| `docs/` | Human executive summary and walkthrough; normative architecture, workflow, governance, artifact, role, and stage contracts; supporting metrics, roadmap, references, and contract index |
 | `schemas/` | Normative, runtime-neutral JSON Schemas for lifecycle handoffs and records |
 | `templates/trello-board-workflow.yaml` | Canonical Trello list order used to provision and validate boards |
 | `templates/policy-compliance-profile.md` | Lean, versioned policy-profile template |
@@ -179,7 +181,7 @@ Do not silently redesign the workflow or assert implementation, test, deployment
 
 ## Keeping the documents consistent
 
-- The ten lifecycle names in `docs/WORKFLOW.md` are the canonical vocabulary. A change to a stage name or order updates every affected lifecycle document, including `docs/WORKFLOW.md`, `docs/STAGE_CONTRACTS.md`, `docs/AGENTIC_SDLC_CONTEXT.md`, `docs/CONTRACT_DECISIONS.md`, `docs/AGENT_ROLES.md`, `docs/ROADMAP.md`, `docs/LEARNING_WORKFLOW.md`, `docs/METRICS.md`, `README.md`, and `templates/trello-board-workflow.yaml`.
+- The ten lifecycle names in `docs/WORKFLOW.md` are the canonical vocabulary. A change to a stage name or order updates every affected lifecycle document, including `docs/WORKFLOW.md`, `docs/STAGE_CONTRACTS.md`, `docs/AGENTIC_SDLC_CONTEXT.md`, `docs/CONTRACT_DECISIONS.md`, `docs/AGENT_ROLES.md`, `docs/ROADMAP.md`, `docs/LEARNING_WORKFLOW.md`, `docs/EXECUTIVE_SUMMARY.md`, `docs/METRICS.md`, `README.md`, and `templates/trello-board-workflow.yaml`.
 - `templates/trello-board-workflow.yaml` is consumed by board provisioning and validation. Changing its lists needs explicit approval.
 - This repository describes a process. It never links to, depends on, or defers to an implementation of any component, including the Intent Creation Skill. Describe the purpose and required outcome instead, so someone can build the component from this repository alone.
 - When you add or re-check a link in `docs/REFERENCES.md`, update the verification date there.

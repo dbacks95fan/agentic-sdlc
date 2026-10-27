@@ -1,5 +1,7 @@
 # Artifact Model
 
+**Audience:** component builders and maintainers. This document is normative for artifact ownership, location, provenance, integrity, and publication. The [Lifecycle Schemas](../schemas/lifecycle-contracts.schema.json) are authoritative for machine-readable field shapes; this document explains how those records are used and validated.
+
 | Artifact | Authoritative location | Created/updated by | Required provenance |
 | --- | --- | --- | --- |
 | Product Constitution | Product repository, maintained with product documentation | Product owner; changes reviewed through the normal repository workflow | Product/repository identity and Git revision |
@@ -39,7 +41,7 @@ At Prioritized, the Conductor appends a human-readable Trello card comment conta
 
 Before execution, validate that product ID, intent ID, intent version, source commit, and intent fingerprint agree between the Conductor record and the Trello card; validate the policy-profile ID, version, source commit, and fingerprint against that same record; and confirm both backlog artifacts and worktree copies match their fingerprints. Never overwrite a conflict casually: surface it, reconcile it with the authorized owner, and record the resulting version.
 
-Artifacts become durable inputs to later stages rather than disposable prompts. Machine-readable record shapes are defined in [`schemas/lifecycle-contracts.schema.json`](../schemas/lifecycle-contracts.schema.json). Its `$defs` are normative and are selected by JSON Pointer (for example `#/$defs/WorkContract`). YAML files are parsed as YAML, converted to JSON-compatible data, and validated against the same schema. Validators must enforce `format` constraints as well as types, required fields, enums, and `additionalProperties: false`.
+Artifacts become durable inputs to later stages rather than disposable prompts. Machine-readable record shapes are defined in [`schemas/lifecycle-contracts.schema.json`](../schemas/lifecycle-contracts.schema.json). Its `$defs` are normative and are selected by JSON Pointer (for example `#/$defs/WorkContract`). YAML files are parsed as YAML, converted to JSON-compatible data, and validated against the same schema. Validators must enforce `format` constraints as well as types, required fields, enums, and `additionalProperties: false`. The following table is a navigation aid; the schema is authoritative for fields and types.
 
 | Schema definition | Use |
 | --- | --- |
