@@ -52,7 +52,7 @@ The board has no Planning column. `spec.md` is the one human-reviewed Markdown d
 
 **Board trigger:** when a card enters the distinct `Spec & Design` column immediately after `Prioritized`, the Conductor validates the frozen inputs and invokes the Spec & Design Agent stage. The assigned worker first creates the isolated workspace and verifies exact byte-preserving copies of the frozen intent and policy profile; then the Spec & Design Agent produces the required artifacts. A failed preflight blocks invocation and is reported for human resolution.
 
-**Inputs:** frozen intent and policy-profile references, target repository/base revision, assigned workspace requirements, and repository-local instructions.
+**Inputs:** frozen intent and policy-profile references, target repository/base revision, assigned workspace requirements, repository-local instructions, and the product-level constitution and current architecture documentation available in the target repository.
 
 **Outputs:**
 
@@ -60,7 +60,7 @@ The board has no Planning column. `spec.md` is the one human-reviewed Markdown d
 - A proposed `work-contract.yaml` that identifies the frozen intent and policy profile, target/base revision, permitted scope, required validation, and release/observation requirements.
 - A structured result: `spec_ready`, `needs_decision`, `blocked`, or `failed`.
 
-`spec.md` must contain these sections: Outcome and scope; acceptance criteria; confirmed repository facts; design; constraints and policy controls; implementation and validation plan; release and observation plan; risks and open decisions; and traceability to frozen inputs.
+`spec.md` must contain these sections: Outcome and scope; acceptance criteria; confirmed repository facts; design; constraints and policy controls; implementation and validation plan; release and observation plan; risks and open decisions; and traceability to frozen inputs. Spec & Design consults the product constitution for durable rules and the architecture documentation for current system structure and accepted decisions. It records relevant constraints and assumptions in the spec. These are product-level references, not copied or frozen per intent. If they conflict with the intent or a proposed design requires changing them, the agent explains the conflict and options and returns `needs_decision`; only an authorized human may approve a baseline change through the product repository's normal review process. The agent must not silently amend either baseline.
 
 **Rules:** the agent may inspect the target repository and write only assigned artifacts. It must not write product code, alter frozen inputs, alter Trello, approve the spec, or claim that a policy or regulation is satisfied.
 

@@ -32,6 +32,7 @@ This is a learning exercise that will build real applications. Begin with a smal
 | [Workflow](docs/WORKFLOW.md) | State transitions, gates, and lifecycle behavior |
 | [Governance](docs/GOVERNANCE.md) | Authority, controls, and exceptions |
 | [Artifacts](docs/ARTIFACTS.md) | Artifact contracts and provenance |
+| [Product-level constitution and architecture](docs/ARTIFACTS.md#intent-content) | How Spec & Design uses durable product rules and current architecture context |
 | [Stage contracts](docs/STAGE_CONTRACTS.md) | Required inputs, outputs, rules, and handoffs from intent through closure |
 | [Agent roles](docs/AGENT_ROLES.md) | Narrow, independent agent responsibilities |
 | [Intent Creation Skill](docs/INTENT_CREATION_SKILL.md) | Purpose, required outcomes, and completion checks for the intent component |
