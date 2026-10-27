@@ -1,5 +1,7 @@
 # Policy & Compliance Profile
 
+Human-owned, versioned product input for the SDLC. It records applicability decisions and controls for agents to consider; it is not an automated legal or compliance determination.
+
 Profile ID: `<PRODUCT>-DEFAULT`
 
 Version: `1`

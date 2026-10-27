@@ -1,5 +1,7 @@
 # Architecture
 
+**Audience:** SDLC maintainers and component builders. This document is normative for system boundaries, ownership, and plane interfaces; detailed stage behavior is in [Stage Contracts](STAGE_CONTRACTS.md), workflow transitions in [Workflow](WORKFLOW.md), and record shapes in the [Lifecycle Schemas](../schemas/lifecycle-contracts.schema.json).
+
 ## System boundaries
 
 ```text

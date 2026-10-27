@@ -1,8 +1,8 @@
 # Stage Contracts
 
-This document defines the complete, minimal path from a product idea to a closed delivery record. It is the shared contract for the Intent Creation Skill, Conductor, Spec & Design Agent, Coding Agent, Evaluator, and accountable human. Components may choose their own runtime and implementation, but they must satisfy these inputs, outputs, rules, and status meanings.
+**Audience:** LLMs and engineers building or validating lifecycle components. This is the normative, build-ready operating contract for triggers, inputs, required actions, outputs, statuses, and handoffs. Follow [Workflow](WORKFLOW.md) for allowed board transitions, [Governance](GOVERNANCE.md) for decision rights, [Artifacts](ARTIFACTS.md) for provenance and publication, and the [Lifecycle Schemas](../schemas/lifecycle-contracts.schema.json) for record shapes.
 
-These requirements are normative for anyone building a component from this repository. The runtime-neutral invocation/result envelope and record structures are in [`schemas/lifecycle-contracts.schema.json`](../schemas/lifecycle-contracts.schema.json). The stage contracts below define which schema applies, which fields are meaningful at each stage, and what the component must do. Transport, LLM provider, code framework, packaging, and deployment remain component implementation choices.
+The contracts below cover the path from intent through closure and identify the applicable stage-specific record and behavior. Components choose their transport, runtime, provider/model, framework, packaging, and deployment, but must preserve the required inputs, permissions, outputs, and status meanings.
 
 ```text
 New Ideas / Backlog -> Prioritized -> Spec & Design -> Execution -> Evaluation
@@ -63,9 +63,9 @@ The board has no Planning column. `spec.md` is the one human-reviewed Markdown d
 
 **Inputs:** synchronized intent revision, card identity, policy-profile reference, and product/intent identity.
 
-**Outputs:** a freeze tuple containing the intent revision and exact-byte fingerprint; policy-profile ID, version, source commit, and fingerprint; card ID; authorizing owner; and freeze time. The frozen intent and profile are immutable inputs to engineering.
+**Outputs:** an append-only freeze activation record and an `Active` card projection. The record's required provenance is defined in [Artifacts](ARTIFACTS.md) and by `FreezeActivationEvent` in the [Lifecycle Schemas](../schemas/lifecycle-contracts.schema.json). The frozen intent and profile are immutable inputs to engineering.
 
-**Rules:** the Conductor resolves the selected profile path through `product.yaml` at the intent's pinned commit and verifies profile identity/version and exact bytes. Missing or mismatched inputs prevent the transition from remaining in `Prioritized`; the Conductor returns the card to `Backlog` with a visible explanation. A successful Prioritized transition immediately freezes both inputs. If the card returns to Backlog or New Ideas, the Conductor revokes the active freeze and preserves the previous tuple and Git revision in history. A later move to Prioritized creates a new freeze tuple.
+**Rules:** the Conductor resolves the selected profile path through `product.yaml` at the intent's pinned commit and verifies the identity, version, and exact bytes as defined in [Artifacts](ARTIFACTS.md). Invalid or mismatched inputs block the transition; the Conductor's card response and freeze revocation behavior are defined in [Workflow](WORKFLOW.md). A successful Prioritized transition immediately freezes both inputs.
 
 ## 3. Spec & Design
 

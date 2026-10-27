@@ -1,59 +1,43 @@
 # Implementation Roadmap
 
-This roadmap defines the order and completion evidence for implementing the documented lifecycle. It is not a live status report for component repositories, Trello, or deployments. Recheck those systems when starting implementation work; never infer current implementation status from this document.
+**Audience:** people sequencing adoption and component implementation. This roadmap defines phases and completion evidence; it is not a live status report or a duplicate of the operating contracts. Follow [Stage Contracts](STAGE_CONTRACTS.md) for exact component requirements and [Workflow](WORKFLOW.md) for allowed transitions.
 
-Implement one coherent stage at a time on a feature branch in the owning repository. Update and review the canonical SDLC contract before changing a component contract or implementation. A component is complete only when its behavior and handoffs pass the conformance requirements in [Stage Contracts](STAGE_CONTRACTS.md).
+Implement one coherent stage at a time in its owning repository. Update and review the canonical SDLC contract before changing a component contract or implementation. Never infer an implementation's current state from this roadmap; verify the component and its handoffs directly.
 
-## Phase 0 — Complete and adopt the canonical contract
+## Phase 0 - Validate the canonical contract
 
-- Keep the lifecycle, decision rights, artifact ownership, agent responsibilities, stage results, exception boundaries, and schemas consistent across the canonical documents.
-- Define and validate the machine-readable schemas for shared invocation, result, freeze, acceptance, evidence, evaluation, human decision, release, observation, and closure records.
-- Confirm the versioning and compatibility rule for every shared record. A consumer rejects an unsupported version rather than silently converting it.
-- Validate each product entry against `ProductConfig`; record the product/intent identity invariants, authorized product-owner identities, canonical Trello stage mapping, and versioned policy-profile references.
-- Maintain one product-level constitution and architecture per product; Spec & Design consults them when producing a feature specification.
+Confirm each lifecycle role has a trigger, authority, inputs, required actions, outputs, error/status behavior, schema, and conformance checks. Confirm every shared record has an explicit version and every product entry validates against `ProductConfig`. Ensure product constitution and architecture baselines are consulted during Spec & Design.
 
-**Complete when:** a builder can identify a component's trigger, authority, inputs, required actions, outputs, errors, schema, and conformance checks from this repository without assuming a runtime or deployment model.
+**Complete when:** a builder can implement a component from this repository without guessing required behavior or assuming a particular runtime, and valid and invalid handoffs can be checked against the published contracts.
 
-## Phase 1 — Intent intake and Prioritized commitment
+## Phase 1 - Intent and commitment
 
-- Verify the Intent Creation Skill creates only the initial `New Ideas` card and synchronizes a versioned canonical `intent.md` to `intent-backlog`.
-- Verify product, intent, and version identity; profile selection; conflict handling; history preservation; and multi-product decomposition.
-- Verify the Conductor validates the Backlog-to-Prioritized transition, pins the exact intent and policy-profile revisions, records the freeze tuple, and records revocation when the card returns to Backlog or New Ideas.
-- Verify Trello projections show the recorded identity, revision, fingerprints, and freeze state, with the Conductor as the sole workflow-state writer.
+Verify new intent creation, versioned revisions, multi-product separation, policy-profile selection, conflict handling, Prioritized freeze, and freeze revocation on return to Backlog or New Ideas.
 
-**Complete when:** controlled new, revision, prioritization, and revocation cases produce synchronized artifacts and inspectable, hash-verifiable records.
+**Complete when:** these cases preserve synchronized, reachable artifacts and inspectable, hash-verifiable freeze history.
 
-## Phase 2 — Spec & Design and human acceptance
+## Phase 2 - Spec & Design and acceptance
 
-- Verify a valid `Spec & Design` entry causes the Conductor to validate the freeze and invoke the Spec & Design Agent with exact inputs and isolated workspace permissions.
-- Verify the agent consults the product constitution and architecture, produces the required `spec.md` sections and a schema-valid proposed `work-contract.yaml`, and returns only a defined status.
-- Verify the product owner can accept both artifacts and that the Conductor records a Spec Acceptance Record binding their immutable references and hashes before Execution.
+Verify a valid Spec & Design entry checks the active freeze, provides the exact inputs and isolated workspace, consults product baselines, and produces `spec.md` plus a schema-valid proposed Work Contract v3. Verify human acceptance records immutable references and hashes before Execution.
 
-**Complete when:** a human-accepted spec and work contract are reachable and their references exactly match the acceptance record and frozen intent/profile.
+**Complete when:** the acceptance record, accepted artifacts, frozen intent/profile, and target revision agree exactly.
 
-## Phase 3 — Execution and independent evaluation
+## Phase 3 - Execution and independent evaluation
 
-- Migrate the Conductor, Coding Agent, and Evaluator from any legacy Work Contract shape to canonical Work Contract v3; the accepted `spec.md` contains the implementation/validation plan, and no separate `plan.md` is used. A v2-only component is not conformant and must fail closed rather than reinterpret fields. The current Coding Agent documentation still describes v2 and a proposed v3 containing `plan.md`; that proposal must be replaced with this canonical contract before the adapter is integrated.
-- Align the Conductor's Coding Agent adapter with the accepted Spec Acceptance Record and `work-contract.yaml`; it must not derive scope or requirements from Trello text or card-derived legacy fields.
-- Verify the Coding Agent validates inputs, stays within assigned scope, runs repository-declared deterministic checks, creates a candidate commit, and returns a schema-valid Evidence Package.
-- Verify the independent Evaluator receives the same frozen inputs and candidate, has read-only access to code, reproduces applicable checks, and returns a schema-valid Evaluation Package.
-- Verify only the documented routes apply: Evaluation `pass` to Human Approval; implementation `fail` to Execution; a non-material specification finding to Spec & Design; unresolved or invalid states remain blocked for human resolution.
+Verify components follow the accepted Work Contract v3 and its validation requirements, Coding stays within assigned scope, and the separate Evaluator assesses the same candidate and evidence with read-only access to candidate code. The exact compatibility and artifact rules are in [Artifacts](ARTIFACTS.md) and [Stage Contracts](STAGE_CONTRACTS.md).
 
-**Complete when:** candidate and evaluation evidence refer to the same immutable SHA and the Conductor rejects malformed, missing, or mismatched records.
+**Complete when:** malformed, missing, or mismatched records are rejected, and candidate and evaluation evidence identify the same immutable SHA.
 
-## Phase 4 — Human approval, release, observation, and closure
+## Phase 4 - Human decision, release, and observation
 
-- Verify human approval names the immutable candidate SHA and records an allowed decision.
-- Verify only the authorized integration/release path merges the approved candidate, records the integration SHA, performs required checks, records delivery and rollback facts, and verifies the running service.
-- Verify Production Observation records the agreed time window, signals, observed outcome, deviations, and follow-up references.
-- Verify a human closes released work only after observation, and closes stopped or rolled-back work only with a Closure Record.
+Verify the accountable human's decision names the candidate, the authorized release path records integration and release facts, required health checks are observed, and Production Observation records the agreed period and signals.
 
-**Complete when:** one low-risk product feature has a traceable chain from intent through a human closure decision, with observed release and outcome evidence or a deliberate stop record.
+**Complete when:** one low-risk feature has a traceable chain from intent through observation and human closure, or a deliberate stop/rollback with a Closure Record.
 
 ## Deferred exception flows
 
-The initial implementation supports the documented in-order path and the two specified rework routes: implementation findings return to Execution, and human-approved non-material specification corrections return to Spec & Design. A direct rerun request while a card remains in the same stage, and out-of-order or unexpected board moves, require a separate documented contract before implementation. Define their trigger, state reconciliation, authorization, audit record, and human recovery path first. The bounded transient-operation retry rule in [Governance](GOVERNANCE.md) is separate. Do not add a board column merely to accommodate exceptions.
+Direct same-stage reruns and out-of-order board moves are not defined for the initial path. Specify their trigger, reconciliation, authorization, audit record, and human recovery before implementing them. The Conductor's bounded retry for a known idempotent, transient operation is separate and is defined in [Governance](GOVERNANCE.md). Do not add a board column merely to accommodate an exception.
 
 ## Before production autonomy
 
-Resolve product-specific webhook authentication, secret storage, retention, workspace lifecycle, access control, rollback, observation-window, and operational-signal requirements before enabling autonomous production actions. The documented human decision gates and allowed Conductor transitions are canonical; runtime credentials and permissions are configured in the owning implementation. A learning feature may proceed with the approved human gates and a manually authorized release path while these broader operating policies remain explicit.
+Resolve product-specific webhook authentication, secret storage, retention, workspace lifecycle, access control, rollback, observation-window, and operational-signal requirements before enabling autonomous production actions. A learning feature may use the documented human gates and a manually authorized release path while these broader operating policies remain explicit.

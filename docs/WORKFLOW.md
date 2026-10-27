@@ -1,5 +1,7 @@
 # Workflow
 
+**Audience:** product owners, Conductor builders, and lifecycle component builders. This document is the normative source for board stages, transition rules, and rework routes. Stage-specific inputs, outputs, and worker requirements are in [Stage Contracts](STAGE_CONTRACTS.md).
+
 ## Product flow
 
 ```text
@@ -73,7 +75,7 @@ The product owner moves the synchronized card from Backlog to `Prioritized`. The
 
 1. The product owner authorizes the Backlog-to-Prioritized transition.
 2. The Conductor confirms card/intent identity, synchronization, material clarity, acceptance criteria, and agreement between the card and intent on policy-profile ID/version. It resolves the profile path from the product's `product.yaml` at the pinned intent commit and reads the profile from that same commit.
-3. The Conductor records one freeze tuple in a visible Trello comment: product ID, intent ID, intent version, intent repository commit SHA, exact-byte intent fingerprint, policy-profile ID, policy-profile version, policy-profile repository commit SHA, policy-profile fingerprint, Trello card ID, authorizing owner, and freeze time. It updates the card's current Freeze State projection to Active.
+3. The Conductor records the complete, append-only freeze tuple defined in [Artifacts](ARTIFACTS.md) and the `FreezeActivationEvent` schema in a visible Trello comment. It updates the card's current Freeze State projection to Active.
 4. A successful Prioritized freeze makes the intent and selected policy profile immutable engineering inputs. If required freeze inputs are missing or disagree, the Conductor returns the card to Backlog with a visible explanation and does not create an active freeze. If the owner returns a frozen card to Backlog or New Ideas, the Conductor updates the current Freeze State projection to Revoked and appends a visible revocation event; the prior freeze comment and Git revision remain in history. A later move to Prioritized creates a new freeze tuple for the newly synchronized revision. `Acceptance metadata` means the authorizing owner, time, and recorded decision; it does not include an unspecified second approval.
 5. When `Spec & Design` starts, the first engineering worker creates the isolated branch/worktree from the assigned base revision, obtains exact byte-preserving copies of the frozen intent and policy profile, verifies their fingerprints, and reports the workspace and artifact references to the Conductor.
 6. Before accepting any worker result, the Conductor verifies that the invocation's freeze remains active and its frozen input references are unchanged. A result produced after revocation or supersession cannot advance the card, even if the worker reports success; the Conductor records it as blocked/superseded and preserves the output references for audit.

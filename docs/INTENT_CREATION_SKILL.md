@@ -1,6 +1,8 @@
 # Intent Creation Skill
 
-The Intent Creation Skill creates the initial Trello card in `New Ideas` and synchronizes it with the canonical, versioned `intent.md` in the dedicated GitHub `intent-backlog` repository. It records the selected policy-profile ID and version with the card and intent. The product owner moves the card through later columns; the Conductor alone records workflow transitions and freeze state. This document describes required outcomes, not how the skill is built or how `intent.md` is laid out.
+**Audience:** an LLM or engineer building the Intent Creation Skill. This is its normative, outcome-based contract. It defines required intent information and behavior without prescribing the skill's architecture, file layout, runtime, or implementation method.
+
+The Intent Creation Skill creates the initial Trello card in `New Ideas` and synchronizes it with the canonical, versioned `intent.md` in the dedicated GitHub `intent-backlog` repository. It records the selected policy-profile ID and version with the card and intent. The product owner moves the card through later columns; the Conductor alone records workflow transitions and freeze state.
 
 ## Why it exists
 

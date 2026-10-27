@@ -1,5 +1,7 @@
 # Governance
 
+**Audience:** product owners, accountable humans, and component builders. This document is normative for decision authority and cross-cutting controls; [Workflow](WORKFLOW.md) and [Stage Contracts](STAGE_CONTRACTS.md) define when each decision is required.
+
 ## Decision rights
 
 | Decision | Authority | Required record |
