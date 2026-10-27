@@ -6,7 +6,7 @@
 | --- | --- | --- | --- |
 | Product Constitution | Product repository, maintained with product documentation | Product owner; changes reviewed through the normal repository workflow | Product/repository identity and Git revision |
 | Product Architecture | Product repository, maintained with product documentation | Product owner and engineering contributors; changes reviewed through the normal repository workflow | Product/repository identity and Git revision; links to accepted architecture decisions where useful |
-| `product.yaml` | `products/<product-slug>/` in `intent-backlog` | Product owner; updated through the repository's normal review process | Product identity, Trello board, target repository, authorized owner identities, and profile-ID/path mapping |
+| `product.yaml` | `products/<product-slug>/` in `intent-backlog` | Product owner; updated through the repository's normal review process | Product identity, Trello board and explicit lifecycle-stage-to-list-ID mapping, target repository, authorized owner identities, and profile-ID/path mapping |
 | `BoardTransitionEvent` | Authenticated Trello event plus current board state | Trello adapter; validated and correlated by Conductor | Event ID, board/card/list IDs, actor, and event time |
 | `StageInvocation` / `StageResult` | Authorized control-plane record and assigned worker result | Conductor / invoked worker | Invocation ID, triggering board event, work identity, immutable inputs, target revision, permissions, status, and output references |
 | `intent.md` | `intent-backlog` | Intent Creation Skill with product owner | Product, intent identity, version, and the commit that stores each revision |
@@ -45,7 +45,7 @@ Artifacts become durable inputs to later stages rather than disposable prompts. 
 
 | Schema definition | Use |
 | --- | --- |
-| `ProductConfig` | Product/board/repository identity, authorized product-owner identities, and profile mapping |
+| `ProductConfig` | Product/board/repository identity, explicit board list mapping, authorized product-owner identities, and profile mapping |
 | `BoardTransitionEvent` | Validated input from the Trello adapter; the Conductor must also verify current board state |
 | `WorkItem` | Stable product, intent, version, and Trello-card identity carried through lifecycle records |
 | `ArtifactRef`, `CommitRef` | Immutable Git provenance; file artifacts include exact-byte SHA-256, while commit references identify a repository revision |

@@ -6,9 +6,11 @@ Implement one coherent stage at a time in its owning repository. Update and revi
 
 ## Phase 0 - Validate the canonical contract
 
-Confirm each lifecycle role has a trigger, authority, inputs, required actions, outputs, error/status behavior, schema, and conformance checks. Confirm every shared record has an explicit version and every product entry validates against `ProductConfig`. Ensure product constitution and architecture baselines are consulted during Spec & Design.
+Confirm each lifecycle role has a trigger, authority, inputs, required actions, outputs, error/status behavior, schema, and conformance checks. Confirm every shared record has an explicit version and every product entry validates against `ProductConfig`. Verify Board Setup can create a greenfield board from the canonical template or bind an existing board with an explicit and valid stage-to-list-ID map. Ensure product constitution and architecture baselines are consulted during Spec & Design.
 
 **Complete when:** a builder can implement a component from this repository without guessing required behavior or assuming a particular runtime, and valid and invalid handoffs can be checked against the published contracts.
+
+The board setup contract and `ProductConfig` 1.1 define board creation and binding. Existing product records and Conductor consumers must be migrated to this contract before a Conductor implementation that requires the explicit list-ID map is enabled.
 
 ## Phase 1 - Intent and commitment
 

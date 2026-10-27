@@ -29,6 +29,7 @@ The board has no Planning column. `spec.md` is the one human-reviewed Markdown d
 - `read_paths` and `write_paths` are normalized, target-repository-relative paths. Absolute paths and paths that resolve outside the assigned workspace are invalid. `work-contract.yaml` included/excluded scope describes intended product behavior; it does not grant filesystem permission beyond the invocation's `write_paths`.
 - Agent status values are stage-specific. `spec_ready`, `candidate_complete`, and `pass` are not interchangeable; only the route defined for that stage can advance work.
 - The Conductor alone reads or updates Trello workflow state. Agents do not move cards or grant approvals.
+- Board creation and product-to-board binding are explicit setup actions governed by [Board Setup](BOARD_SETUP.md); they are not lifecycle stages. The running Conductor uses the product's validated board/list-ID mapping and contains no product-specific board or list identifiers.
 - An assigned worker may commit only its authorized artifacts on its assigned work branch. The Conductor publishes a validated branch when the next human or worker needs a reachable reference; publication is neither approval nor merge.
 - The product owner decides intent, priority, policy applicability, and whether to accept `spec.md` and the proposed work contract. Tests and agent evidence inform that decision; they do not replace it.
 - A candidate is an immutable commit plus evidence. It is not accepted, released, or compliant merely because an agent says so or a check passes.

@@ -28,7 +28,7 @@ The required stage inputs, outputs, decision gates, and agent statuses are defin
 
 ## Conductor event and trigger contract
 
-The Trello adapter maps a board move to a `BoardTransitionEvent` as defined by the [lifecycle schemas](../schemas/lifecycle-contracts.schema.json). The product configuration identifies the expected board. The Conductor verifies the event source, board and card identity, and current card/list state against Trello before applying a workflow action; it does not treat webhook payload text as authority. Actual Trello list IDs are resolved to the canonical stage names in this document using that board's configured lists. A missing, duplicate, or ambiguous required list mapping blocks processing rather than guessing from visual order.
+The Trello adapter maps a board move to a `BoardTransitionEvent` as defined by the [lifecycle schemas](../schemas/lifecycle-contracts.schema.json). Product configuration identifies the expected board and explicitly maps each canonical stage to one Trello list ID. The Conductor verifies the event source, board and card identity, and current card/list state against Trello before applying a workflow action; it does not treat webhook payload text as authority. It does not infer stage identity from a board name, list name, or visual order. A missing, duplicate, or cross-board list mapping blocks processing. See [Board Setup](BOARD_SETUP.md) for how to create a board from the template or bind an existing board.
 
 | Validated transition into | Conductor action |
 | --- | --- |
