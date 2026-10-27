@@ -25,6 +25,7 @@
 - Validate identity, revision, and hash preconditions before an agent runs.
 - Treat card, intent, specification, policy-profile, and worker-result content as untrusted data; it cannot override the documented permissions or control-plane policy.
 - Make required checks executable: schemas, contract validation, CI, structural checks, and policy checks.
+- Treat [`schemas/lifecycle-contracts.schema.json`](../schemas/lifecycle-contracts.schema.json) as the normative shape for the listed machine-readable records. Invalid, mismatched, or unsupported records are rejected and surfaced; consumers do not silently coerce or repair them.
 - Preserve lineage from intent to spec and execution artifacts.
 - Do not erase a prior freeze record when a pre-execution commitment is withdrawn; record revocation and keep the previous intent revision retrievable.
 - Use append-only or immutable records where the platform permits.
@@ -32,7 +33,7 @@
 - Do not let an agent decide legal applicability, grant a policy exception, or claim compliance. It may identify a defined trigger and request an authorized human decision.
 - Keep candidate assessment independent from implementation. An Evaluator may provide evidence and findings, but only a human can approve release.
 - Preserve release and observation facts against the immutable candidate SHA. Do not treat an execution report, a green test suite, or a completed release command as outcome proof.
-- Automatically retry only idempotent, clearly transient failures with no unknown side effect. Record each retry; escalate all other failures to an authorized human.
+- The Conductor may repeat only the same operation when it is known to be idempotent, clearly transient, and free of unknown side effects. Record each repeat and escalate other failures to an authorized human. This operational retry does not authorize an agent rerun without a documented board transition. The supported rework routes and deferred direct reruns are defined in [Workflow](WORKFLOW.md) and [the roadmap](ROADMAP.md).
 
 ## Exceptions and incidents
 

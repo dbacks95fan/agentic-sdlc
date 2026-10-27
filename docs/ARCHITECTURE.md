@@ -24,6 +24,8 @@ The **execution plane** consumes only validated, frozen inputs and produces boun
 
 The boundary is a durable contract rather than a chat handoff. Control-plane-to-execution-plane messages identify immutable input revisions and permissions. Execution-plane-to-control-plane messages identify status, immutable output references, and observed evidence. The Conductor validates those records before any route changes.
 
+The shared message and record shapes are in [`schemas/lifecycle-contracts.schema.json`](../schemas/lifecycle-contracts.schema.json). The Trello adapter validates a `BoardTransitionEvent`; the Conductor then emits a `StageInvocation` containing the work identity, immutable inputs, target revision, and explicit read/write paths. The worker returns a correlated `StageResult` and the stage-specific durable artifact. The Conductor verifies schema version, invocation identity, artifact reachability, and hashes, then writes a `StageResultDecision` before applying any route. A component may use a different internal request format, but its adapter must preserve this logical contract at the boundary.
+
 ## LLM assignment
 
 Use a separately configurable LLM assignment for each plane: one control-plane LLM and one execution-plane LLM. Any capable provider or model may fill either assignment. The assignments are operational configuration, not Trello columns, identity, or authority. Record the provider/model/version used for a run in the appropriate audit or evidence record when available, but do not let that metadata substitute for artifact lineage.
@@ -45,7 +47,7 @@ Using different LLMs supports separation of concerns and makes it easier to comp
 
 ## Product and intent identity
 
-The intent backlog is namespaced by product. A lightweight product registry supplies product ID, board reference, target repository, and ownership. Example:
+The intent backlog is namespaced by product. A lightweight product registry supplies product ID/name, Trello board ID, target repository, authorized product-owner identities, and policy-profile paths. Product IDs are unique and stable within the registry. An intent ID is stable, unique within its product, includes that product's identifying prefix, and is never reused; its precise textual format is configured rather than parsed as workflow state. Intent versions are positive integers beginning at `1` and increasing by one. Each product entry validates against `ProductConfig` in the [lifecycle schemas](../schemas/lifecycle-contracts.schema.json). Example:
 
 ```text
 products/mealflow/product.yaml
@@ -57,13 +59,18 @@ products/agentic-sdlc/intents/INT-AS-0017/intent.md
 `product.yaml` identifies the product and its repository and maps every selectable profile ID to an exact path:
 
 ```yaml
+schema_version: "1.0"
 product_id: MF
 product_name: MealFlow
 trello_board_id: <board-id>
 target_repository: https://github.com/example/mealflow.git
+authorized_product_owner_ids:
+  - <trello-member-id>
 policy_profiles:
   MEALFLOW-DEFAULT: policy-profiles/MEALFLOW-DEFAULT.md
 ```
+
+The Conductor resolves the configured board's actual Trello list IDs by exact match to the canonical names in [Workflow](WORKFLOW.md) and the board template; it does not infer a stage from a list's visual position. Missing, duplicate, or unknown required names stop the workflow until a human corrects the board/configuration. It validates the board actor against that product's configured authorized product-owner identities for owner-only decisions. Those identity values are not secrets; authentication credentials remain in the component's approved secret store. `policy_profiles` paths must be relative to the product namespace, remain inside the intent-backlog repository, and resolve at the same pinned commit as the intent.
 
 `product.yaml` maps each policy-profile ID to a repository-relative profile path in the same product namespace. The selected profile ID and version are recorded with the intent. The Conductor resolves that mapping and reads `intent.md`, `product.yaml`, and the selected policy profile from the intent's pinned `intent-backlog` commit, then records the source commit and exact-byte fingerprints at Prioritized. The Skill creates the initial Trello card in New Ideas and records the intent and selected profile reference; it does not create, activate, or revoke a freeze. `intent.md` and its Trello card identify the same product, intent, and version, and the card also shows the commit and fingerprint of that revision (see [Artifacts](ARTIFACTS.md)). What an intent must capture is described in [Intent Creation Skill](INTENT_CREATION_SKILL.md). Cross-product initiatives are parent/portfolio intents decomposed into one execution intent per product; one execution intent never spans unrelated product repositories.
 

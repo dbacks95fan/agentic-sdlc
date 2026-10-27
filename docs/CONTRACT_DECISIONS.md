@@ -24,6 +24,10 @@ Required lifecycle artifacts must be durable and reachable before the next defin
 
 `spec.md` is the single human-reviewed Markdown artifact. It contains its own implementation and validation plan; a separate `plan.md` is not part of this lifecycle. The proposed `work-contract.yaml` is a machine-readable execution record created alongside the spec and frozen only after human acceptance. Its required lineage is defined in [Stage Contracts](STAGE_CONTRACTS.md).
 
+Machine-readable lifecycle records use the normative definitions in [`schemas/lifecycle-contracts.schema.json`](../schemas/lifecycle-contracts.schema.json). The schemas define shape and field types; the applicable stage contract defines authorization, source-of-truth checks, and allowed outcomes. They do not prescribe an agent transport, runtime, model, or deployment.
+
+The canonical `work-contract.yaml` is schema version `3`. It carries the accepted work identity, pinned intent and policy-profile artifacts, target/base commit, acceptance criteria, scope, required validation, policy controls, and release/observation requirements. The human-reviewed `spec.md` contains the implementation and validation plan. A separate `plan.md` is not part of the contract. Components that still accept Work Contract v2 must be migrated before they are considered conformant; they must not silently treat v2 as v3.
+
 ## Candidate, evaluation, and delivery
 
 Execution creates a candidate commit and Evidence Package; neither is an approval. A separate Evaluator produces an Evaluation Package against the frozen inputs. Only an accountable human may approve the named candidate for integration and Release. The authorized integration path records the resulting protected-branch SHA before release. Release and Production Observation create durable fact records tied to the candidate and integration SHA, and Done requires a human closure decision. Evaluation failure returns to Execution with findings; a non-material specification defect returns to Spec & Design; a material product change creates a successor intent instead.
@@ -35,3 +39,5 @@ Each frozen intent names a versioned product Policy & Compliance Profile by ID, 
 ## Scope boundary
 
 This repository defines SDLC outcomes and controls, not agent or skill implementation. Component repositories own their runtime and deployment design while remaining compatible with these contracts. See [Architecture](ARCHITECTURE.md).
+
+When this canonical contract changes, update each affected component's operating/build definition and implementation against the new contract version. Do not change an unaffected component merely to match a repository-wide timestamp; record the supported schema and lifecycle contract versions and validate the actual handoffs.

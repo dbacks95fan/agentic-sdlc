@@ -25,6 +25,7 @@ In this SDLC, **XP for quality** means practical engineering habits within each 
 - **Evaluation** is independent of implementation. An Evaluator reviews the candidate and evidence against the frozen inputs.
 - **Human Approval** is the consequential decision to accept the evaluated candidate for release, request rework, or stop the work.
 - **Release**, **Production Observation**, and **Done** complete the delivery loop with a release record, outcome evidence, and a human closure decision.
+- This repository defines each role's purpose, authority, inputs, required actions, outputs, statuses, and cross-component records. Component repositories implement those contracts and may choose their runtime and deployment; they do not redefine the SDLC. When a canonical contract changes, update each affected component definition and verify its compatibility before treating it as conformant.
 
 ## Change rule
 
