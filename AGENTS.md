@@ -151,7 +151,7 @@ Everything above this heading is the DPSystems canonical rule set, copied verbat
 
 This is a vendor-neutral architectural repository: reference architecture, workflow, governance, artifact contracts, and templates for an intent-driven Agentic SDLC. It does not contain component implementations. Agent and skill runtimes live in their own component repositories.
 
-Before proposing or changing the Agentic SDLC, read `docs/AGENTIC_SDLC_CONTEXT.md`, `docs/ARCHITECTURE.md`, `docs/WORKFLOW.md`, `docs/STAGE_CONTRACTS.md`, `docs/GOVERNANCE.md`, `docs/INTENT_CREATION_SKILL.md`, and `docs/REFERENCES.md`.
+Before proposing or changing the Agentic SDLC, read `docs/AGENTIC_SDLC_CONTEXT.md`, `docs/ARCHITECTURE.md`, `docs/WORKFLOW.md`, `docs/STAGE_CONTRACTS.md`, `docs/AGENT_ROLES.md`, `docs/ARTIFACTS.md`, `docs/GOVERNANCE.md`, `docs/INTENT_CREATION_SKILL.md`, `docs/CONTRACT_DECISIONS.md`, `docs/ROADMAP.md`, `docs/REFERENCES.md`, and `schemas/lifecycle-contracts.schema.json`.
 
 ## Decisions to preserve
 
@@ -172,6 +172,7 @@ Do not silently redesign the workflow or assert implementation, test, deployment
 | --- | --- |
 | `README.md` | Operating model and documentation map |
 | `docs/` | Architecture, workflow, governance, artifacts, roles, metrics, roadmap, references, and contract decisions |
+| `schemas/` | Normative, runtime-neutral JSON Schemas for lifecycle handoffs and records |
 | `templates/trello-board-workflow.yaml` | Canonical Trello list order used to provision and validate boards |
 | `templates/policy-compliance-profile.md` | Lean, versioned policy-profile template |
 | `AGENTS.md` | This file; `CLAUDE.md` and `GEMINI.md` import it |
@@ -188,3 +189,4 @@ Do not silently redesign the workflow or assert implementation, test, deployment
 - Markdown is prose and is exempt from linting. Follow the prose rules: one line per paragraph or list item, no hard wrapping.
 - The YAML template must parse: `python -c "import yaml; yaml.safe_load(open('templates/trello-board-workflow.yaml'))"`. No YAML formatter or linter is configured in this repository yet; say so rather than claiming it was linted.
 - Relative links between documents must resolve to files that exist.
+- `schemas/*.schema.json` must parse as JSON and use JSON Schema Draft 2020-12. A component must validate records against the matching `$defs` entry and enforce field formats.

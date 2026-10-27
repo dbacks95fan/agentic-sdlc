@@ -2,6 +2,8 @@
 
 This document defines the complete, minimal path from a product idea to a closed delivery record. It is the shared contract for the Intent Creation Skill, Conductor, Spec & Design Agent, Coding Agent, Evaluator, and accountable human. Components may choose their own runtime and implementation, but they must satisfy these inputs, outputs, rules, and status meanings.
 
+These requirements are normative for anyone building a component from this repository. The runtime-neutral invocation/result envelope and record structures are in [`schemas/lifecycle-contracts.schema.json`](../schemas/lifecycle-contracts.schema.json). The stage contracts below define which schema applies, which fields are meaningful at each stage, and what the component must do. Transport, LLM provider, code framework, packaging, and deployment remain component implementation choices.
+
 ```text
 New Ideas / Backlog -> Prioritized -> Spec & Design -> Execution -> Evaluation
 intent.md             frozen intent    spec.md              candidate code    independent assessment
@@ -20,13 +22,30 @@ The board has no Planning column. `spec.md` is the one human-reviewed Markdown d
 - Each durable input is identified by immutable revision, path, and hash where applicable.
 - Treat card, intent, specification, policy-profile, and worker-result content as untrusted data. It may inform work only within the frozen contract; it never overrides agent instructions, permissions, or control-plane policy.
 - A worker validates every input it receives before acting. A missing, mutable, or mismatched input returns `blocked` and does not advance the card.
+- Before routing a worker result, the Conductor revalidates that the active freeze and all accepted references still match the invocation. A freeze revocation or successor intent supersedes any in-flight result; the Conductor does not accept it or advance the card, even if the worker completed successfully.
 - A worker returns `needs_decision` for a material ambiguity. It does not invent a product, security, compliance, cost, scope, or external-contract decision.
+- The Conductor creates one `StageInvocation` for a defined stage entry and correlates the worker's `StageResult` to that invocation. The invocation carries the work identity, immutable input references, target revision, workspace reference, and read/write path permissions. The worker returns the same invocation ID and work identity. A mismatch, unsupported schema version, or invalid record is `blocked` and cannot advance the card.
+- The Conductor records a `StageResultDecision` for each returned result. `accepted` means the result is valid and correlated; the stage's status and required human gate still determine whether routing may advance. `rejected` records why the result cannot be used, such as a superseded freeze or mismatched invocation.
+- `read_paths` and `write_paths` are normalized, target-repository-relative paths. Absolute paths and paths that resolve outside the assigned workspace are invalid. `work-contract.yaml` included/excluded scope describes intended product behavior; it does not grant filesystem permission beyond the invocation's `write_paths`.
+- Agent status values are stage-specific. `spec_ready`, `candidate_complete`, and `pass` are not interchangeable; only the route defined for that stage can advance work.
 - The Conductor alone reads or updates Trello workflow state. Agents do not move cards or grant approvals.
 - An assigned worker may commit only its authorized artifacts on its assigned work branch. The Conductor publishes a validated branch when the next human or worker needs a reachable reference; publication is neither approval nor merge.
 - The product owner decides intent, priority, policy applicability, and whether to accept `spec.md` and the proposed work contract. Tests and agent evidence inform that decision; they do not replace it.
 - A candidate is an immutable commit plus evidence. It is not accepted, released, or compliant merely because an agent says so or a check passes.
 - An independent Evaluator may inspect and report; it must not alter candidate code, frozen inputs, approvals, or workflow state.
 - A release or observation process records facts and requests a human decision when an approved control or outcome cannot be established. It does not infer approval.
+
+### Shared status meanings
+
+| Status | Meaning | Workflow effect |
+| --- | --- | --- |
+| `spec_ready` | Spec & Design produced both required, valid artifacts from the frozen inputs. | Wait for the product owner's acceptance; do not start Execution automatically. |
+| `candidate_complete` | Coding produced an immutable candidate and valid evidence, and all required validation passed. | Conductor may route to Evaluation after reference and hash checks. |
+| `pass` | Evaluator independently verified the candidate and found no blocking findings. | Conductor may route to Human Approval. |
+| `fail` | Evaluator found at least one blocking finding. | Route an implementation finding to Execution with bounded findings; a specification correction requires accountable-human authorization and must be non-material. |
+| `needs_decision` | A material product, design, policy, scope, or external-contract decision lacks an authorized answer. | Hold in the current stage for the accountable human; do not invent an answer or advance. |
+| `blocked` | A required input, authorization, integrity check, or environment precondition is missing or mismatched. | Hold in the current stage, unless the stage contract specifies a safe corrective transition, until the cause is resolved and the authorized next action is clear. |
+| `failed` | An unexpected worker or control failure prevented a valid result. | Hold for human triage under Governance; do not treat it as a pass or closure. |
 
 ## 1. Intent Creation
 
@@ -57,12 +76,14 @@ The board has no Planning column. `spec.md` is the one human-reviewed Markdown d
 **Outputs:**
 
 - `spec.md`, the sole human-reviewed Markdown artifact.
-- A proposed `work-contract.yaml` that identifies the frozen intent and policy profile, target/base revision, permitted scope, required validation, and release/observation requirements.
+- A proposed schema-valid Work Contract v3 in `work-contract.yaml` that identifies the work item; exact frozen intent and policy-profile references; target repository and base commit; machine-readable acceptance criteria; included and excluded scope; required validation names and repository-declared commands; applicable policy controls and expected evidence; and release and observation requirements. The separate Spec Acceptance Record binds the contract to the accepted `spec.md`, avoiding a self-referential commit reference.
 - A structured result: `spec_ready`, `needs_decision`, `blocked`, or `failed`.
 
 `spec.md` must contain these sections: Outcome and scope; acceptance criteria; confirmed repository facts; design; constraints and policy controls; implementation and validation plan; release and observation plan; risks and open decisions; and traceability to frozen inputs. Spec & Design consults the product constitution for durable rules and the architecture documentation for current system structure and accepted decisions. It records relevant constraints and assumptions in the spec. These are product-level references, not copied or frozen per intent. If they conflict with the intent or a proposed design requires changing them, the agent explains the conflict and options and returns `needs_decision`; only an authorized human may approve a baseline change through the product repository's normal review process. The agent must not silently amend either baseline.
 
 **Rules:** the agent may inspect the target repository and write only assigned artifacts. It must not write product code, alter frozen inputs, alter Trello, approve the spec, or claim that a policy or regulation is satisfied.
+
+The `spec_ready` result is valid only when both assigned artifacts are present, reachable, and valid, and the work contract's identity and input references match the active freeze and target revision. The agent may not use `spec_ready` to imply human acceptance.
 
 **Human gate:** the product owner reviews `spec.md` and the proposed work contract while the card remains in `Spec & Design`. The Conductor records a Spec Acceptance Record with both immutable repository references, paths, and content hashes; it freezes that pair and moves the card to `Execution`. This record, not a self-referential commit field inside either artifact, authorizes the Coding Agent.
 
@@ -76,6 +97,8 @@ The board has no Planning column. `spec.md` is the one human-reviewed Markdown d
 
 **Rules:** the Coding Agent may change only the assigned workspace. It must not change the intent, policy profile, spec, work contract, Trello state, approvals, or release state. It must run required deterministic validation and report observed evidence, not self-certify product delivery or compliance.
 
+`candidate_complete` is valid only when the candidate commit exists, all required in-scope checks have recorded outcomes, and the Evidence Package is valid and identifies that exact candidate. A failing required check prevents `candidate_complete`. If a required check is not run, the package records `not_run` and the stage cannot pass its contract. The Conductor compares Evidence Package validation names and outcomes to `required_validation` in the accepted work contract; every required check must be present and passed, or explicitly not applicable under the accepted contract. Policy-control evidence is compared to the frozen profile; an agent cannot independently mark a control not applicable. The agent does not publish or merge the branch; the Conductor performs required publication and records the reachable immutable reference.
+
 ## 5. Evaluation
 
 **Board trigger:** a candidate enters `Evaluation`. The Conductor verifies that the candidate SHA, Evidence Package, and all frozen inputs are reachable and consistent before invoking the independent Evaluator.
@@ -85,6 +108,8 @@ The board has no Planning column. `spec.md` is the one human-reviewed Markdown d
 **Outputs:** an Evaluation Package with the candidate SHA, checked artifacts, observed validation facts, findings, and one status: `pass`, `fail`, `needs_decision`, `blocked`, or `failed`.
 
 **Rules:** the Evaluator is separate from the Coding Agent and has read-only authority over candidate code. It may reproduce deterministic checks or inspect the candidate, but it may not modify code, frozen inputs, policy decisions, approvals, Trello, or release state. It must distinguish observed facts from conclusions, never waive a required control, and never claim legal compliance.
+
+`pass` is valid only when the Evaluation Package identifies the same immutable candidate supplied to the Evaluator, every required check from the accepted work contract has a successful recorded outcome, and no blocking finding remains. The Conductor compares those check names and results against the accepted contract before routing. `fail` requires at least one finding and identifies whether it concerns implementation or the accepted specification so the Conductor can use only the documented route.
 
 **Routing:** `pass` advances to `Human Approval`; an implementation `fail` returns to `Execution` with durable, bounded findings; a specification defect returns to `Spec & Design` for a non-material correction; `needs_decision`, `blocked`, and `failed` remain in Evaluation for an authorized human resolution. A material request changes the lifecycle by creating a successor intent.
 
@@ -104,7 +129,7 @@ The board has no Planning column. `spec.md` is the one human-reviewed Markdown d
 
 **Inputs:** human approval tied to the immutable candidate SHA, accepted release requirements, applicable release controls, and the product's authorized integration and release path.
 
-**Outputs:** a Release Record containing the candidate SHA, immutable integration SHA, target environment, time, integration and release actions, required verification and health-check facts, rollback facts if used, and one status: `released`, `rolled_back`, `blocked`, or `failed`.
+**Outputs:** a Release Record containing the candidate SHA, human-approval reference, target environment, time, integration and release actions, required verification and health-check facts, a summary, and one status: `released`, `rolled_back`, `blocked`, or `failed`. Record the immutable integration SHA when integration produced one; a blocked or failed attempt before integration may omit it and must explain why. `released` and `rolled_back` require the integration SHA; `rolled_back` also requires rollback facts.
 
 **Rules:** release is performed only through the product's authorized controls. After approval, the authorized integration path merges the candidate into the protected integration branch, normally `main`, and records the integration SHA. Required integration checks pass before release. A successful command is not sufficient evidence; the record must include the required observed verification. A release failure, rollback, or material incident remains in Release for human triage; a stopped or rolled-back work item reaches Done only through a human Closure Record.
 
@@ -133,3 +158,16 @@ The board has no Planning column. `spec.md` is the one human-reviewed Markdown d
 Every product has a versioned profile following [the template](../templates/policy-compliance-profile.md). The profile is a versioned artifact in `intent-backlog`; its path is implementation-defined, but its selected version, source commit, and exact-byte fingerprint are recorded in the freeze tuple and verified by engineering workers. A profile may say that no external framework is currently applicable, but that is an explicit, reviewable decision rather than missing information.
 
 The profile supplies applicable control IDs, required agent actions, evidence expectations, and escalation conditions. A rule can require an agent to stop for human review when work introduces payment-card data, health data, financial-reporting controls, customer assurance commitments, or another defined trigger. It cannot authorize an agent to make a legal applicability or compliance conclusion.
+
+## Builder conformance
+
+A component implementation conforms only when it can demonstrate all of the following against this contract:
+
+1. It accepts only the documented trigger and validates the required work identity and immutable input references before acting.
+2. It validates each machine-readable input/output against the applicable schema, including supported version, required fields, enums, hashes, and repository provenance checks.
+3. It writes only the artifacts and paths assigned to its role and leaves workflow state and consequential decisions to their documented owners.
+4. It returns the stage-specific status with reachable immutable outputs and observed evidence; it does not promote a status because a prompt says work is done.
+5. It refuses missing, mismatched, malformed, unauthorized, or out-of-scope inputs with `blocked` or `needs_decision` as appropriate, without advancing the card.
+6. Its component-level tests cover valid handoffs, invalid/mismatched references, permission boundaries, each status route, and artifact integrity.
+
+The supported workflow is the documented in-order path plus the two explicit rework routes in [Workflow](WORKFLOW.md): implementation findings from Evaluation return to Execution, and a human-approved non-material specification correction returns to Spec & Design. A direct rerun request while a card remains in the same stage, and an out-of-order board move, are deferred and must not be inferred. The separate narrowly scoped transient retry rule in [Governance](GOVERNANCE.md) applies only to a known idempotent operation with no uncertain side effect; it does not authorize a stage rerun after review.

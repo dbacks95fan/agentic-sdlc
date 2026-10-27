@@ -24,7 +24,7 @@ The product owner moves a synchronized card from `Backlog` to `Prioritized`. The
 - The one product it belongs to.
 - The product Policy & Compliance Profile ID and version selected by the product owner.
 - A stable identifier that includes the product, such as `INT-MF-0042`, which is never changed or reused.
-- A version that increases with every accepted revision.
+- A positive integer version: start at `1` and increase by exactly one for each accepted revision of that intent.
 
 How these are laid out in `intent.md`, and what they are called, is the implementer's choice, as long as a person can read the file and the Spec & Design stage can work from it. No workflow control depends on the layout.
 
@@ -68,4 +68,4 @@ An implementation is complete when all of these can be shown:
 
 ## Open decisions
 
-No workflow decision is currently open in this contract. Reruns and out-of-order moves are documented as deferred exceptions in [Roadmap](ROADMAP.md).
+No workflow decision is currently open in this contract. Direct agent reruns without a documented board transition and out-of-order moves remain deferred exceptions in [Roadmap](ROADMAP.md).
