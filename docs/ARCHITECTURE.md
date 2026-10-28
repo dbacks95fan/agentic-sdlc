@@ -20,13 +20,13 @@ People <-> Trello <-> Intent Creation Skill + Conductor <-> intent-backlog
 
 ## Two-plane operating model
 
-The **control plane** makes the lifecycle legible and controlled. It owns the Trello projection, intent synchronization and freeze validation, stage routing, durable handoff records, and presentation of decisions to accountable humans. The Conductor is its stateful coordinator; humans retain authority for priority, specification acceptance, release approval, policy applicability, and closure.
+The **control plane** makes the lifecycle legible and controlled. It owns the Trello projection, intent synchronization and freeze validation, stage routing, durable handoff records, and presentation of decisions to accountable humans. The Conductor is its stateful coordinator; it has read-only product-repository access for handoff validation and does not create, check out, commit to, push, or merge product-repository branches. Humans retain authority for priority, specification acceptance, release approval, policy applicability, and closure.
 
 The **execution plane** consumes only validated, frozen inputs and produces bounded engineering artifacts. It contains the Spec & Design Agent, Coding Agent, and independent Evaluator working in assigned isolated workspaces. It cannot move cards, revise an intent, grant approval, or alter a release decision.
 
-The boundary is a durable contract rather than a chat handoff. Control-plane-to-execution-plane messages identify immutable input revisions and permissions. Execution-plane-to-control-plane messages identify status, immutable output references, and observed evidence. The Conductor validates those records before any route changes.
+The boundary is a durable contract rather than a chat handoff. Control-plane-to-execution-plane messages identify immutable input revisions, the assigned work branch, the expected commit, and permissions. Execution-plane-to-control-plane messages identify status, pushed commit and artifact references, and observed evidence. The Conductor validates those records before any route changes.
 
-The shared message and record shapes are in [`schemas/lifecycle-contracts.schema.json`](../schemas/lifecycle-contracts.schema.json). The Trello adapter validates a `BoardTransitionEvent`; the Conductor then emits a `StageInvocation` containing the work identity, immutable inputs, target revision, and explicit read/write paths. The worker returns a correlated `StageResult` and the stage-specific durable artifact. The Conductor verifies schema version, invocation identity, artifact reachability, and hashes, then writes a `StageResultDecision` before applying any route. A component may use a different internal request format, but its adapter must preserve this logical contract at the boundary.
+The shared message and record shapes are in [`schemas/lifecycle-contracts.schema.json`](../schemas/lifecycle-contracts.schema.json). The Trello adapter validates a `BoardTransitionEvent`; the Conductor then emits a `StageInvocation` containing the work identity, immutable inputs, target revision, assigned branch, and explicit read/write paths. The worker returns a correlated `StageResult` and the stage-specific durable artifact. The Conductor verifies schema version, invocation identity, pushed commit and artifact references, reachability, and hashes using read-only repository access, then writes a `StageResultDecision` before applying any route. It does not mutate repository refs. A component may use a different internal request format, but its adapter must preserve this logical contract at the boundary.
 
 ## LLM assignment
 
@@ -39,12 +39,12 @@ Using different LLMs supports separation of concerns and makes it easier to comp
 | Configured Trello board | Human-visible flow and summaries for one product | Canonical artifact contents or Conductor policy |
 | Intent Creation Skill | Refinement and synchronization contract | Engineering execution while a freeze is active |
 | `intent-backlog` | Canonical evolving product intent and revision history | Product code or execution evidence |
-| Conductor | State transitions, routing, bounded retries, and board updates | Execution conclusions |
-| Target product repository | Branch-scoped engineering artifacts, code, candidate, and evidence | Product intent or workflow state |
+| Conductor | State transitions, routing, bounded retries, board updates, and read-only handoff validation | Product-repository writes, branch management, and merges |
+| Target product repository | Branch-scoped engineering artifacts, code, candidate, and evidence; assigned agents commit and push to the work branch | Product intent or workflow state |
 | Spec & Design Agent | Produce `spec.md` from a frozen intent | Alter the frozen intent |
 | Coding Agent | Carry out assigned work from durable inputs | Mutate frozen inputs or workflow state |
 | Evaluator | Independently assess an immutable candidate and evidence | Modify code, approve, or release work |
-| Release and Observation Controls | Record authorized integration, delivery, and outcome facts | Decide product intent, approval, or compliance applicability |
+| Release and Observation Controls | Perform authorized integration after approval and record delivery and outcome facts | Decide product intent, approval, or compliance applicability |
 | Humans | Priority and consequential judgment | Routine deterministic work |
 
 ## Product, board, and intent identity
@@ -89,9 +89,13 @@ The Conductor validates the board actor against that product's configured author
 
 `product.yaml` maps each policy-profile ID to a repository-relative profile path in the same product namespace. The selected profile ID and version are recorded with the intent. The Conductor resolves that mapping and reads `intent.md`, `product.yaml`, and the selected policy profile from the intent's pinned `intent-backlog` commit, then records the source commit and exact-byte fingerprints at Prioritized. The Skill creates the initial Trello card in New Ideas and records the intent and selected profile reference; it does not create, activate, or revoke a freeze. `intent.md` and its Trello card identify the same product, intent, and version, and the card also shows the commit and fingerprint of that revision (see [Artifacts](ARTIFACTS.md)). What an intent must capture is described in [Intent Creation Skill](INTENT_CREATION_SKILL.md). Cross-product initiatives are parent/portfolio intents decomposed into one execution intent per product; one execution intent never spans unrelated product repositories.
 
-## Execution workspace
+## Execution workspace and Git handoff
 
-The worktree is created only from a frozen input. A suggested durable layout is:
+The first engineering-stage worker creates the work branch from the target repository's assigned base commit after the Prioritized freeze is valid. It obtains the frozen intent and policy profile from their recorded source revisions, verifies their exact-byte fingerprints, and commits and pushes only its assigned artifacts. Each later worker starts with a fresh isolated checkout of the same branch at the exact commit SHA supplied in its invocation; it does not depend on another agent's local files or chat history. Only one worker may write to the branch at a time, and pushes must advance the assigned branch without force-pushing.
+
+The Evaluator checks the immutable candidate SHA read-only. It may publish only its assigned Evaluation Package, which must identify that candidate SHA and must not modify candidate code. The Conductor records and validates the returned refs but never creates, checks out, commits to, pushes, or merges product-repository branches. The authorized integration path merges only after Evaluation passes and the accountable human approves the named candidate for release.
+
+A suggested durable layout is:
 
 ```text
 .agent/work/INT-MF-0042/
@@ -105,7 +109,7 @@ The worktree is created only from a frozen input. A suggested durable layout is:
   observation-record/
 ```
 
-The frozen intent, accepted `spec.md`, frozen work contract, candidate, and later evidence form one traceable delivery chain. Artifact details are defined in [Artifacts](ARTIFACTS.md) and [Stage Contracts](STAGE_CONTRACTS.md).
+The frozen intent, accepted `spec.md`, frozen work contract, candidate, and later evidence form one traceable delivery chain across commits on the work branch. Each handoff records the exact commit SHA so a new device can fetch the branch and reproduce the assigned state. Artifact details are defined in [Artifacts](ARTIFACTS.md) and [Stage Contracts](STAGE_CONTRACTS.md).
 
 ## Design constraints
 

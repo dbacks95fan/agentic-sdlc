@@ -32,10 +32,12 @@ The board has no Planning column. `spec.md` is the one human-reviewed Markdown d
 - Agent status values are stage-specific. `spec_ready`, `candidate_complete`, and `pass` are not interchangeable; only the route defined for that stage can advance work.
 - The Conductor alone reads or updates Trello workflow state. Agents do not move cards or grant approvals.
 - Board creation and product-to-board binding are explicit setup actions governed by [Board Setup](BOARD_SETUP.md); they are not lifecycle stages. The running Conductor uses the product's validated board/list-ID mapping and contains no product-specific board or list identifiers.
-- An assigned worker may commit only its authorized artifacts on its assigned work branch. The Conductor publishes a validated branch when the next human or worker needs a reachable reference; publication is neither approval nor merge.
+- The first engineering worker creates the work branch from the assigned target base revision. Each later worker fetches that branch and checks out the exact commit SHA in its StageInvocation or the latest accepted handoff. Each worker commits and pushes only its authorized artifacts to the assigned work branch. Do not force-push or run concurrent writers on that branch.
+- The Conductor owns workflow state and routing, not product-repository Git operations. It uses read-only access to validate reachable refs and hashes, then records accepted handoff references and routes the next stage. It must not create branches, check out code, commit, push, or merge.
+- No agent may merge a work branch into the protected integration branch. The authorized release path merges only after the Evaluator has passed the exact candidate and the accountable human has approved that candidate for integration and release.
 - The product owner decides intent, priority, policy applicability, and whether to accept `spec.md` and the proposed work contract. Tests and agent evidence inform that decision; they do not replace it.
 - A candidate is an immutable commit plus evidence. It is not accepted, released, or compliant merely because an agent says so or a check passes.
-- An independent Evaluator may inspect and report; it must not alter candidate code, frozen inputs, approvals, or workflow state.
+- An independent Evaluator checks the candidate at its immutable SHA with read-only access to candidate code. It may commit and push only its assigned Evaluation Package, which identifies the unchanged candidate SHA; it must not alter candidate code, frozen inputs, approvals, or workflow state.
 - A release or observation process records facts and requests a human decision when an approved control or outcome cannot be established. It does not infer approval.
 
 ### Shared status meanings
@@ -80,11 +82,12 @@ The board has no Planning column. `spec.md` is the one human-reviewed Markdown d
 
 - `spec.md`, the sole human-reviewed Markdown artifact.
 - A proposed schema-valid Work Contract v3 in `work-contract.yaml` that identifies the work item; exact frozen intent and policy-profile references; target repository and base commit; machine-readable acceptance criteria; included and excluded scope; required validation names and repository-declared commands; applicable policy controls and expected evidence; and release and observation requirements. The separate Spec Acceptance Record binds the contract to the accepted `spec.md`, avoiding a self-referential commit reference.
+- The pushed work-branch ref and commit SHA containing both artifacts, returned in the correlated stage result.
 - A structured result: `spec_ready`, `needs_decision`, `blocked`, or `failed`.
 
 `spec.md` must contain these sections: Outcome and scope; acceptance criteria; confirmed repository facts; design; constraints and policy controls; implementation and validation plan; release and observation plan; risks and open decisions; and traceability to frozen inputs. Spec & Design consults the product constitution for durable rules and the architecture documentation for current system structure and accepted decisions. It records relevant constraints and assumptions in the spec. These are product-level references, not copied or frozen per intent. If they conflict with the intent or a proposed design requires changing them, the agent explains the conflict and options and returns `needs_decision`; only an authorized human may approve a baseline change through the product repository's normal review process. The agent must not silently amend either baseline.
 
-**Rules:** the agent may inspect the target repository and write only assigned artifacts. It must not write product code, alter frozen inputs, alter Trello, approve the spec, or claim that a policy or regulation is satisfied.
+**Rules:** the agent fetches the target repository at the assigned base commit, creates the work branch if this is its first engineering invocation, verifies the frozen inputs, and writes only assigned artifacts. It pushes its committed artifacts to the assigned work branch. It must not write product code, alter frozen inputs, alter Trello, approve the spec, or claim that a policy or regulation is satisfied.
 
 The `spec_ready` result is valid only when both assigned artifacts are present, reachable, and valid, and the work contract's identity and input references match the active freeze and target revision. The agent may not use `spec_ready` to imply human acceptance.
 
@@ -96,11 +99,11 @@ The `spec_ready` result is valid only when both assigned artifacts are present, 
 
 **Inputs:** frozen intent, frozen policy profile, accepted `spec.md`, accepted `work-contract.yaml`, isolated product workspace, repository-local instructions, and any bounded rework findings or human feedback.
 
-**Outputs:** candidate implementation committed on the assigned branch, immutable candidate commit SHA, and an Evidence Package containing changed artifacts, independently observed validation results, policy-control evidence, and status: `candidate_complete`, `needs_decision`, `blocked`, or `failed`.
+**Outputs:** candidate implementation committed and pushed on the assigned branch, immutable candidate commit SHA, and an Evidence Package containing changed artifacts, independently observed validation results, policy-control evidence, and status: `candidate_complete`, `needs_decision`, `blocked`, or `failed`.
 
 **Rules:** the Coding Agent may change only the assigned workspace. It must not change the intent, policy profile, spec, work contract, Trello state, approvals, or release state. It must run required deterministic validation and report observed evidence, not self-certify product delivery or compliance.
 
-`candidate_complete` is valid only when the candidate commit exists, all required in-scope checks have recorded outcomes, and the Evidence Package is valid and identifies that exact candidate. A failing required check prevents `candidate_complete`. If a required check is not run, the package records `not_run` and the stage cannot pass its contract. The Conductor compares Evidence Package validation names and outcomes to `required_validation` in the accepted work contract; every required check must be present and passed, or explicitly not applicable under the accepted contract. Policy-control evidence is compared to the frozen profile; an agent cannot independently mark a control not applicable. The agent does not publish or merge the branch; the Conductor performs required publication and records the reachable immutable reference.
+`candidate_complete` is valid only when the pushed candidate commit exists, all required in-scope checks have recorded outcomes, and the Evidence Package is valid and identifies that exact candidate. A failing required check prevents `candidate_complete`. If a required check is not run, the package records `not_run` and the stage cannot pass its contract. The Conductor compares Evidence Package validation names and outcomes to `required_validation` in the accepted work contract; every required check must be present and passed, or explicitly not applicable under the accepted contract. Policy-control evidence is compared to the frozen profile; an agent cannot independently mark a control not applicable. The Coding Agent does not merge the branch. The Conductor records the reachable immutable reference without writing to the repository.
 
 ## 5. Evaluation
 
@@ -108,11 +111,11 @@ The `spec_ready` result is valid only when both assigned artifacts are present, 
 
 **Inputs:** frozen intent, frozen policy profile, accepted `spec.md`, frozen work contract, candidate commit SHA, Evidence Package, and repository-local evaluation instructions.
 
-**Outputs:** an Evaluation Package with the candidate SHA, checked artifacts, observed validation facts, findings, and one status: `pass`, `fail`, `needs_decision`, `blocked`, or `failed`.
+**Outputs:** an Evaluation Package committed and pushed to its assigned artifact path, with the candidate SHA, checked artifacts, observed validation facts, findings, and one status: `pass`, `fail`, `needs_decision`, `blocked`, or `failed`.
 
-**Rules:** the Evaluator is separate from the Coding Agent and has read-only authority over candidate code. It may reproduce deterministic checks or inspect the candidate, but it may not modify code, frozen inputs, policy decisions, approvals, Trello, or release state. It must distinguish observed facts from conclusions, never waive a required control, and never claim legal compliance.
+**Rules:** the Evaluator is separate from the Coding Agent and checks the exact candidate SHA using a fresh checkout. Candidate code and frozen inputs are read-only. The Evaluator may commit and push only its Evaluation Package at the assigned artifact path; that commit must identify the candidate SHA and must not modify candidate code. It may reproduce deterministic checks or inspect the candidate, but may not modify policy decisions, approvals, Trello, or release state. It must distinguish observed facts from conclusions, never waive a required control, and never claim legal compliance.
 
-`pass` is valid only when the Evaluation Package identifies the same immutable candidate supplied to the Evaluator, every required check from the accepted work contract has a successful recorded outcome, and no blocking finding remains. The Conductor compares those check names and results against the accepted contract before routing. `fail` requires at least one finding and identifies whether it concerns implementation or the accepted specification so the Conductor can use only the documented route.
+`pass` is valid only when the pushed Evaluation Package identifies the same immutable candidate supplied to the Evaluator, every required check from the accepted work contract has a successful recorded outcome, and no blocking finding remains. The Conductor validates the returned package and refs using read-only repository access and compares check names and results against the accepted contract before routing. `fail` requires at least one finding and identifies whether it concerns implementation or the accepted specification so the Conductor can use only the documented route.
 
 **Routing:** `pass` advances to `Human Approval`; an implementation `fail` returns to `Execution` with durable, bounded findings; a specification defect returns to `Spec & Design` for a non-material correction; `needs_decision`, `blocked`, and `failed` remain in Evaluation for an authorized human resolution. A material request changes the lifecycle by creating a successor intent.
 
@@ -130,11 +133,11 @@ The `spec_ready` result is valid only when both assigned artifacts are present, 
 
 **Board trigger:** a candidate approved for integration and release enters `Release`.
 
-**Inputs:** human approval tied to the immutable candidate SHA, accepted release requirements, applicable release controls, and the product's authorized integration and release path.
+**Inputs:** human approval tied to the immutable candidate SHA, a passing Evaluation Package tied to that SHA, accepted release requirements, applicable release controls, and the product's authorized integration and release path.
 
 **Outputs:** a Release Record containing the candidate SHA, human-approval reference, target environment, time, integration and release actions, required verification and health-check facts, a summary, and one status: `released`, `rolled_back`, `blocked`, or `failed`. Record the immutable integration SHA when integration produced one; a blocked or failed attempt before integration may omit it and must explain why. `released` and `rolled_back` require the integration SHA; `rolled_back` also requires rollback facts.
 
-**Rules:** release is performed only through the product's authorized controls. After approval, the authorized integration path merges the candidate into the protected integration branch, normally `main`, and records the integration SHA. Required integration checks pass before release. A successful command is not sufficient evidence; the record must include the required observed verification. A release failure, rollback, or material incident remains in Release for human triage; a stopped or rolled-back work item reaches Done only through a human Closure Record.
+**Rules:** release is performed only through the product's authorized controls. After a passing evaluation and accountable-human approval, the authorized integration path merges the approved candidate into the protected integration branch, normally `main`, and records the integration SHA. Neither an agent nor the Conductor performs this merge. Required integration checks pass before release. A successful command is not sufficient evidence; the record must include the required observed verification. A release failure, rollback, or material incident remains in Release for human triage; a stopped or rolled-back work item reaches Done only through a human Closure Record.
 
 ## 8. Production Observation
 

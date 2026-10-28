@@ -10,18 +10,18 @@
 | `BoardTransitionEvent` | Authenticated Trello event plus current board state | Trello adapter; validated and correlated by Conductor | Event ID, board/card/list IDs, actor, and event time |
 | `StageInvocation` / `StageResult` | Authorized control-plane record and assigned worker result | Conductor / invoked worker | Invocation ID, triggering board event, work identity, immutable inputs, target revision, permissions, status, and output references |
 | `intent.md` | `intent-backlog` | Intent Creation Skill with product owner | Product, intent identity, version, and the commit that stores each revision |
-| Frozen `intent.md` | Product worktree | First engineering agent | Source commit and exact-byte intent fingerprint |
+| Frozen `intent.md` | Product work branch | First engineering agent | Source commit and exact-byte intent fingerprint |
 | Policy & Compliance Profile | `products/<product>/policy-profiles/` in `intent-backlog`, with its path mapped by `product.yaml` | Product owner | Profile ID, version, source commit, exact-byte fingerprint, applicability decisions, and control IDs |
-| `spec.md` | Product worktree | Spec & Design Agent | Frozen intent/profile references; design, implementation, validation, and decision sections |
-| `work-contract.yaml` | Product worktree | Spec & Design Agent; frozen by product owner | Frozen intent/profile references; target, scope, validation, policy-control, and release/observation requirements |
+| `spec.md` | Product work branch | Spec & Design Agent | Frozen intent/profile references; design, implementation, validation, and decision sections |
+| `work-contract.yaml` | Product work branch | Spec & Design Agent; frozen by product owner | Frozen intent/profile references; target, scope, validation, policy-control, and release/observation requirements |
 | Spec Acceptance Record | Authorized workflow record | Conductor after product-owner acceptance | Immutable references, paths, and content hashes for the accepted `spec.md` and `work-contract.yaml` |
-| Evidence Package | Product worktree | Coding Agent | Candidate commit, validation results, control evidence, and status |
-| Evaluation Package | Product worktree or authorized versioned record | Evaluator | Candidate commit, checks reproduced, findings, and outcome status |
+| Evidence Package | Product work branch | Coding Agent | Candidate commit, validation results, control evidence, and status |
+| Evaluation Package | Assigned artifact path on the product work branch | Evaluator | Candidate commit, checks reproduced, findings, and outcome status; may not alter candidate code |
 | Human Approval Record | Authorized workflow record | Accountable human | Candidate SHA, decision, rationale, and time |
 | Release Record | Product worktree or authorized versioned record | Release and Observation Controls | Candidate SHA, approval reference, integration SHA when produced, environment, release/health facts, and rollback facts |
 | Observation Record | Product worktree or authorized versioned record | Observation control with human closure | Observation window, signals, outcome, findings, and follow-up links |
 | Closure Record | Authorized workflow record | Accountable human | Stopped or rolled-back reason, latest immutable artifact, decision, and follow-up |
-| Execution artifacts | Product worktree | Coding Agent | Frozen intent, profile, `spec.md`, and work-contract references |
+| Execution artifacts | Product work branch | Coding Agent | Frozen intent, profile, `spec.md`, and work-contract references |
 
 ## Intent content
 
@@ -39,7 +39,7 @@ At Prioritized, the Conductor appends a human-readable Trello card comment conta
 
 ## Integrity rules
 
-Before execution, validate that product ID, intent ID, intent version, source commit, and intent fingerprint agree between the Conductor record and the Trello card; validate the policy-profile ID, version, source commit, and fingerprint against that same record; and confirm both backlog artifacts and worktree copies match their fingerprints. Never overwrite a conflict casually: surface it, reconcile it with the authorized owner, and record the resulting version.
+Before execution, validate that product ID, intent ID, intent version, source commit, and intent fingerprint agree between the Conductor record and the Trello card; validate the policy-profile ID, version, source commit, and fingerprint against that same record; and confirm both backlog artifacts and worktree copies match their fingerprints. Every receiving worker independently verifies its frozen input bytes against the recorded source references. The Conductor may perform these checks through read-only repository access; it must not write repository content or refs. Never overwrite a conflict casually: surface it, reconcile it with the authorized owner, and record the resulting version.
 
 Artifacts become durable inputs to later stages rather than disposable prompts. Machine-readable record shapes are defined in [`schemas/lifecycle-contracts.schema.json`](../schemas/lifecycle-contracts.schema.json). Its `$defs` are normative and are selected by JSON Pointer (for example `#/$defs/WorkContract`). YAML files are parsed as YAML, converted to JSON-compatible data, and validated against the same schema. Validators must enforce `format` constraints as well as types, required fields, enums, and `additionalProperties: false`. The following table is a navigation aid; the schema is authoritative for fields and types.
 
@@ -67,6 +67,6 @@ Every artifact in this document is retained in the assigned work branch or anoth
 
 Before Execution starts, the Spec Acceptance Record binds both `spec.md` and `work-contract.yaml` with immutable repository references, repository-relative paths, and content hashes. It makes the execution input unambiguous without requiring either file to contain the commit that stores itself.
 
-An assigned worker may commit only its authorized artifacts on its assigned work branch. The Conductor publishes a validated branch when a human or later worker needs a reachable reference, and records that reference with the stage handoff. Publication is neither approval nor merge. A worker without remote access remains correct; a required publication failure blocks the handoff and is surfaced to the authorized owner.
+The first engineering worker creates the work branch from the assigned base commit. Each later worker starts with a fresh checkout at the exact branch commit supplied by the preceding accepted handoff. A worker commits and pushes only its authorized artifacts to that assigned branch; it does not force-push, write outside its assigned paths, or merge into the protected integration branch. Only one worker may write to the work branch at a time. A push failure blocks the handoff and is surfaced for human resolution.
 
-Publication is a workflow control that makes an artifact available to the next defined stage. It does not change the frozen intent or create an undeclared board stage. The candidate, Evaluation Package, Human Approval Record, Release Record, Observation Record, and Closure Record retain the relevant immutable candidate or integration reference so the work can be traced from intent to outcome or deliberate closure.
+The Conductor verifies branch, commit, and artifact references through read-only access; it does not create, check out, commit to, push, or merge product-repository refs. A worker's push makes a handoff reachable but is neither approval nor a workflow transition. The candidate, Evaluation Package, Human Approval Record, Release Record, Observation Record, and Closure Record retain the relevant immutable candidate or integration reference so the work can be traced from intent to outcome or deliberate closure. The authorized release path merges the approved candidate only after a passing Evaluation Package and human approval.

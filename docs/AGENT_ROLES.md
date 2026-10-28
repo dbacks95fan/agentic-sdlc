@@ -5,12 +5,12 @@
 | Role | Plane | Purpose | Authority boundary | Normative contract |
 | --- | --- | --- | --- | --- |
 | Intent Creation Skill | Control | Capture and synchronize an initial product intent | Creates in `New Ideas`; does not move cards or control freeze state | [Intent Creation Skill](INTENT_CREATION_SKILL.md) and Stage Contracts: Intent Creation |
-| Conductor | Control | Maintain lifecycle state and route validated work | Sole workflow-state writer; does not author product code or make human decisions | Stage Contracts: Prioritized Freeze and shared rules; [Workflow](WORKFLOW.md) |
+| Conductor | Control | Maintain lifecycle state and route validated work | Sole workflow-state writer; validates Git refs read-only; does not create branches, commit, push, merge, or make human decisions | Stage Contracts: Prioritized Freeze and shared rules; [Workflow](WORKFLOW.md) |
 | Board Setup | Control setup | Create a canonical Trello board or bind an existing board to a product configuration | Runs only when explicitly authorized; does not create work items, set priority, or change lifecycle policy | [Board Setup](BOARD_SETUP.md) and [Architecture](ARCHITECTURE.md) |
-| Spec & Design Agent | Execution | Turn frozen intent and product baselines into reviewed specification artifacts | Writes assigned artifacts; cannot change intent, baselines, workflow state, or accept its own work | Stage Contracts: Spec & Design |
-| Coding Agent | Execution | Implement the accepted specification | Writes only assigned product changes and evidence; cannot change accepted inputs, evaluate, approve, merge, or release | Stage Contracts: Execution |
-| Evaluator | Execution | Independently assess the candidate and its evidence | Read-only on candidate code; cannot edit, approve, or change workflow state | Stage Contracts: Evaluation |
-| Release and Observation Controls | Control | Record authorized integration, delivery, and outcome facts | Performs only authorized controls; cannot approve release or close work | Stage Contracts: Release, Production Observation, and Done |
+| Spec & Design Agent | Execution | Turn frozen intent and product baselines into reviewed specification artifacts | Creates the work branch when it is the first engineering worker; commits and pushes only assigned artifacts; cannot change intent, baselines, workflow state, or accept its own work | Stage Contracts: Spec & Design |
+| Coding Agent | Execution | Implement the accepted specification | Fetches the assigned handoff SHA and pushes only assigned product changes and evidence; cannot change accepted inputs, evaluate, approve, merge, or release | Stage Contracts: Execution |
+| Evaluator | Execution | Independently assess the candidate and its evidence | Reads candidate code at its immutable SHA; may push only its Evaluation Package; cannot alter candidate code, approve, or change workflow state | Stage Contracts: Evaluation |
+| Release and Observation Controls | Control | Record authorized integration, delivery, and outcome facts | Merges only the human-approved, evaluated candidate through the authorized release path; cannot approve release or close work | Stage Contracts: Release, Production Observation, and Done |
 | Product owner / accountable human | Control | Make product and delivery decisions | Retains priority, policy applicability, spec acceptance, release, and closure decisions | [Governance](GOVERNANCE.md) and relevant Stage Contracts |
 
 ## Build a component
