@@ -49,7 +49,7 @@ Artifacts become durable inputs to later stages rather than disposable prompts. 
 | `BoardTransitionEvent` | Validated input from the Trello adapter; the Conductor must also verify current board state |
 | `WorkItem` | Stable product, intent, version, and Trello-card identity carried through lifecycle records |
 | `ArtifactRef`, `CommitRef` | Immutable Git provenance; file artifacts include exact-byte SHA-256, while commit references identify a repository revision |
-| `StageInvocation`, `StageResult`, `StageResultDecision` | Runtime-neutral request/result boundary and the Conductor's durable acceptance/rejection of a worker result |
+| `StageInvocation`, `StageResult`, `StageResultDecision` | Runtime-neutral request/result boundary; StageInvocation 1.1 includes the typed Prioritized freeze record so workers can identify frozen intent and policy-profile inputs; StageResultDecision records the Conductor's durable acceptance/rejection |
 | `FreezeActivationEvent`, `FreezeRevocationEvent` | Append-only records for Prioritized freeze activation and authorized revocation |
 | `WorkContract` | Accepted machine-readable scope, frozen input references, validation, policy controls, and release/observation requirements |
 | `SpecAcceptanceRecord` | Human acceptance and immutable binding of `spec.md` and `work-contract.yaml` before Execution |

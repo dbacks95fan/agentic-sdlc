@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:agentic-sdlc:lifecycle-contracts:1.1.0",
+  "$id": "urn:agentic-sdlc:lifecycle-contracts:1.2.0",
   "title": "Agentic SDLC lifecycle contracts",
   "description": "Shared machine-readable records for workflow handoffs. YAML documents MUST be parsed to JSON data before validation against these schemas.",
   "$defs": {
@@ -102,16 +102,17 @@
     "StageInvocation": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["schema_version", "invocation_id", "trigger_event_id", "stage", "work_item", "input_artifacts", "target", "workspace_ref", "read_paths", "write_paths"],
+      "required": ["schema_version", "invocation_id", "trigger_event_id", "stage", "work_item", "freeze_activation", "input_artifacts", "target", "workspace_ref", "read_paths", "write_paths"],
       "properties": {
-        "schema_version": { "const": "1.0" },
+        "schema_version": { "const": "1.1" },
         "invocation_id": { "type": "string", "minLength": 1 },
         "trigger_event_id": { "type": "string", "minLength": 1 },
         "stage": { "$ref": "#/$defs/Stage" },
         "work_item": { "$ref": "#/$defs/WorkItem" },
+        "freeze_activation": { "$ref": "#/$defs/FreezeActivationEvent", "description": "The Prioritized freeze record authorizing this engineering invocation. Its typed intent and policy_profile references identify the frozen inputs and include profile ID and version." },
         "input_artifacts": {
           "type": "array",
-          "minItems": 1,
+          "description": "Additional stage-specific immutable inputs beyond the frozen intent and policy profile referenced by freeze_activation.",
           "items": { "$ref": "#/$defs/ArtifactRef" }
         },
         "target": { "$ref": "#/$defs/CommitRef" },
