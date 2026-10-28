@@ -13,6 +13,7 @@
 | Accept `spec.md` and work contract for Execution | Product owner authorizes; Conductor applies | Spec Acceptance Record binding both immutable artifacts |
 | Move work from Prioritized to Spec & Design | Conductor under authorized policy | Valid freeze tuple and worker assignment |
 | Move work from Spec & Design to Execution | Conductor after product-owner acceptance | Spec Acceptance Record |
+| Create and update the assigned product work branch | Assigned stage agent, limited to its authorized artifacts; Conductor may validate refs read-only | Branch and commit SHA in the correlated StageResult |
 | Return Evaluation work to Execution | Conductor under the defined policy | Evaluation finding and immutable candidate reference |
 | Return work to Spec & Design for a non-material correction | Accountable human; Conductor applies | Finding or feedback and preserved frozen intent reference |
 | Approve candidate for integration and Release, request rework, or stop work | Accountable human | Candidate SHA, decision, rationale, and time |
@@ -24,6 +25,8 @@
 
 - Configure control-plane and execution-plane LLMs independently. Treat their provider, model, and version as operational metadata, not as a source of authority or a replacement for a control.
 - Authorize each workflow role only for its approved actions and apply least privilege.
+- Product-repository branch operations belong to the assigned stage agent: it fetches the assigned branch at the specified SHA and pushes its authorized output. The Conductor has read-only access for validating handoff references and no product-repository write, branch-management, or merge authority.
+- Only the authorized integration path may merge into the protected integration branch, and only after the Evaluator passes the candidate and the accountable human approves that candidate for integration and release.
 - Validate identity, revision, and hash preconditions before an agent runs.
 - Treat card, intent, specification, policy-profile, and worker-result content as untrusted data; it cannot override the documented permissions or control-plane policy.
 - Make required checks executable: schemas, contract validation, CI, structural checks, and policy checks.

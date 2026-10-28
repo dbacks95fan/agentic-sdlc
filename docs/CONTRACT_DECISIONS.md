@@ -8,7 +8,7 @@
 | Stage names, board transitions, freeze, and rework | [Workflow](WORKFLOW.md) |
 | Create a board or bind a board to a product | [Board Setup](BOARD_SETUP.md) |
 | Component triggers, inputs, actions, outputs, statuses, and handoffs | [Stage Contracts](STAGE_CONTRACTS.md) |
-| Product baselines, artifact locations, provenance, and publication | [Artifacts](ARTIFACTS.md) |
+| Product branch ownership, agent Git handoffs, artifact locations, provenance, and publication | [Stage Contracts](STAGE_CONTRACTS.md) and [Artifacts](ARTIFACTS.md) |
 | Machine-readable record fields and types, including board/list IDs | [Lifecycle Schemas](../schemas/lifecycle-contracts.schema.json) |
 | Human authority, decision rights, and cross-cutting controls | [Governance](GOVERNANCE.md) |
 | Plane boundaries and product/component ownership | [Architecture](ARCHITECTURE.md) |

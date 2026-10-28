@@ -19,9 +19,11 @@ The product owner creates and refines an intent. `Prioritized` commits the work 
 ## Who owns what
 
 - A configured Trello board shows one product's work state; **Git** preserves intents, specifications, code, and evidence. The Conductor is configured with board and list IDs; it is not tied to a named product or board. A setup capability can create a board from the canonical template or bind an existing board.
-- The **Conductor** validates board events, owns workflow state, and routes work.
-- **Agents** are narrow workers: they use assigned, validated inputs and return durable results. They do not approve their own work or control the board.
+- The **Conductor** validates board events, owns workflow state, and routes work. It validates GitHub refs read-only but does not create, commit, push, or merge product branches.
+- **Agents** are narrow workers: each starts from the assigned branch and exact commit, then pushes only its authorized outputs so the next device can continue from GitHub. They do not approve their own work or control the board.
 - **People** decide priority, policy applicability, specification acceptance, release, and closure.
+
+The work branch carries changes between independent agent runs. The Evaluator checks the exact candidate commit and publishes its evaluation record without changing candidate code. The authorized release path merges only after evaluation passes and a person approves the candidate.
 
 Passing checks and agent reports are evidence, not proof of business success or regulatory compliance. Production observation compares the delivered result with the intended outcome.
 

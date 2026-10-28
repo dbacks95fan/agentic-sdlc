@@ -15,7 +15,7 @@ New Ideas -> Backlog -> Prioritized -> Spec & Design -> Execution -> Evaluation
                                                             -> Production Observation -> Done
 ```
 
-Trello shows the human workflow. The dedicated `intent-backlog` repository stores canonical intent; product repositories store product baselines and engineering work. The Conductor owns workflow state and routing. Narrow, stateless agents work from validated inputs. People make priority, specification acceptance, policy applicability, release, and closure decisions. Tests and agent reports provide evidence; they do not prove the intended outcome was delivered.
+Trello shows the human workflow. The dedicated `intent-backlog` repository stores canonical intent; product repositories store product baselines and engineering work. Agents fetch and push their assigned work branch so independent runs can hand off through GitHub. The Conductor owns Trello state and routing, with read-only validation of repository references; it does not write branches or merge code. People make priority, specification acceptance, policy applicability, release, and closure decisions. The authorized release path merges only after evaluation passes and a person approves the candidate. Tests and agent reports provide evidence; they do not prove the intended outcome was delivered.
 
 ## Documentation authority
 
