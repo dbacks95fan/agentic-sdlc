@@ -13,6 +13,10 @@
 | Release and Observation Controls | Control | Record authorized integration, delivery, and outcome facts | Merges only the human-approved, evaluated candidate through the authorized release path; cannot approve release or close work | Stage Contracts: Release, Production Observation, and Done |
 | Product owner / accountable human | Control | Make product and delivery decisions | Retains priority, policy applicability, spec acceptance, release, and closure decisions | [Governance](GOVERNANCE.md) and relevant Stage Contracts |
 
+## Cross-board execution rule
+
+All roles are invoked with resolved product context, not tied to a particular board. The Conductor validates an incoming board event and selects the unique registered product configuration; stage agents receive that product ID, its assigned repository, and pinned artifact references. Agents must not hardcode a board, product, or repository, and must not use Trello board titles or list names to choose work.
+
 ## Build a component
 
 1. Select the role above and follow its normative contract link.

@@ -67,6 +67,8 @@ The `trello_lists` object in `product.yaml` maps these stable keys to Trello lis
 
 ## Product binding and runtime checks
 
+The registry may bind several Trello boards at once, with one product configuration per board. Incoming webhook events are routed by verified board ID to exactly one configuration. Board IDs must be unique in the registry; unknown or ambiguous board IDs, and cards or lists not belonging to the mapped board, block processing. Board titles and matching list names are not routing keys.
+
 `product.yaml` uses `schema_version: "1.1"` and includes:
 
 ```yaml

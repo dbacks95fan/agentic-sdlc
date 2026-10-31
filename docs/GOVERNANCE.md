@@ -40,6 +40,20 @@
 - Preserve release and observation facts against the immutable candidate SHA. Do not treat an execution report, a green test suite, or a completed release command as outcome proof.
 - The Conductor may repeat only the same operation when it is known to be idempotent, clearly transient, and free of unknown side effects. Record each repeat and escalate other failures to an authorized human. This operational retry does not authorize an agent rerun without a documented board transition. The supported rework routes and deferred direct reruns are defined in [Workflow](WORKFLOW.md) and [the roadmap](ROADMAP.md).
 
+## GitHub identity and repository access
+
+Use separate credentials for intent-backlog and product-code repositories. The GitHub App has no access to `intent-backlog`; access there uses dedicated repository access tokens. Code repositories use short-lived GitHub App installation tokens, scoped to the assigned repository and minimum permissions required. Keep the App private key and all tokens in the runtime secret store, never in Trello, product configuration, invocation records, logs, or committed files.
+
+| Role | `intent-backlog` access | Product-code repository access |
+| --- | --- | --- |
+| Intent Creation Skill | Read/write token; creates and versions intent records | None |
+| Orchestrator | Read-only token; resolves and verifies frozen intent/profile references | App installation token with read-only access for repository and ref checks |
+| Spec & Design Agent | None; receives the frozen snapshot from the Orchestrator | App installation token with contents read/write access to its assigned product repository |
+| Coding Agent | None | App installation token with contents read/write access to its assigned product repository |
+| Evaluator | None | App installation token with read/write access to publish the evaluation package, but not to alter candidate code |
+
+The runtime supplies credentials only to the role that needs them. GitHub App tokens are limited to repositories and permissions, while repository branch protection governs which branches may change. Tokens passed through container environment variables are visible to principals with access to the container runtime, so that access must be restricted. Missing access blocks the operation; a component must not fall back to a developer's ambient identity or a broader token. Board Setup requires intent-backlog read/write access only when it is authorized to persist product configuration there.
+
 ## Exceptions and incidents
 
 Any workflow exception records its scope, approver, rationale, expiry, and compensating controls. Agent failures caused by missing, malformed, mismatched, or unapproved inputs are system/input errors—not implementation passes. Security incidents, unexpected access, material execution disagreement, or production harm pause the affected workflow and require human triage.
