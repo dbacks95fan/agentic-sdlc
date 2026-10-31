@@ -34,6 +34,8 @@ The file must not contain values that are only known after it is saved, such as 
 
 ## Outcomes the skill must deliver
 
+For the private `intent-backlog` repository, the skill's runtime must provide the dedicated read/write access token. The skill uses it only for the configured backlog repository, never asks the product user to paste it, and never records it in Trello, intent files, or logs. GitHub App access is not available for this repository.
+
 1. Every idea it captures has a card on the product's board and a matching `intent.md` in the `intent-backlog` repository, under the right product.
 2. The card and `intent.md` always describe the same intent at the same version. Each accepted revision is committed to `intent-backlog`, and the card shows the product, intent ID, version, commit, and fingerprint of that revision.
 3. Every revision stays retrievable; history is never rewritten.

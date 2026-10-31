@@ -121,7 +121,9 @@ The frozen intent, accepted `spec.md`, frozen work contract, candidate, and late
 
 ## GitHub authentication
 
-Agents that clone or push GitHub repositories receive just-in-time GitHub App installation tokens through their runtime credential boundary. Tokens are short-lived and restricted to the resolved target repository and minimum required permissions; agents must not rely on personal access tokens or ambient user credentials. The intent-backlog writer and product-code agents require separate repository grants. See [Governance](GOVERNANCE.md) for credential handling and least-privilege rules.
+GitHub access has two separate credential boundaries. The `intent-backlog` repository is accessed only with its dedicated access tokens: the Orchestrator uses read-only access to resolve and verify frozen intents, while the Intent Creation Skill uses read/write access to create and version intents. The GitHub App is not installed on `intent-backlog`.
+
+Product-code repositories use GitHub App installation tokens. Each invocation receives a token limited to the assigned repository and the minimum permission required: Spec & Design and Coding need contents read/write to create and update their work; the Evaluator needs contents read/write to publish its evaluation package without changing candidate code; the Orchestrator needs read-only access for repository and handoff checks. GitHub App permissions are repository-level; repository branch protection and workflow rules govern which branches can be changed. Runtime secrets must stay out of requests, Trello, artifacts, logs, and source control. Tokens injected as container environment variables can be inspected by principals with Docker daemon access, so restrict that access. An agent never receives the intent-backlog write token unless its role is explicitly authorized to write intents. See [Governance](GOVERNANCE.md) for the access matrix.
 
 ## Design constraints
 

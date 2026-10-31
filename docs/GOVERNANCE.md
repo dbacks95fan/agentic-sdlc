@@ -42,9 +42,17 @@
 
 ## GitHub identity and repository access
 
-GitHub read/write access for an agent or service uses a GitHub App installation identity, not a personal access token. The runtime obtains a short-lived installation token for the one repository and permission set needed for the current action. Limit each installation to the repositories it serves, grant only required contents and metadata permissions, and keep the App private key in the runtime secret store. Do not put keys or tokens in Trello, product configuration, invocation records, logs, or committed files. If the App is not installed on the resolved repository, the operation blocks for an authorized configuration change; it must not fall back to a user's credentials.
+Use separate credentials for intent-backlog and product-code repositories. The GitHub App has no access to `intent-backlog`; access there uses dedicated repository access tokens. Code repositories use short-lived GitHub App installation tokens, scoped to the assigned repository and minimum permissions required. Keep the App private key and all tokens in the runtime secret store, never in Trello, product configuration, invocation records, logs, or committed files.
 
-The intent-backlog repository and each product-code repository are distinct authorization targets. The component that writes intents receives access only to the intent-backlog repository. Stage agents receive access only to the assigned product-code repository. The Evaluator remains read-only. App installation credentials are component configuration, while the selected repository is resolved from product context for each invocation.
+| Role | `intent-backlog` access | Product-code repository access |
+| --- | --- | --- |
+| Intent Creation Skill | Read/write token; creates and versions intent records | None |
+| Orchestrator | Read-only token; resolves and verifies frozen intent/profile references | App installation token with read-only access for repository and ref checks |
+| Spec & Design Agent | None; receives the frozen snapshot from the Orchestrator | App installation token with contents read/write access to its assigned product repository |
+| Coding Agent | None | App installation token with contents read/write access to its assigned product repository |
+| Evaluator | None | App installation token with read/write access to publish the evaluation package, but not to alter candidate code |
+
+The runtime supplies credentials only to the role that needs them. GitHub App tokens are limited to repositories and permissions, while repository branch protection governs which branches may change. Tokens passed through container environment variables are visible to principals with access to the container runtime, so that access must be restricted. Missing access blocks the operation; a component must not fall back to a developer's ambient identity or a broader token. Board Setup requires intent-backlog read/write access only when it is authorized to persist product configuration there.
 
 ## Exceptions and incidents
 
