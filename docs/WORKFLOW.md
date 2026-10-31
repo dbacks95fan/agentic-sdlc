@@ -28,6 +28,8 @@ The required stage inputs, outputs, decision gates, and agent statuses are defin
 
 ## Conductor event and trigger contract
 
+The event's verified board ID selects exactly one registered product configuration before card, list, or stage processing. That configuration supplies product ID, intent-backlog namespace, target product repository, and explicit list-ID mapping. Every invocation passes the resolved product and repository context to its stage agent. Agents do not receive authority to route by board name or choose among repositories.
+
 The Trello adapter maps a board move to a `BoardTransitionEvent` as defined by the [lifecycle schemas](../schemas/lifecycle-contracts.schema.json). Product configuration identifies the expected board and explicitly maps each canonical stage to one Trello list ID. The Conductor verifies the event source, board and card identity, and current card/list state against Trello before applying a workflow action; it does not treat webhook payload text as authority. It does not infer stage identity from a board name, list name, or visual order. A missing, duplicate, or cross-board list mapping blocks processing. See [Board Setup](BOARD_SETUP.md) for how to create a board from the template or bind an existing board.
 
 | Validated transition into | Conductor action |

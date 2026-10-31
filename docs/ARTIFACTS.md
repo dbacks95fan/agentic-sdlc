@@ -23,6 +23,12 @@
 | Closure Record | Authorized workflow record | Accountable human | Stopped or rolled-back reason, latest immutable artifact, decision, and follow-up |
 | Execution artifacts | Product work branch | Coding Agent | Frozen intent, profile, `spec.md`, and work-contract references |
 
+## Intent repository routing
+
+The canonical `intent-backlog` GitHub repository is shared by registered products. Store each intent under its resolved product namespace, for example `products/mealflow/intents/INT-MF-0042/intent.md` or `products/perioparrot/intents/INT-PP-0012/intent.md`. The verified Trello board ID selects the product configuration before the intent path is formed. Do not place an intent in a product-code repository or route it by board/card title.
+
+The product's `target_repository` is the application-code repository used by engineering stages. It is distinct from the central intent-backlog repository. Every stage handoff carries the resolved product ID and exact repository/artifact references so agents can operate without board-specific configuration.
+
 ## Intent content
 
 The constitution and architecture are product-level references, not per-intent artifacts. Spec & Design consults the current product constitution and architecture when producing a feature's `spec.md` and implementation plan. The spec records relevant constraints and architectural assumptions and links to the files or decisions it relied on when that context materially affects the design. These baseline documents are not copied into each work item or frozen as part of the intent tuple. If a proposed feature conflicts with a constitution rule or requires an architectural change, Spec & Design makes the conflict and tradeoff explicit for human decision; it does not silently revise the baseline. An accepted baseline change is maintained in the product repository through its normal review process.

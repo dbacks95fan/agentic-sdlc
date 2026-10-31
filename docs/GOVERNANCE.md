@@ -40,6 +40,12 @@
 - Preserve release and observation facts against the immutable candidate SHA. Do not treat an execution report, a green test suite, or a completed release command as outcome proof.
 - The Conductor may repeat only the same operation when it is known to be idempotent, clearly transient, and free of unknown side effects. Record each repeat and escalate other failures to an authorized human. This operational retry does not authorize an agent rerun without a documented board transition. The supported rework routes and deferred direct reruns are defined in [Workflow](WORKFLOW.md) and [the roadmap](ROADMAP.md).
 
+## GitHub identity and repository access
+
+GitHub read/write access for an agent or service uses a GitHub App installation identity, not a personal access token. The runtime obtains a short-lived installation token for the one repository and permission set needed for the current action. Limit each installation to the repositories it serves, grant only required contents and metadata permissions, and keep the App private key in the runtime secret store. Do not put keys or tokens in Trello, product configuration, invocation records, logs, or committed files. If the App is not installed on the resolved repository, the operation blocks for an authorized configuration change; it must not fall back to a user's credentials.
+
+The intent-backlog repository and each product-code repository are distinct authorization targets. The component that writes intents receives access only to the intent-backlog repository. Stage agents receive access only to the assigned product-code repository. The Evaluator remains read-only. App installation credentials are component configuration, while the selected repository is resolved from product context for each invocation.
+
 ## Exceptions and incidents
 
 Any workflow exception records its scope, approver, rationale, expiry, and compensating controls. Agent failures caused by missing, malformed, mismatched, or unapproved inputs are system/input errors—not implementation passes. Security incidents, unexpected access, material execution disagreement, or production harm pause the affected workflow and require human triage.

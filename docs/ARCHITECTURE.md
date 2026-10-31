@@ -89,6 +89,14 @@ The Conductor validates the board actor against that product's configured author
 
 `product.yaml` maps each policy-profile ID to a repository-relative profile path in the same product namespace. The selected profile ID and version are recorded with the intent. The Conductor resolves that mapping and reads `intent.md`, `product.yaml`, and the selected policy profile from the intent's pinned `intent-backlog` commit, then records the source commit and exact-byte fingerprints at Prioritized. The Skill creates the initial Trello card in New Ideas and records the intent and selected profile reference; it does not create, activate, or revoke a freeze. `intent.md` and its Trello card identify the same product, intent, and version, and the card also shows the commit and fingerprint of that revision (see [Artifacts](ARTIFACTS.md)). What an intent must capture is described in [Intent Creation Skill](INTENT_CREATION_SKILL.md). Cross-product initiatives are parent/portfolio intents decomposed into one execution intent per product; one execution intent never spans unrelated product repositories.
 
+### Multiple boards and repository routing
+
+The product registry may contain multiple product configurations. Each configured Trello board ID must resolve to exactly one product configuration. The Conductor selects the product from the verified board ID on the event, then verifies that the card and lists belong to that board. An unknown board, duplicate board mapping, or card/list mismatch is rejected before workflow state changes. Product names, board titles, list names, and visual positions are never routing keys.
+
+The intent-backlog GitHub repository is configured once for the SDLC installation. The resolved product configuration determines the product namespace inside that repository, where the canonical intent and its version history are stored. `target_repository` in a product configuration is the product's application-code repository, not the intent-backlog repository. These repository roles must not be conflated.
+
+All stage agents are product- and board-neutral workers. The Conductor passes the resolved product ID, target repository, immutable intent/profile references, and assigned work branch or base revision in the invocation. An agent must not contain a MealFlow, PerioParrot, board ID, board title, or repository constant, and must not independently search Trello or choose a product repository. The same agent definition can serve work originating on any registered board.
+
 ## Execution workspace and Git handoff
 
 The first engineering-stage worker creates the work branch from the target repository's assigned base commit after the Prioritized freeze is valid. It obtains the frozen intent and policy profile from their recorded source revisions, verifies their exact-byte fingerprints, and commits and pushes only its assigned artifacts. Each later worker starts with a fresh isolated checkout of the same branch at the exact commit SHA supplied in its invocation; it does not depend on another agent's local files or chat history. Only one worker may write to the branch at a time, and pushes must advance the assigned branch without force-pushing.
@@ -110,6 +118,10 @@ A suggested durable layout is:
 ```
 
 The frozen intent, accepted `spec.md`, frozen work contract, candidate, and later evidence form one traceable delivery chain across commits on the work branch. Each handoff records the exact commit SHA so a new device can fetch the branch and reproduce the assigned state. Artifact details are defined in [Artifacts](ARTIFACTS.md) and [Stage Contracts](STAGE_CONTRACTS.md).
+
+## GitHub authentication
+
+Agents that clone or push GitHub repositories receive just-in-time GitHub App installation tokens through their runtime credential boundary. Tokens are short-lived and restricted to the resolved target repository and minimum required permissions; agents must not rely on personal access tokens or ambient user credentials. The intent-backlog writer and product-code agents require separate repository grants. See [Governance](GOVERNANCE.md) for credential handling and least-privilege rules.
 
 ## Design constraints
 
