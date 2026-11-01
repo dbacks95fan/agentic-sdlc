@@ -10,7 +10,7 @@
 | Spec & Design Agent | Execution | Turn frozen intent and product baselines into reviewed specification artifacts | Creates the work branch when it is the first engineering worker; commits and pushes only assigned artifacts; cannot change intent, baselines, workflow state, or accept its own work | Stage Contracts: Spec & Design |
 | Coding Agent | Execution | Implement the accepted specification | Fetches the assigned handoff SHA and pushes only assigned product changes and evidence; cannot change accepted inputs, evaluate, approve, merge, or release | Stage Contracts: Execution |
 | Evaluator | Execution | Independently assess the candidate and its evidence | Reads candidate code at its immutable SHA; may push only its Evaluation Package; cannot alter candidate code, approve, or change workflow state | Stage Contracts: Evaluation |
-| Release and Observation Controls | Control | Record authorized integration, delivery, and outcome facts | Merges only the human-approved, evaluated candidate through the authorized release path; cannot approve release or close work | Stage Contracts: Release, Production Observation, and Done |
+| Release and Observation Controls | Control | Execute authorized integration and deployment and record delivery and outcome facts | A separately authorized integration workflow or human may merge under the Release contract; controls cannot approve the candidate or production deployment or close work | Stage Contracts: Release, Production Observation, and Done |
 | Product owner / accountable human | Control | Make product and delivery decisions | Retains priority, policy applicability, spec acceptance, release, and closure decisions | [Governance](GOVERNANCE.md) and relevant Stage Contracts |
 
 ## Cross-board execution rule

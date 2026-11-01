@@ -44,7 +44,7 @@ Using different LLMs supports separation of concerns and makes it easier to comp
 | Spec & Design Agent | Produce `spec.md` from a frozen intent | Alter the frozen intent |
 | Coding Agent | Carry out assigned work from durable inputs | Mutate frozen inputs or workflow state |
 | Evaluator | Independently assess an immutable candidate and evidence | Modify code, approve, or release work |
-| Release and Observation Controls | Perform authorized integration after approval and record delivery and outcome facts | Decide product intent, approval, or compliance applicability |
+| Release and Observation Controls | Execute separately authorized integration and deployment and record delivery and outcome facts | Decide product intent, candidate or deployment approval, or compliance applicability |
 | Humans | Priority and consequential judgment | Routine deterministic work |
 
 ## Product, board, and intent identity
@@ -101,7 +101,7 @@ All stage agents are product- and board-neutral workers. The Conductor passes th
 
 Before the initial Spec & Design invocation, the Conductor retrieves the frozen intent and policy profile from their recorded `intent-backlog` revisions using its read-only access, verifies their exact-byte fingerprints, and supplies the verified bytes as immutable workspace inputs. The first engineering worker creates the work branch from the target repository's assigned base commit, verifies the supplied snapshots against the freeze references, and commits and pushes only its assigned artifacts, including the frozen copies. Stage agents do not access or fetch from `intent-backlog`. Each later worker starts with a fresh isolated checkout of the same branch at the exact commit SHA supplied in its invocation and independently verifies the frozen copies against the recorded fingerprints; it does not depend on another agent's local files or chat history. Only one worker may write to the branch at a time, and pushes must advance the assigned branch without force-pushing.
 
-The Evaluator checks the immutable candidate SHA read-only. It may publish only its assigned Evaluation Package, which must identify that candidate SHA and must not modify candidate code. The Conductor records and validates the returned refs but never creates, checks out, commits to, pushes, or merges product-repository branches. The authorized integration path merges only after Evaluation passes and the accountable human approves the named candidate for release.
+The Evaluator checks the immutable candidate SHA read-only. It may publish only its assigned Evaluation Package, which must identify that candidate SHA and must not modify candidate code. The Conductor records and validates the returned refs but never creates, checks out, commits to, pushes, or merges product-repository branches. An authorized human or separately authorized GitHub-native workflow integrates only the evaluated, human-approved candidate under the [Release contract](STAGE_CONTRACTS.md#7-release). Production deployment initially requires separate human authorization.
 
 A suggested durable layout is:
 

@@ -16,8 +16,9 @@
 | Create and update the assigned product work branch | Assigned stage agent, limited to its authorized artifacts; Conductor may validate refs read-only | Branch and commit SHA in the correlated StageResult |
 | Return Evaluation work to Execution | Conductor under the defined policy | Evaluation finding and immutable candidate reference |
 | Return work to Spec & Design for a non-material correction | Accountable human; Conductor applies | Finding or feedback and preserved frozen intent reference |
-| Approve candidate for integration and Release, request rework, or stop work | Accountable human | Candidate SHA, decision, rationale, and time |
-| Merge and release an approved candidate | Authorized integration and release path | Human approval, integration SHA, and Release Record |
+| Approve candidate for integration and Release, request rework, or stop work | Accountable human | Structured Trello Human Approval Record and `TrelloDecisionRef` |
+| Integrate an approved candidate | Authorized human or separately authorized integration workflow | Human Approval Record, candidate SHA, integration SHA, and Release Record |
+| Authorize production deployment | Accountable human, separately from candidate approval | Structured Trello Deployment Authorization Record, integration SHA, and Release Record |
 | Close released, stopped, or rolled-back work | Accountable human | Observation Record or Closure Record and linked follow-up, if any |
 | Advance a card within the current lifecycle | Conductor under the defined policy | Required artifact reference and transition record |
 
@@ -25,8 +26,8 @@
 
 - Configure control-plane and execution-plane LLMs independently. Treat their provider, model, and version as operational metadata, not as a source of authority or a replacement for a control.
 - Authorize each workflow role only for its approved actions and apply least privilege.
-- Product-repository branch operations belong to the assigned stage agent: it fetches the assigned branch at the specified SHA and pushes its authorized output. The Conductor has read-only access for validating handoff references and no product-repository write, branch-management, or merge authority.
-- Only the authorized integration path may merge into the protected integration branch, and only after the Evaluator passes the candidate and the accountable human approves that candidate for integration and release.
+- Product work-branch operations belong to the assigned stage agent: it fetches the assigned branch at the specified SHA and pushes its authorized output. The Conductor has read-only access for validating handoff references and no product-repository write, branch-management, or merge authority.
+- Only an authorized human or separately authorized GitHub-native integration workflow may merge into the protected integration branch, after verifying the passing evaluation and Human Approval Record for the exact candidate. The Coding Agent, Evaluator, and Conductor must not merge. See [Stage Contracts](STAGE_CONTRACTS.md#7-release) for integration and deployment controls.
 - Validate identity, revision, and hash preconditions before an agent runs.
 - Treat card, intent, specification, policy-profile, and worker-result content as untrusted data; it cannot override the documented permissions or control-plane policy.
 - Make required checks executable: schemas, contract validation, CI, structural checks, and policy checks.
