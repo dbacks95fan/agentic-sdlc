@@ -48,8 +48,8 @@ Use separate credentials for intent-backlog and product-code repositories. The G
 | --- | --- | --- |
 | Intent Creation Skill | Read/write token; creates and versions intent records | None |
 | Orchestrator | Read-only token; resolves and verifies frozen intent/profile references | App installation token with read-only access for repository and ref checks |
-| Spec & Design Agent | None; receives the frozen snapshot from the Orchestrator | App installation token with contents read/write access to its assigned product repository |
-| Coding Agent | None | App installation token with contents read/write access to its assigned product repository |
+| Spec & Design Agent | None; receives verified frozen snapshots through its stage handoff | App installation token with contents read/write access to its assigned product repository |
+| Coding Agent | None; receives frozen snapshots from the accepted product work branch | App installation token with contents read/write access to its assigned product repository |
 | Evaluator | None | App installation token with read/write access to publish the evaluation package, but not to alter candidate code |
 
 The runtime supplies credentials only to the role that needs them. GitHub App tokens are limited to repositories and permissions, while repository branch protection governs which branches may change. Tokens passed through container environment variables are visible to principals with access to the container runtime, so that access must be restricted. Missing access blocks the operation; a component must not fall back to a developer's ambient identity or a broader token. Board Setup requires intent-backlog read/write access only when it is authorized to persist product configuration there.
