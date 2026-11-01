@@ -56,7 +56,7 @@
         "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
       }
     },
-    "TrelloDecisionRef": {
+    "TrelloRecordRef": {
       "type": "object",
       "additionalProperties": false,
       "required": ["board_id", "card_id", "comment_id", "author_id", "content_sha256"],
@@ -423,7 +423,7 @@
         "environment": { "type": "string", "minLength": 1 },
         "authorized_by": { "type": "string", "minLength": 1 },
         "recorded_at": { "type": "string", "format": "date-time" },
-        "authorization_ref": { "$ref": "#/$defs/TrelloDecisionRef" },
+        "authorization_ref": { "$ref": "#/$defs/TrelloRecordRef" },
         "rationale": { "type": "string", "minLength": 1 }
       }
     },
@@ -436,7 +436,7 @@
         "work_item": { "$ref": "#/$defs/WorkItem" },
         "candidate": { "$ref": "#/$defs/CommitRef" },
         "integration": { "$ref": "#/$defs/CommitRef" },
-        "approval_record": { "$ref": "#/$defs/TrelloDecisionRef" },
+        "approval_record": { "$ref": "#/$defs/TrelloRecordRef" },
         "deployment_authorization": { "$ref": "#/$defs/DeploymentAuthorizationRecord" },
         "environment": { "type": "string", "minLength": 1 },
         "recorded_at": { "type": "string", "format": "date-time" },
@@ -464,7 +464,7 @@
       "properties": {
         "schema_version": { "const": "1.0" },
         "work_item": { "$ref": "#/$defs/WorkItem" },
-        "release_record": { "$ref": "#/$defs/ArtifactRef" },
+        "release_record": { "$ref": "#/$defs/TrelloRecordRef" },
         "observation_start": { "type": "string", "format": "date-time" },
         "observation_end": { "type": "string", "format": "date-time" },
         "signals": { "type": "array", "items": { "type": "string" } },
