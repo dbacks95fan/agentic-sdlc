@@ -56,6 +56,18 @@
         "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
       }
     },
+    "TrelloDecisionRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["board_id", "card_id", "comment_id", "author_id", "content_sha256"],
+      "properties": {
+        "board_id": { "type": "string", "minLength": 1 },
+        "card_id": { "type": "string", "minLength": 1 },
+        "comment_id": { "type": "string", "minLength": 1 },
+        "author_id": { "type": "string", "minLength": 1 },
+        "content_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
     "WorkItem": {
       "type": "object",
       "additionalProperties": false,
@@ -411,7 +423,7 @@
         "environment": { "type": "string", "minLength": 1 },
         "authorized_by": { "type": "string", "minLength": 1 },
         "recorded_at": { "type": "string", "format": "date-time" },
-        "authorization_ref": { "$ref": "#/$defs/ArtifactRef" },
+        "authorization_ref": { "$ref": "#/$defs/TrelloDecisionRef" },
         "rationale": { "type": "string", "minLength": 1 }
       }
     },
@@ -424,7 +436,7 @@
         "work_item": { "$ref": "#/$defs/WorkItem" },
         "candidate": { "$ref": "#/$defs/CommitRef" },
         "integration": { "$ref": "#/$defs/CommitRef" },
-        "approval_record": { "$ref": "#/$defs/ArtifactRef" },
+        "approval_record": { "$ref": "#/$defs/TrelloDecisionRef" },
         "deployment_authorization": { "$ref": "#/$defs/DeploymentAuthorizationRecord" },
         "environment": { "type": "string", "minLength": 1 },
         "recorded_at": { "type": "string", "format": "date-time" },

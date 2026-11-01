@@ -16,9 +16,9 @@
 | Create and update the assigned product work branch | Assigned stage agent, limited to its authorized artifacts; Conductor may validate refs read-only | Branch and commit SHA in the correlated StageResult |
 | Return Evaluation work to Execution | Conductor under the defined policy | Evaluation finding and immutable candidate reference |
 | Return work to Spec & Design for a non-material correction | Accountable human; Conductor applies | Finding or feedback and preserved frozen intent reference |
-| Approve candidate for integration and Release, request rework, or stop work | Accountable human | Candidate SHA, decision, rationale, and time |
+| Approve candidate for integration and Release, request rework, or stop work | Accountable human | Structured Trello Human Approval Record and `TrelloDecisionRef` |
 | Integrate an approved candidate | Authorized human or separately authorized integration workflow | Human Approval Record, candidate SHA, integration SHA, and Release Record |
-| Authorize production deployment | Accountable human, separately from candidate approval | Deployment authorization, integration SHA, and Release Record |
+| Authorize production deployment | Accountable human, separately from candidate approval | Structured Trello Deployment Authorization Record, integration SHA, and Release Record |
 | Close released, stopped, or rolled-back work | Accountable human | Observation Record or Closure Record and linked follow-up, if any |
 | Advance a card within the current lifecycle | Conductor under the defined policy | Required artifact reference and transition record |
 
